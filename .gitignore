@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Virtualenv
+.venv/
+venv/
+
+# Generated artifacts (regenerate with: python data/make_sample_db.py)
+data/*.duckdb
+*.csv
+
+# Doc build temp
+docs/_build_*.md
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

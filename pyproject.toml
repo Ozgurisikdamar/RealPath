@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "relpath"
+version = "0.1.0"
+description = "The open-source, self-hostable relational prediction engine. Connect a database, ask a predictive question in plain language, get an explained answer — local-first."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "relpath.dev" }]
+keywords = ["relational deep learning", "predictive query", "automl", "feature engineering", "duckdb", "local-first"]
+
+# Core stays permissively licensed (MIT/BSD/Apache) and torch-free.
+dependencies = [
+    "duckdb>=0.10",
+    "pandas>=2.0",
+    "numpy>=1.24",
+    "featuretools>=1.30",
+    "lightgbm>=4.0",
+    "scikit-learn>=1.3",
+    "sqlglot>=23",
+]
+
+[project.optional-dependencies]
+# Natural-language -> PQL via Claude (falls back to offline templates if absent)
+nlp = ["anthropic>=0.40"]
+# Local explanations
+explain = ["shap>=0.44"]
+# Small-data tabular foundation model
+tabpfn = ["tabpfn>=0.1"]
+# Interactive demo
+demo = ["streamlit>=1.30"]
+# RelBench evaluation harness (pulls in torch + pyg — kept isolated from the core)
+eval = ["relbench>=1.0", "torch>=2.0", "torch-frame>=0.2"]
+dev = ["pytest>=7", "ruff>=0.4"]
+
+[project.scripts]
+relpath = "relpath.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["relpath*"]
+
+[tool.setuptools.package-data]
+relpath = ["templates/*.json"]

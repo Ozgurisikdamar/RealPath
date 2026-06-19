@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc 3.10" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>relpath.dev v2.0</title>
+  <style>
+
+html {
+color: #1a1a1a;
+background-color: #fdfdfd;
+}
+body {
+margin: 0 auto;
+max-width: 36em;
+padding-left: 50px;
+padding-right: 50px;
+padding-top: 50px;
+padding-bottom: 50px;
+hyphens: auto;
+overflow-wrap: break-word;
+text-rendering: optimizeLegibility;
+font-kerning: normal;
+}
+@media (max-width: 600px) {
+body {
+font-size: 0.9em;
+padding: 12px;
+}
+h1 {
+font-size: 1.8em;
+}
+}
+@media print {
+html {
+background-color: white;
+}
+body {
+background-color: transparent;
+color: black;
+font-size: 12pt;
+}
+p, h2, h3 {
+orphans: 3;
+widows: 3;
+}
+h2, h3, h4 {
+page-break-after: avoid;
+}
+}
+p {
+margin: 1em 0;
+}
+a {
+color: #1a1a1a;
+}
+a:visited {
+color: #1a1a1a;
+}
+img {
+max-width: 100%;
+}
+svg {
+height: auto;
+max-width: 100%;
+}
+h1, h2, h3, h4, h5, h6 {
+margin-top: 1.4em;
+}
+h5, h6 {
+font-size: 1em;
+font-style: italic;
+}
+h6 {
+font-weight: normal;
+}
+ol, ul {
+padding-left: 1.7em;
+margin-top: 1em;
+}
+li > ol, li > ul {
+margin-top: 0;
+}
+blockquote {
+margin: 1em 0 1em 1.7em;
+padding-left: 1em;
+border-left: 2px solid #e6e6e6;
+color: #606060;
+}
+code {
+white-space: pre-wrap;
+font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+font-size: 85%;
+margin: 0;
+hyphens: manual;
+}
+pre {
+margin: 1em 0;
+overflow: auto;
+}
+pre code {
+padding: 0;
+overflow: visible;
+overflow-wrap: normal;
+}
+.sourceCode {
+background-color: transparent;
+overflow: visible;
+}
+hr {
+border: none;
+border-top: 1px solid #1a1a1a;
+height: 1px;
+margin: 1em 0;
+}
+table {
+margin: 1em 0;
+border-collapse: collapse;
+width: 100%;
+overflow-x: auto;
+display: block;
+font-variant-numeric: lining-nums tabular-nums;
+}
+table caption {
+margin-bottom: 0.75em;
+}
+tbody {
+margin-top: 0.5em;
+border-top: 1px solid #1a1a1a;
+border-bottom: 1px solid #1a1a1a;
+}
+th {
+border-top: 1px solid #1a1a1a;
+padding: 0.25em 0.5em 0.25em 0.5em;
+}
+td {
+padding: 0.125em 0.5em 0.25em 0.5em;
+}
+header {
+margin-bottom: 4em;
+text-align: center;
+}
+#TOC li {
+list-style: none;
+}
+#TOC ul {
+padding-left: 1.3em;
+}
+#TOC > ul {
+padding-left: 0;
+}
+#TOC a:not(:hover) {
+text-decoration: none;
+}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: 1.5em;}
+div.column{flex: auto;}
+@media screen {
+div.columns{gap: min(4vw, 1.5em);}
+div.column{overflow-x: auto;}
+}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">relpath.dev v2.0</h1>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#relpath.dev-neural-database-predictive-engine" id="toc-relpath.dev-neural-database-predictive-engine">relpath.dev —
+Neural Database Predictive Engine</a>
+<ul>
+<li><a href="#içindekiler" id="toc-içindekiler">İçindekiler</a></li>
+</ul></li>
+</ul>
+</nav>
+<h1 id="relpath.dev-neural-database-predictive-engine">relpath.dev —
+Neural Database Predictive Engine</h1>
+<h3 id="strateji-teknik-mimari-ve-go-to-market-dokümanı-v2.0">Strateji,
+Teknik Mimari ve Go-to-Market Dokümanı — <strong>v2.0</strong></h3>
+<blockquote>
+<p><strong>Versiyon:</strong> 2.0.0 · <strong>Tarih:</strong> Haziran
+2026 <strong>Konumlandırma:</strong> <em>The open-source, self-hostable
+relational prediction engine.</em> <strong>Bir cümlede:</strong>
+Veritabanınıza bağlanın, düz İngilizce/Türkçe ile bir tahmin sorun;
+relpath join’leri kendi bulur, sızıntısız öznitelik üretir, modeli
+eğitir ve <strong>hangi ilişkisel yolun kararı verdiğini</strong>
+açıklayarak yanıtı döndürür — veriyi hiçbir yere taşımadan, kendi
+makinenizde.</p>
+</blockquote>
+<figure>
+<img role="img" aria-label="relpath.dev logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMjIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0icHVycGxlR3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2MzY2RjEiIC8+IDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0E4NTVGNyIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImVtZXJhbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzEwQjk4MSIgLz4gPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM0I4MkY2IiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Im5lb25HbG93IiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iNiIgcmVzdWx0PSJibHVyIiAvPgogICAgICA8ZmVDb21wb3NpdGUgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iYmx1ciIgb3BlcmF0b3I9Im92ZXIiIC8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIyMjAiIHJ4PSIxNiIgZmlsbD0iIzA5MEQxNiIgLz4KICA8ZyBvcGFjaXR5PSIwLjA0Ij4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjExMCIgcj0iMTUwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgLz4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjExMCIgcj0iMjIwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgLz4KICAgIDxsaW5lIHgxPSIxMDAiIHkxPSIwIiB4Mj0iMTAwIiB5Mj0iMjIwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iMTEwIiB4Mj0iODAwIiB5Mj0iMTEwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgLz4KICA8L2c+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDUsIDEwKSI+CiAgICA8cmVjdCB4PSIzNSIgeT0iNDUiIHdpZHRoPSI0NSIgaGVpZ2h0PSIzNSIgcng9IjYiIGZpbGw9IiMxRTI5M0IiIHN0cm9rZT0iIzQ3NTU2OSIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSI1NyIgeDI9IjcwIiB5Mj0iNTciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSI2NyIgeDI9IjYwIiB5Mj0iNjciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8cmVjdCB4PSIxMTUiIHk9IjExNSIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjM1IiByeD0iNiIgZmlsbD0iIzFFMjkzQiIgc3Ryb2tlPSIjNDc1NTY5IiBzdHJva2Utd2lkdGg9IjEuNSIgLz4KICAgIDxsaW5lIHgxPSIxMjUiIHkxPSIxMjciIHgyPSIxNTAiIHkyPSIxMjciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iMTI1IiB5MT0iMTM3IiB4Mj0iMTQwIiB5Mj0iMTM3IiBzdHJva2U9IiM2NDc0OEIiIHN0cm9rZS13aWR0aD0iMS41IiAvPgogICAgPHBhdGggZD0iTSA4MCA2MiBRIDEzNyA2MiAxMzcgMTE1IiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjcHVycGxlR3JhZCkiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iMiAyIiAvPgogICAgPHBhdGggZD0iTSA4MCA2MiBRIDEwMCAxMTAgMTM3IDExNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2VtZXJhbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIzLjUiIGZpbHRlcj0idXJsKCNuZW9uR2xvdykiIC8+CiAgICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjYyIiByPSI2IiBmaWxsPSIjMTBCOTgxIiAvPgogICAgPGNpcmNsZSBjeD0iMTM3IiBjeT0iMTE1IiByPSI2IiBmaWxsPSIjM0I4MkY2IiAvPgogICAgPGNpcmNsZSBjeD0iMTAzIiBjeT0iOTEiIHI9IjQiIGZpbGw9IiNGRkZGRkYiIGZpbHRlcj0idXJsKCNuZW9uR2xvdykiIC8+CiAgPC9nPgogIDx0ZXh0IHg9IjIxNSIgeT0iMTE1IiBmb250LWZhbWlseT0iJ0ludGVyJywgJ1NlZ29lIFVJJywgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSI1NiIgZmlsbD0iI0ZGRkZGRiIgbGV0dGVyLXNwYWNpbmc9Ii0xIj5yZWxwYXRoPC90ZXh0PgogIDx0ZXh0IHg9IjQyMCIgeT0iMTE1IiBmb250LWZhbWlseT0iJ0ludGVyJywgJ1NlZ29lIFVJJywgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjMwMCIgZm9udC1zaXplPSI1NiIgZmlsbD0idXJsKCNlbWVyYWxkR3JhZCkiPi5kZXY8L3RleHQ+CiAgPHRleHQgeD0iMjE4IiB5PSIxNDgiIGZvbnQtZmFtaWx5PSInSW50ZXInLCAnU2Vnb2UgVUknLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNjAwIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNEI1NTYzIiBsZXR0ZXItc3BhY2luZz0iNC41Ij5ORVVSQUwgREFUQUJBU0UgUFJFRElDVElWRSBFTkdJTkU8L3RleHQ+Cjwvc3ZnPgo=" alt="relpath.dev logo" />
+<figcaption aria-hidden="true">relpath.dev logo</figcaption>
+</figure>
+<hr />
+<h2 id="içindekiler">İçindekiler</h2>
+<ol start="0" type="1">
+<li><a href="#0">Bu v2 Neden Var? (v1’den Farklar)</a></li>
+<li><a href="#1">Executive Summary &amp; Vizyon</a></li>
+<li><a href="#2">Pazar ve Rekabet Analizi (Haziran 2026)</a></li>
+<li><a href="#3">Farklılaştırma / Moat — 4 Sütun</a></li>
+<li><a href="#4">Sistem Mimarisi (Fazlı ve Dürüst)</a></li>
+<li><a href="#5">PQL — Predictive Query Language Spesifikasyonu</a></li>
+<li><a href="#6">Zamansal Sızıntı Güvenliği (Temporal Leakage
+Safety)</a></li>
+<li><a href="#7">Açıklanabilirlik (Explainability) Tasarımı</a></li>
+<li><a href="#8">Değerlendirme: RelBench Benchmark Planı</a></li>
+<li><a href="#9">Go-to-Market, Yol Haritası ve Riskler</a></li>
+</ol>
+<ul>
+<li><a href="#ekA">Ek A: Kaynakça</a></li>
+<li><a href="#ekB">Ek B: Sözlük</a></li>
+</ul>
+<hr />
+<p><a id="0"></a> ## 0. Bu v2 Neden Var? (v1’den Farklar)</p>
+<p>İlk doküman (<code>v1.0.0-PROD</code>) iddialı bir <strong>vizyon ve
+pitch</strong> metniydi: kurumsal mimari diyagramları, AWS EKS GPU
+manifestleri, Snowflake SPCS dağıtımı, GNN + Relational Transformer
+mimarisi ve RelBench benchmark tabloları içeriyordu. Ancak v1’in iki
+temel sorunu vardı:</p>
+<ol type="1">
+<li><strong>Çalışan kod yoktu</strong> — tamamı slayt seviyesinde bir
+vaatti.</li>
+<li><strong>Kategori lideri Kumo.AI’nin bir klonuydu.</strong> Aynı
+kavram (Relational Foundation Model), aynı arayüz (PQL), aynı dağıtım
+(Snowflake/Databricks), aynı benchmark (RelBench). Kapalı, iyi finanse
+edilmiş ve hızlı bir oyuncuyla <strong>onun kendi sahasında</strong>,
+onun silahlarıyla rekabet etmek kaybedilen bir savaştır.</li>
+</ol>
+<p><strong>v2’nin tezi:</strong> Kumo’yu taklit etme — <strong>Kumo’nun
+yapısal olarak yapamadığını yap.</strong></p>
+<table>
+<colgroup>
+<col style="width: 33%" />
+<col style="width: 33%" />
+<col style="width: 33%" />
+</colgroup>
+<thead>
+<tr>
+<th></th>
+<th>v1 (pitch)</th>
+<th><strong>v2 (bu doküman)</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Doğa</td>
+<td>Vizyon dokümanı</td>
+<td>Strateji <strong>+ çalışan prototip</strong></td>
+</tr>
+<tr>
+<td>Konum</td>
+<td>Kumo klonu</td>
+<td>Kumo’nun <strong>karşıtı</strong> (açık kaynak, self-host,
+local-first)</td>
+</tr>
+<tr>
+<td>Mimari</td>
+<td>“Önce GNN” (en pahalı yol)</td>
+<td><strong>Önce ucuz baseline</strong> (DFS+GBDT), GNN sonra</td>
+</tr>
+<tr>
+<td>Dağıtım</td>
+<td>Snowflake/Databricks-kilitli</td>
+<td><strong>DuckDB local-first</strong>, warehouse opsiyonel</td>
+</tr>
+<tr>
+<td>Açıklanabilirlik</td>
+<td>Belirtilmemiş</td>
+<td><strong>Birinci sınıf özellik</strong> (join-yolu provenance)</td>
+</tr>
+<tr>
+<td>Kanıt</td>
+<td>Alıntılanan tablolar</td>
+<td><strong>Kendi çalıştırdığımız RelBench eval’i</strong></td>
+</tr>
+</tbody>
+</table>
+<p>Bu değişikliklerin gerekçesi, aşağıdaki gerçek piyasa ve akademik
+araştırmaya dayanır.</p>
+<hr />
+<p><a id="1"></a> ## 1. Executive Summary &amp; Vizyon</p>
+<h3 id="problem-öznitelik-mühendisliği-cehennemi">1.1 Problem:
+“Öznitelik Mühendisliği Cehennemi”</h3>
+<p>Dünyanın en değerli verisi (finansal işlemler, müşteri yolculukları,
+tedarik zinciri, klinik kayıtlar) <strong>ilişkisel</strong> olarak
+yaşar — onlarca tabloya yayılmış, primary/foreign key ile bağlanmış. Ama
+egemen ML araçları (XGBoost, LightGBM, CatBoost) yalnızca <strong>tek
+bir düz tablo</strong> görebilir.<a href="#fn1" class="footnote-ref" id="fnref1" role="doc-noteref"><sup>1</sup></a><a href="#fn2" class="footnote-ref" id="fnref2" role="doc-noteref"><sup>2</sup></a>
+Aradaki boşluğu veri bilimciler kapatır: aylar süren elle SQL
+<code>JOIN</code> + <code>GROUP BY</code> yazarak “öznitelik boru
+hatları” kurmak. Bu süreç pahalı, yavaş, hataya açık ve her yeni tahmin
+sorusunda sıfırdan tekrarlanır.</p>
+<h3 id="paradigma-ilişkisel-derin-öğrenme-relational-deep-learning-rdl">1.2
+Paradigma: İlişkisel Derin Öğrenme (Relational Deep Learning, RDL)</h3>
+<p>RDL, veritabanını <strong>zamansal heterojen bir grafik</strong>
+olarak modeller: her tablonun her satırı bir düğüm, her PK–FK bağlantısı
+bir kenar, her satırın görünür olduğu an bir zaman damgası.<a href="#fn3" class="footnote-ref" id="fnref3" role="doc-noteref"><sup>3</sup></a> Böylece “öznitelik mühendisliği”
+otomatikleşir — model, ilişkisel topolojiyi tarayarak hangi sinyalin
+önemli olduğunu kendisi keşfeder. Bu fikrin akademik temeli Stanford’da
+(Fey, Leskovec ve ark., ICML’24) atıldı; ticari öncüsü
+<strong>Kumo.AI</strong>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
+<h3 id="relpath.devin-vizyonu">1.3 relpath.dev’in Vizyonu</h3>
+<blockquote>
+<p><strong>“Relational Deep Learning’i
+demokratikleştirmek.”</strong></p>
+</blockquote>
+<p>Kumo bu teknolojiyi kurumsal, kapalı ve bulut-kilitli bir SaaS olarak
+sunuyor. relpath.dev aynı değeri <strong>açık kaynak, self-hostable ve
+local-first</strong> olarak sunar. Bir veri bilimci veya geliştirici,
+kendi dizüstü bilgisayarında, verisini hiçbir yere taşımadan, üç satır
+kodla (ya da bir cümle düz dille) ilişkisel tahmin alabilmeli.</p>
+<p><strong>Dürüst kapsam notu:</strong> relpath.dev bir “foundation
+model” (KumoRFM gibi sıfır-eğitim in-context model)
+<strong>değildir</strong> — en azından bugün değil. v2 prototipi,
+bilinçli olarak <strong>görev-başına hızlı eğitilen güçlü bir
+baseline</strong> (Deep Feature Synthesis + Gradient Boosting) üzerine
+kuruludur. Bu, basit görünebilir; ama §2.4 ve §8’de göstereceğimiz gibi,
+<strong>bu baseline birçok gerçek görevde GNN/RDL ile yarışır veya onu
+geçer</strong> — kat kat daha ucuza. Foundation-model yolu (§4, Faz 3)
+yol haritasındadır, vitrin değildir.</p>
+<hr />
+<p><a id="2"></a> ## 2. Pazar ve Rekabet Analizi (Haziran 2026)</p>
+<h3 id="kategori-lideri-kumo.ai-kumorfm-2">2.1 Kategori Lideri: Kumo.AI
+/ KumoRFM-2</h3>
+<p>Kumo.AI (Jure Leskovec ve ekibi), <strong>KumoRFM</strong> ile
+kategoriyi tanımladı: çok tablolu veritabanı üzerinde,
+<strong>görev-başına eğitim olmadan</strong> (in-context learning)
+tahmin yapan bir <strong>Relational Foundation Model</strong>.<a href="#fn6" class="footnote-ref" id="fnref6" role="doc-noteref"><sup>6</sup></a><a href="#fn7" class="footnote-ref" id="fnref7" role="doc-noteref"><sup>7</sup></a> 2025–2026’da
+<strong>KumoRFM-2</strong> ile güncellendi.</p>
+<p><strong>Güçlü yanları:</strong> - <strong>In-context
+learning:</strong> Çıkarım anında geçmiş satırlardan otomatik etiketli
+alt-grafikler örnekleyerek “context example” üretir — LLM’lerdeki
+few-shot mantığı.<a href="#fn8" class="footnote-ref" id="fnref8" role="doc-noteref"><sup>8</sup></a> - <strong>Hız &amp; ölçek:</strong>
+~1 sn çıkarım; “Online Serving” ile sub-100ms / binlerce QPS;
+memory-mapped grafik motoru 500B+ satır.<a href="#fn9" class="footnote-ref" id="fnref9" role="doc-noteref"><sup>9</sup></a> -
+<strong>Warehouse-native:</strong> Snowflake &amp; Databricks içinde,
+veri dışarı çıkmadan çalışır.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> -
+<strong>Agent-native:</strong> MCP server + Python SDK.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
+<p><strong>Yapısal zayıflıkları (bizim açtığımız kapılar):</strong> |
+Zayıflık | Açıklama | relpath fırsatı | |—|—|—| | <strong>Kapalı
+kaynak</strong> | Model ağırlıkları/kodu kapalı, satış-odaklı | Açık
+kaynak çekirdek | | <strong>Şeffaf olmayan fiyat</strong> | Genel fiyat
+sayfası yok; enterprise = “contact sales” | Self-host = ücretsiz;
+küçük-veri bedava | | <strong>Bulut kilidi</strong> |
+Snowflake/Databricks ekosistemine bağlı | <strong>DuckDB
+local-first</strong>, warehouse opsiyonel | | <strong>On-prem/air-gapped
+yok</strong> | Düzenlemeli sektörler (sağlık, kamu, finans) dışarıda |
+Tamamen offline çalışır | | <strong>Korelasyonel açıklama</strong> |
+“Hangi sütun katkı yaptı” var ama nedensel/denetlenebilir değil |
+<strong>Join-yolu provenance</strong> | | <strong>Yalnızca yapısal
+veri</strong> | Metin/belge muhakemesi yok | (yol haritası) LLM +
+ilişkisel füzyon |</p>
+<h3 id="bitişik-dolaylı-rakipler">2.2 Bitişik / Dolaylı Rakipler</h3>
+<ul>
+<li><strong>getML</strong> — ilişkisel/zaman-serisi öznitelik
+mühendisliği (FastProp/Multirel); Featuretools’tan 60–1000× hızlı.<a href="#fn12" class="footnote-ref" id="fnref12" role="doc-noteref"><sup>12</sup></a> Ama <em>foundation model
+değil</em>, klasik ML için öznitelik üretir; community sürümü
+<strong>ELv2</strong> (OSI-onaylı açık kaynak <strong>değil</strong>,
+SaaS yeniden-satışı yasak).</li>
+<li><strong>Featuretools / Deep Feature Synthesis (Alteryx)</strong> —
+olgun, ücretsiz (BSD), çok-tablolu otomatik agregasyon; ama
+<em>düzleştirir</em> (tek-satır-per-entity), sıfır-shot yok, model
+eğitmeyi size bırakır.<a href="#fn13" class="footnote-ref" id="fnref13" role="doc-noteref"><sup>13</sup></a></li>
+<li><strong>Snowflake Cortex ML Functions</strong> — SQL içi
+forecasting/classification/anomaly; kolay ama <strong>tek-tablo /
+zaman-serisi</strong> odaklı, çok-tablolu grafik öğrenme değil.<a href="#fn14" class="footnote-ref" id="fnref14" role="doc-noteref"><sup>14</sup></a></li>
+<li><strong>Databricks Mosaic AI / AutoML</strong> — güçlü ama DIY
+MLOps; push-button ilişkisel tahmin değil.</li>
+<li><strong>RelationalAI</strong> — Snowflake Native App “Knowledge
+Graph Coprocessor”; akıl yürütme/kural odaklı, tahmin ikincil ve
+<strong>yalnızca Snowflake</strong>.<a href="#fn15" class="footnote-ref" id="fnref15" role="doc-noteref"><sup>15</sup></a></li>
+<li><strong>Continual.ai</strong> — “warehouse üzerinde deklaratif ML”
+oyuncusuydu; ekip Snowflake’e geçti, ürün etkin biçimde kapandı —
+bıraktığı boşluğu bugün Kumo dolduruyor.</li>
+</ul>
+<h3 id="pazar-haritası-tek-bakışta">2.3 Pazar Haritası — Tek
+Bakışta</h3>
+<pre><code>                 Açık Kaynak / Self-host
+                          ▲
+        Featuretools •    │    • relpath.dev  ◀── BOŞ KÖŞE (hedefimiz)
+            getML •       │
+   ───────────────────────┼───────────────────────▶  Push-button
+   Manuel öznitelik       │              Otomatik ilişkisel tahmin
+                          │    • Kumo / KumoRFM
+        Snowflake Cortex •│    • RelationalAI
+            Databricks •  │
+                          ▼
+                  Kapalı / Bulut-kilitli</code></pre>
+<p>Sağ-üst köşe — <strong>otomatik ilişkisel tahmin + açık
+kaynak/self-host</strong> — bugün <strong>boş</strong>. relpath.dev’in
+tüm stratejisi bu köşeyi sahiplenmektir.</p>
+<h3 id="kritik-bulgu-gnn-şart-değil-8020">2.4 Kritik Bulgu: “GNN Şart
+Değil” (80/20)</h3>
+<p>En önemli stratejik veri: <strong>getml-relbench</strong>
+karşılaştırması, propositionalization + gradient boosting’in birçok
+RelBench görevinde GNN/RDL’i <strong>eşitlediğini veya
+geçtiğini</strong> gösteriyor — çok daha ucuza:<a href="#fn16" class="footnote-ref" id="fnref16" role="doc-noteref"><sup>16</sup></a></p>
+<table>
+<thead>
+<tr>
+<th>Görev</th>
+<th>DFS/FastProp + GBDT</th>
+<th>RDL/GNN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>rel-amazon item-churn</td>
+<td><strong>0.831</strong></td>
+<td>0.828</td>
+</tr>
+<tr>
+<td>rel-hm user-churn</td>
+<td><strong>0.703</strong></td>
+<td>0.699</td>
+</tr>
+<tr>
+<td>rel-hm item-sales (MAE, düşük=iyi)</td>
+<td><strong>0.031</strong></td>
+<td>0.056</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Sonuç:</strong> GNN’in net üstünlüğü esas olarak
+<strong>link-prediction / öneri</strong> ve derin çok-hop zamansal
+sinyal gerektiren görevlerde. Tablo-düzeyi sınıflandırma/regresyon
+görevlerinin çoğunda ucuz baseline yeterli. Bu, prototip kararımızı
+(önce baseline) doğrudan haklı çıkarır ve “RDL = mutlaka pahalı GPU”
+mitini kırar — bu da açık kaynak/local-first konumumuzun teknik
+temelidir.</p>
+<hr />
+<p><a id="3"></a> ## 3. Farklılaştırma / Moat — 4 Sütun</p>
+<p>Her sütun, “<strong>Kumo bunu neden kolayca yapamaz?</strong>”
+sorusuyla gerekçelendirilmiştir.</p>
+<h3 id="sütun-1-açık-kaynak-self-host-local-first-duckdb">Sütun 1 — Açık
+Kaynak + Self-Host + Local-First (DuckDB)</h3>
+<ul>
+<li><strong>Ne:</strong> Çekirdek motor MIT/BSD lisanslı; tek
+<code>pip install</code>; <strong>DuckDB</strong> ile dizüstünde, veri
+hiç dışarı çıkmadan çalışır. İnternet, warehouse, hesap
+gerektirmez.</li>
+<li><strong>Neden Kumo yapamaz:</strong> İş modeli kapalı SaaS +
+warehouse ortaklıklarına dayanır. Açık kaynak yapmak gelir modelini ve
+bulut kilidini imha eder. Bu yapısal bir kilit.</li>
+<li><strong>Kime hitap eder:</strong> Düzenlemeli sektörler
+(sağlık/kamu/finans), KOBİ’ler, startup’lar, hava-boşluklu (air-gapped)
+ortamlar, “veri çıkamaz” politikası olan herkes.</li>
+</ul>
+<h3 id="sütun-2-doğal-dil-pql-llm-arayüzü">Sütun 2 — Doğal Dil → PQL
+(LLM arayüzü)</h3>
+<ul>
+<li><strong>Ne:</strong> Kullanıcı “<em>gelecek 30 günde alışveriş
+yapmayacak müşterileri bul</em>” yazar; sistem şema-farkında bir LLM ile
+bunu geçerli <strong>PQL</strong>’e çevirir, SQLGlot ile
+<strong>doğrular</strong>, sonra çalıştırır. Yanlış/uydurma sorgu
+üretimi parser ile yakalanır.</li>
+<li><strong>Neden moat:</strong> Düşük efor, yüksek algılanan değer.
+PQL’i öğrenme bariyerini sıfırlar; “veritabanıyla konuşma” deneyimi
+sunar. LLM sağlayıcısı pluggable (Claude varsayılan; local LLM / offline
+şablon fallback).</li>
+</ul>
+<h3 id="sütun-3-açıklanabilirlik-join-yolu-provenance">Sütun 3 —
+Açıklanabilirlik (Join-Yolu Provenance)</h3>
+<ul>
+<li><strong>Ne:</strong> Her tahmin için “<strong>bu kararı hangi
+tablolar, hangi agregasyonlar, hangi join yolu</strong> verdi”
+gösterilir. DFS öznitelikleri doğası gereği yorumlanabilir
+(<code>SUM(transactions.amount WHERE ...)</code> gibi); bunları LightGBM
+gain/SHAP ile birleştirip hem global hem entity-bazlı açıklama
+üretiriz.</li>
+<li><strong>Neden Kumo yapamaz (kolayca):</strong> GNN/foundation-model
+gömme uzayında çalışır; çıktısı korelasyonel sütun-katkısıdır,
+<strong>insan-okunur ilişkisel yol</strong> değil. Bizim baseline’ımız
+bu açıklamayı <em>bedavaya</em> verir — mimari avantaj.</li>
+<li><strong>Neden önemli:</strong> Düzenleyici uyum (GDPR/KVKK “açıklama
+hakkı”), güven, hata ayıklama.</li>
+</ul>
+<h3 id="sütun-4-dikey-şablonlar-vertical-templates">Sütun 4 — Dikey
+Şablonlar (Vertical Templates)</h3>
+<ul>
+<li><strong>Ne:</strong> Yatay sorgu diline ek olarak, hazır paketlenmiş
+çözümler: <code>churn</code>, <code>fraud</code>, <code>forecast</code>.
+Her biri parametrik bir PQL + makul varsayılanlar + alana özgü açıklama.
+<code>relpath.churn(entity=&quot;customers&quot;, horizon=&quot;30 days&quot;)</code> →
+bitti.</li>
+<li><strong>Neden moat:</strong> Kumo yatay bir platform satar; alıcı
+yine de problemi modellemeli. Şablonlar “time-to-value”yu dakikalara
+indirir ve dikey pazarlama (SEO, içerik) sağlar.</li>
+</ul>
+<hr />
+<p><a id="4"></a> ## 4. Sistem Mimarisi (Fazlı ve Dürüst)</p>
+<h3 id="üç-faz">4.1 Üç Faz</h3>
+<pre><code>Faz 1 (PROTOTİP — bu sürüm)      Faz 2 (BÜYÜME)            Faz 3 (VİZYON)
+─────────────────────────       ───────────────           ──────────────
+DFS + GradientBoosting          + RDL/GNN backend         + Relational
+(local-first, CPU)                (relbench + PyG)           Foundation Model
+                                                            (in-context, zero-train)
+NL→PQL · Explain · Templates    + Warehouse konnektörleri  + Streaming / real-time
+DuckDB / Postgres                 (Snowflake/Databricks)     + Multimodal (metin)</code></pre>
+<p><strong>Strateji:</strong> Değerin %80’ini Faz 1’de, maliyetin
+%20’siyle teslim et (§2.4). GNN ve foundation-model, kanıtlanmış talep
+ve gelir geldikçe eklenir — vitrin değil, yol haritası.</p>
+<h3 id="faz-1-veri-akışı-prototip">4.2 Faz 1 Veri Akışı (Prototip)</h3>
+<pre><code>┌──────────────┐   ┌───────────────┐   ┌──────────────────┐   ┌─────────────┐
+│  CONNECT     │──▶│  SCHEMA        │──▶│  PQL COMPILE     │──▶│  TASK BUILD │
+│ DuckDB/PG    │   │ FK-grafiği +   │   │ NL→PQL (LLM)     │   │ entity @    │
+│ tabloları    │   │ EntitySet      │   │ → AST → join     │   │ anchor ts + │
+│              │   │ (Featuretools) │   │   inference      │   │ label       │
+└──────────────┘   └───────────────┘   └──────────────────┘   └──────┬──────┘
+                                                                      │
+        ┌─────────────────────────────────────────────────────────────┘
+        ▼
+┌──────────────────┐   ┌──────────────────┐   ┌─────────────────────────┐
+│  FEATURES (DFS)  │──▶│  MODEL           │──▶│  EXPLAIN + SERVE        │
+│ cutoff_time ile  │   │ LightGBM (auto   │   │ join-yolu provenance,   │
+│ sızıntı-güvenli  │   │ clf/reg) /TabPFN │   │ tahmin tablosu, SDK/CLI │
+└──────────────────┘   └──────────────────┘   └─────────────────────────┘</code></pre>
+<h3 id="zero-data-movement-bizim-yorumumuz">4.3 “Zero-Data-Movement” —
+Bizim Yorumumuz</h3>
+<p>v1 bunu “warehouse içinde çalış” diye tanımlıyordu (Snowflake SPCS).
+Biz daha radikal yorumluyoruz: <strong>veri zaten makinenizde</strong>
+(DuckDB dosyası) ya da kendi sunucunuzda (Postgres); relpath onun
+<em>yanında</em> çalışır. Hiçbir SaaS’a, hiçbir buluta veri gitmez.
+Warehouse’a bağlanmak (Faz 2) bir <em>opsiyon</em>’dur,
+<em>zorunluluk</em> değil — Kumo’nun aksine.</p>
+<h3 id="teknoloji-yığını-ve-lisanslar">4.4 Teknoloji Yığını ve
+Lisanslar</h3>
+<table>
+<colgroup>
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+<col style="width: 25%" />
+</colgroup>
+<thead>
+<tr>
+<th>Katman</th>
+<th>Bileşen</th>
+<th>Lisans</th>
+<th>Rol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Depolama</td>
+<td><strong>DuckDB</strong></td>
+<td>MIT</td>
+<td>Local-first analitik motor</td>
+</tr>
+<tr>
+<td>Şema</td>
+<td><strong>Featuretools EntitySet</strong></td>
+<td>BSD-3</td>
+<td>Entity + ilişki + cutoff modeli</td>
+</tr>
+<tr>
+<td>Derleyici</td>
+<td><strong>SQLGlot</strong></td>
+<td>MIT</td>
+<td>PQL parse/validate/transpile</td>
+</tr>
+<tr>
+<td>Öznitelik</td>
+<td><strong>Featuretools DFS</strong></td>
+<td>BSD-3</td>
+<td>Sızıntı-güvenli propositionalization</td>
+</tr>
+<tr>
+<td>Model</td>
+<td><strong>LightGBM</strong></td>
+<td>MIT</td>
+<td>Gradient boosting (clf/reg)</td>
+</tr>
+<tr>
+<td>Model (küçük veri)</td>
+<td><strong>TabPFN</strong></td>
+<td>Apache+attr.</td>
+<td>Tabular FM (opsiyonel)</td>
+</tr>
+<tr>
+<td>NL→PQL</td>
+<td><strong>Claude (anthropic SDK)</strong></td>
+<td>API</td>
+<td>Doğal dil arayüzü (pluggable)</td>
+</tr>
+<tr>
+<td>Açıklama</td>
+<td><strong>SHAP / LGBM gain</strong></td>
+<td>MIT</td>
+<td>Öznitelik katkısı</td>
+</tr>
+<tr>
+<td>Eval</td>
+<td><strong>relbench</strong></td>
+<td>MIT</td>
+<td>Benchmark + metrik (opsiyonel extra)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Lisans disiplini:</strong> Çekirdek tamamen izinli
+(MIT/BSD/Apache). getML (ELv2) ve TabPFN-2.5 (ticari kullanım yasak)
+<strong>çekirdeğe alınmaz</strong> — yalnızca opsiyonel/karantina
+eklenti olarak sunulur.</p>
+<hr />
+<p><a id="5"></a> ## 5. PQL — Predictive Query Language
+Spesifikasyonu</p>
+<p>PQL, “ne tahmin etmek istediğinizi” deklaratif olarak söyleten bir
+DSL’dir; “nasıl”ı derleyici halleder. v1’in gramerini
+<strong>koruyoruz</strong> (geriye uyum), netleştirerek.</p>
+<h3 id="gramer">5.1 Gramer</h3>
+<pre><code>PREDICT  &lt;target_expr&gt;
+FOR EACH &lt;Entity_Table.Primary_Key&gt;
+[ WHERE  &lt;filters&gt; ]
+[ ASSUMING &lt;segment_filters&gt; ]      -- (v2 eklentisi: tahmin evrenini daraltır)</code></pre>
+<p><code>target_expr</code>, bir <strong>zaman-pencereli
+agregasyon</strong>’dur:</p>
+<pre><code>AGG( &lt;Table.Column | Table.*&gt; , &lt;start_offset&gt; , &lt;end_offset&gt; , &lt;unit&gt; ) [ &lt;op&gt; &lt;value&gt; ]
+AGG ∈ { COUNT, SUM, AVG, MIN, MAX, FIRST, LAST, LIST_DISTINCT }
+unit ∈ { days, weeks, months }
+op   ∈ { ==, !=, &gt;, &gt;=, &lt;, &lt;= }    -- varsa → sınıflandırma, yoksa → regresyon</code></pre>
+<h3 id="örnekler">5.2 Örnekler</h3>
+<p><strong>Müşteri churn’ü (ikili sınıflandırma):</strong> “Gelecek 30
+günde hiç işlem yapmayacak müşteriler”</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>PREDICT  <span class="fu">COUNT</span>(TRANSACTIONS.<span class="op">*</span>, <span class="dv">0</span>, <span class="dv">30</span>, days) <span class="op">==</span> <span class="dv">0</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="cf">FOR</span> <span class="kw">EACH</span> CUSTOMERS.CUSTOMER_ID</span></code></pre></div>
+<p><strong>Talep tahmini (regresyon):</strong> “Her ürün için gelecek 3
+ayın toplam satışı”</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>PREDICT  <span class="fu">SUM</span>(TRANSACTIONS.QUANTITY, <span class="dv">0</span>, <span class="dv">3</span>, months)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">FOR</span> <span class="kw">EACH</span> ARTICLES.ARTICLE_ID</span></code></pre></div>
+<p><strong>Fraud (segmentli sınıflandırma):</strong> “Yüksek-tutarlı
+işlemlerden hangileri geri-çekilecek (chargeback)”</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>PREDICT  <span class="fu">COUNT</span>(CHARGEBACKS.<span class="op">*</span>, <span class="dv">0</span>, <span class="dv">60</span>, days) <span class="op">&gt;</span> <span class="dv">0</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="cf">FOR</span> <span class="kw">EACH</span> TRANSACTIONS.TX_ID</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>ASSUMING TRANSACTIONS.AMOUNT <span class="op">&gt;</span> <span class="dv">1000</span></span></code></pre></div>
+<h3 id="derleyici-aşamaları">5.3 Derleyici Aşamaları</h3>
+<ol type="1">
+<li><strong>Lexing/Parsing (AST):</strong> SQLGlot tabanlı tokenizer +
+PQL grameri → soyut sözdizim ağacı.</li>
+<li><strong>Join Inference:</strong> FK-grafiğinde
+<code>Entity_Table</code> ↔︎ hedef/öznitelik tabloları arası en kısa join
+yolları otomatik bulunur — elle <code>JOIN</code> yazmaya gerek yok.
+(v1’deki “Join Inferral”.)</li>
+<li><strong>Temporal Decomposition:</strong> İki pencere kesin izole
+edilir → <em>Label window</em> <code>[anchor, anchor+horizon]</code>
+(geleceğe bakar, <strong>yalnızca etiket için</strong>) ve <em>Feature
+window</em> <code>(-∞, anchor]</code> (geçmişe bakar, <strong>yalnızca
+girdi için</strong>). Ayrıntı §6.</li>
+<li><strong>Task Lowering:</strong> Her entity için (anchor timestamp,
+label) çiftleri üretilir; çıktı, Featuretools’a verilecek
+<code>cutoff_time</code> tablosu + hedef vektörüdür.</li>
+</ol>
+<h3 id="nlpql">5.4 NL→PQL</h3>
+<p>Düz dil → şema-farkında LLM prompt → PQL string → <strong>tekrar
+parse ederek doğrulama</strong>. Parse başarısızsa LLM’e hata geri
+beslenir (self-correction, max N tur). API yoksa <strong>deterministik
+şablon fallback</strong> (örüntü eşleme ile yaygın churn/forecast
+sorularını karşılar). Bu sayede “local-first” sözü NL katmanında da
+bozulmaz.</p>
+<hr />
+<p><a id="6"></a> ## 6. Zamansal Sızıntı Güvenliği (Temporal Leakage
+Safety)</p>
+<p><strong>Problem.</strong> İlişkisel tahmolinde en sinsi hata, modelin
+<em>gelecekteki</em> veriyi görerek eğitilmesidir (label leakage).
+Akademi bunu RDL’in <strong>çözülmemiş açık problemlerinden</strong>
+sayar; çoğu sistem bunu ad-hoc halleder.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a><a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> v1 bunu “Anchor Timestamp” diye
+anıyordu ama mekanizma soyuttu.</p>
+<p><strong>relpath’in çözümü — yapısal garanti.</strong> Her entity’ye
+bir <strong>anchor timestamp</strong> <code>t*</code> atanır. Tüm
+öznitelikler Featuretools <code>cutoff_time</code> ile üretilir; bu,
+motorun <strong>yalnızca <code>t ≤ t*</code> olan satırları</strong>
+öznitelik hesabına dahil etmesini <em>garanti</em> eder. Etiket ise
+yalnızca <code>(t*, t*+horizon]</code> penceresinden hesaplanır. İki
+pencere asla kesişmez:</p>
+<pre><code>   geçmiş (öznitelikler)            gelecek (etiket)
+ ◀───────────────────────●───────────────────────▶
+        t ≤ t*          t*        t* &lt; t ≤ t*+H
+   FEATURE WINDOW      anchor       LABEL WINDOW</code></pre>
+<p><strong>Denetlenebilirlik.</strong> Bunu bir slogan değil,
+<strong>otomatik test</strong> yapıyoruz: <code>tests/</code> içinde,
+üretilen her özniteliğin provenance’ını izleyip <code>t*</code> sonrası
+hiçbir kaynak satıra dokunmadığını doğrulayan bir sızıntı-denetçisi var
+(§8.2). “Sızıntı yok” iddiası CI’da kanıtlanır.</p>
+<p>Bu, §3’teki açıklanabilirlik sütununu da besler: provenance zaten
+izlendiği için, “neden”i göstermek bedavaya gelir.</p>
+<hr />
+<p><a id="7"></a> ## 7. Açıklanabilirlik (Explainability) Tasarımı</p>
+<p><strong>Hedef:</strong> Her tahmin için insan-okunur
+“<strong>neden</strong>”. İki seviye:</p>
+<ol type="1">
+<li><p><strong>Global (model seviyesi):</strong> Hangi
+join-yolları/agregasyonlar genelde en belirleyici? LightGBM gain
+importance, DFS öznitelik tanımına geri eşlenir. Örn:
+<em>“<code>MEAN(transactions.amount, last 90d)</code> ve
+<code>COUNT(returns.*, last 30d)</code> churn’ün en güçlü 2
+sürücüsü.”</em></p></li>
+<li><p><strong>Lokal (entity seviyesi):</strong> Bu <em>tek</em> müşteri
+neden riskli? SHAP değerleri + öznitelik provenance → “<strong>join yolu
+kartı</strong>”:</p>
+<pre><code>customer #4471 — churn olasılığı 0.87  (▲ yüksek)
+├─ transactions → MEAN(amount, 90d) = 12₺      katkı: +0.41  (düşük harcama)
+├─ transactions → COUNT(*, 30d)     = 0         katkı: +0.28  (son 30g hareketsiz)
+└─ returns      → COUNT(*, 60d)     = 3         katkı: +0.12  (çok iade)</code></pre></li>
+</ol>
+<p><strong>Neden mimari avantaj:</strong> DFS öznitelikleri
+<em>tanımları gereği</em> ilişkisel yol taşır (tablo + agregasyon +
+filtre + zaman penceresi). GNN gömmelerinin aksine bu açıklama
+<em>post-hoc tahmin</em> değil, <em>gerçek hesap yolu</em>dur. Kumo’nun
+korelasyonel sütun-katkısından niteliksel olarak üstündür ve düzenleyici
+“açıklama hakkı” için uygundur.</p>
+<hr />
+<p><a id="8"></a> ## 8. Değerlendirme: RelBench Benchmark Planı</p>
+<p>İddiaları kanıtla — alıntılama, <strong>kendin çalıştır.</strong></p>
+<h3 id="datasetler-ve-görevler">8.1 Datasetler ve Görevler</h3>
+<p>Stanford <strong>RelBench v2</strong> (11 DB / 66 görev) üzerinde,
+başlangıçta 2 temsili görev:<a href="#fn19" class="footnote-ref" id="fnref19" role="doc-noteref"><sup>19</sup></a><a href="#fn20" class="footnote-ref" id="fnref20" role="doc-noteref"><sup>20</sup></a> -
+<strong>Sınıflandırma:</strong> <code>rel-hm</code> <em>user-churn</em>
+(veya <code>rel-amazon</code> <em>user-churn</em>) → metrik
+<strong>ROC-AUC</strong>. - <strong>Regresyon:</strong>
+<code>rel-hm</code> <em>item-sales</em> → metrik
+<strong>MAE</strong>.</p>
+<h3 id="karşılaştırma-ve-hedefler">8.2 Karşılaştırma ve Hedefler</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Karşılaştırma</th>
+<th>Amaç</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>relpath (DFS+LGBM) <strong>vs</strong> LightGBM-no-features</td>
+<td>Öznitelik üretiminin değerini kanıtla</td>
+</tr>
+<tr>
+<td>relpath <strong>vs</strong> yayınlanan RDL/GNN baseline</td>
+<td>“Ucuz baseline yarışıyor” tezini doğrula (§2.4)</td>
+</tr>
+<tr>
+<td><strong>Sızıntı testi</strong></td>
+<td>Hiçbir özniteliğin anchor sonrası veri kullanmadığını CI’da
+kanıtla</td>
+</tr>
+<tr>
+<td><strong>PQL parser birim testleri</strong></td>
+<td>Gramerin doğruluğu</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Tek komut:</strong>
+<code>python -m relpath.eval --dataset rel-hm --task user-churn</code> →
+skor + baseline farkı yazdırır. (relbench, <code>relpath[eval]</code>
+opsiyonel extra’sında izole; çekirdek torch’suz.)</p>
+<hr />
+<p><a id="9"></a> ## 9. Go-to-Market, Yol Haritası ve Riskler</p>
+<h3 id="gtm-açık-kaynak-öncelikli">9.1 GTM — Açık Kaynak Öncelikli</h3>
+<ol type="1">
+<li><strong>GitHub-first launch:</strong> MIT çekirdek + tek-komut demo
++ RelBench eval. “Show HN / r/MachineLearning” için doğal hikâye:
+<em>“Kumo’nun açık kaynak alternatifi, dizüstünüzde.”</em></li>
+<li><strong>NL→PQL interaktif demo:</strong> Web sitesinde kullanıcı
+kendi şemasını yükler, düz dille sorar, PQL + Python SDK kodu üretir.
+Yüksek-kaliteli geliştirici lead’i toplar. (v1’deki bu fikir
+<em>iyiydi</em> — koruyoruz.)</li>
+<li><strong>Dikey içerik/SEO:</strong> “Open-source churn prediction”,
+“self-hosted demand forecasting”, “relational deep learning without
+GPUs” gibi long-tail kümeleri.</li>
+<li><strong>OSS → ticari köprü:</strong> Çekirdek bedava; gelir Faz 2’de
+<strong>managed/warehouse konnektörleri, ekip özellikleri,
+destek</strong> ile (open-core modeli).</li>
+</ol>
+<h3 id="yol-haritası">9.2 Yol Haritası</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Çeyrek</th>
+<th>Kilometre taşı</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Şimdi</strong></td>
+<td>Faz 1 prototip: connect→PQL→DFS→LGBM→explain; NL→PQL; 3 şablon;
+RelBench eval</td>
+</tr>
+<tr>
+<td>+1</td>
+<td>Postgres/MySQL konnektörleri; Streamlit Cloud demo; PyPI yayını</td>
+</tr>
+<tr>
+<td>+2</td>
+<td>RDL/GNN backend (relbench+PyG) opsiyonel; link-prediction/öneri
+görevleri</td>
+</tr>
+<tr>
+<td>+3</td>
+<td>Warehouse konnektörleri (Snowflake/Databricks read); managed
+sürüm</td>
+</tr>
+<tr>
+<td>Vizyon</td>
+<td>Relational Foundation Model (in-context); streaming; multimodal</td>
+</tr>
+</tbody>
+</table>
+<h3 id="riskler-ve-azaltım">9.3 Riskler ve Azaltım</h3>
+<table>
+<colgroup>
+<col style="width: 50%" />
+<col style="width: 50%" />
+</colgroup>
+<thead>
+<tr>
+<th>Risk</th>
+<th>Azaltım</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Kumo’nun hızı/fonu</td>
+<td>Onun sahasında değil, <strong>açık kaynak/local-first</strong>
+sahasında oyna</td>
+</tr>
+<tr>
+<td>GNN olgunluğu/maliyeti</td>
+<td>Faz 1 GNN’siz değer üretir; GNN talebe bağlı</td>
+</tr>
+<tr>
+<td>Açık kaynak gelir modeli</td>
+<td>Open-core: çekirdek bedava, warehouse/managed ücretli</td>
+</tr>
+<tr>
+<td>LLM bağımlılığı (NL→PQL)</td>
+<td>Pluggable + offline şablon fallback</td>
+</tr>
+<tr>
+<td>Lisans tuzakları (getML/TabPFN-2.5)</td>
+<td>Çekirdek izinli; riskli bileşenler karantinada</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<p><a id="ekA"></a> ## Ek A: Kaynakça</p>
+<p><a id="ekB"></a> ## Ek B: Sözlük</p>
+<ul>
+<li><strong>RDL (Relational Deep Learning):</strong> Veritabanını
+zamansal heterojen grafik olarak görüp uçtan uca derin öğrenme uygulama
+paradigması.</li>
+<li><strong>RFM (Relational Foundation Model):</strong> Görev-başına
+eğitim olmadan, in-context tahmin yapan önceden-eğitilmiş ilişkisel
+model (örn. KumoRFM).</li>
+<li><strong>PQL (Predictive Query Language):</strong> “Ne tahmin
+edileceğini” deklaratif söyleyen DSL.</li>
+<li><strong>DFS (Deep Feature Synthesis):</strong> İlişkili tablolarda
+otomatik agregasyonla öznitelik üretimi.</li>
+<li><strong>Propositionalization:</strong> Çok-tablolu ilişkisel veriyi
+tek düz öznitelik tablosuna indirgeme.</li>
+<li><strong>Anchor timestamp / cutoff time:</strong> Bir entity için
+“şimdi” anı; öznitelikler bundan öncesini, etiket sonrasını görür →
+sızıntı engellenir.</li>
+<li><strong>Local-first:</strong> Verinin ve hesabın kullanıcı
+makinesinde kalması; buluta bağımlı olmama.</li>
+</ul>
+<hr />
+<blockquote>
+<p><em>relpath.dev — “tablolardan grafik patikalarına ve sinirsel
+tahminlere giden ilişkisel yol.”</em> Açık kaynak. Self-hostable.
+Local-first.</p>
+</blockquote>
+<section id="footnotes" class="footnotes footnotes-end-of-document" role="doc-endnotes">
+<hr />
+<ol>
+<li id="fn1"><p>Fey, Hu, Huang, Robinson, Ying, You, Leskovec.
+<em>Position: Relational Deep Learning</em>, ICML 2024.
+https://proceedings.mlr.press/v235/fey24a.html<a href="#fnref1" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn2"><p>Kumo.AI — KumoRFM tanıtımı.
+https://kumo.ai/company/news/kumo-relational-foundation-model/<a href="#fnref2" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn3"><p>Fey, Hu, Huang, Robinson, Ying, You, Leskovec.
+<em>Position: Relational Deep Learning</em>, ICML 2024.
+https://proceedings.mlr.press/v235/fey24a.html<a href="#fnref3" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn4"><p>Fey, Hu, Huang, Robinson, Ying, You, Leskovec.
+<em>Position: Relational Deep Learning</em>, ICML 2024.
+https://proceedings.mlr.press/v235/fey24a.html<a href="#fnref4" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn5"><p>Kumo.AI — KumoRFM tanıtımı.
+https://kumo.ai/company/news/kumo-relational-foundation-model/<a href="#fnref5" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn6"><p>Kumo.AI — KumoRFM tanıtımı.
+https://kumo.ai/company/news/kumo-relational-foundation-model/<a href="#fnref6" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn7"><p>KumoRFM-2 teknik raporu.
+https://arxiv.org/html/2604.12596v1 · Duyuru:
+https://kumo.ai/company/news/kumorfm-2-the-most-powerful-predictive-model-for-humans-and-agents/<a href="#fnref7" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn8"><p>KumoRFM-2 teknik raporu.
+https://arxiv.org/html/2604.12596v1 · Duyuru:
+https://kumo.ai/company/news/kumorfm-2-the-most-powerful-predictive-model-for-humans-and-agents/<a href="#fnref8" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn9"><p>Kumo Online Serving (sub-100ms).
+https://kumo.ai/company/news/low-latency-high-throughput-predictions-with-kumorfm-2-fine-tuning/<a href="#fnref9" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn10"><p>Kumo.AI — KumoRFM tanıtımı.
+https://kumo.ai/company/news/kumo-relational-foundation-model/<a href="#fnref10" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn11"><p>KumoRFM MCP server.
+https://kumo.ai/company/news/kumorfm-mcp/<a href="#fnref11" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn12"><p>getML community.
+https://github.com/getml/getml-community<a href="#fnref12" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn13"><p>Featuretools / Deep Feature Synthesis.
+https://github.com/alteryx/featuretools<a href="#fnref13" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn14"><p>Snowflake Cortex ML Functions.
+https://docs.snowflake.com/en/guides-overview-ml-functions<a href="#fnref14" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn15"><p>RelationalAI Snowflake Native App GA.
+https://www.relational.ai/post/relationalai-knowledge-graph-coprocessor-is-generally-available-as-a-snowflake-native-app<a href="#fnref15" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn16"><p>getml-relbench karşılaştırması.
+https://github.com/getml/getml-relbench<a href="#fnref16" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn17"><p><em>Relational Deep Learning: Challenges, Foundations
+and Next-Generation Architectures</em>, KDD’25.
+https://arxiv.org/html/2506.16654v1<a href="#fnref17" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn18"><p>RelGNN (atomic routes), ICML’25.
+https://arxiv.org/abs/2502.06784 · RelGT, ICLR’26.
+https://arxiv.org/abs/2505.10960 · Griffin.
+https://arxiv.org/abs/2505.05568<a href="#fnref18" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn19"><p>RelBench (Stanford SNAP).
+https://github.com/snap-stanford/relbench · NeurIPS’24:
+https://arxiv.org/abs/2407.20060<a href="#fnref19" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+<li id="fn20"><p>RelBench v2. https://arxiv.org/pdf/2602.12606<a href="#fnref20" class="footnote-back" role="doc-backlink">↩︎</a></p></li>
+</ol>
+</section>
+</body>
+</html>
