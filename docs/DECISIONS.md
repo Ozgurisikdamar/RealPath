@@ -57,7 +57,7 @@ pandas'ı 2.2.x'e (pin: 2.2.3) sabitler.** pandas 3.0'a **yükseltilmez.** Bu, G
 olarak her session için bağlayıcıdır.
 
 ### Consequences
-- (+) Featuretools/woodwork/DFS hattı deterministik biçimde çalışır; 12/12 test geçer.
+- (+) Featuretools/woodwork/DFS hattı deterministik biçimde çalışır; 20/20 test geçer.
 - (−) pandas 3.0'ın performans/API kazanımlarından şimdilik feragat edilir.
 - (−) Bir bağımlılık yükseltmesi sırasında bu pin yanlışlıkla kalkarsa DFS bozulur —
   bu yüzden pin hem kuralda hem burada belgelenmiştir.
@@ -187,7 +187,7 @@ Bu, otomatik testle kanıtlanır (`tests/test_leakage.py`):
 - (−) DFS'i `cutoff_time` ile çağırmak, sınırsız öznitelik üretiminden daha yavaştır — kabul edilen takas.
 
 ```bash
-.venv\Scripts\python.exe -m pytest tests/ -q          # 12 passed
+.venv\Scripts\python.exe -m pytest tests/ -q          # 20 passed
 ```
 
 ---

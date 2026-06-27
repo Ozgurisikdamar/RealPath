@@ -505,8 +505,8 @@ entity-only baseline'ı yener.
 | Görev | Metrik | relpath | Baseline | Δ (lift) |
 |-------|--------|---------|----------|----------|
 | Churn (`COUNT(transactions.*, 0, 30, days) == 0`) | ROC-AUC | **~0.749** | ~0.704 | **+0.045** |
-| Customer-level return-risk (2-hop join, 90 günlük pencere) | ROC-AUC | **~0.689** | — | ilişkisel kazanım |
-| Test paketi | — | **12/12 geçer** | — | — |
+| Customer-level return-risk (2-hop join, 30 günlük pencere) | ROC-AUC | **~0.689** | — | ilişkisel kazanım (60d ~0.699, 90d ~0.690) |
+| Test paketi | — | **20/20 geçer** | — | — |
 
 > **Forecast hakkında dürüst not (ilişkisel lift tablosuna dahil EDİLMEDİ):** Product demand
 > forecast bir *regresyon* görevidir; sayısı seçilen ufka (horizon) güçlü bağlıdır ve bu sentetik

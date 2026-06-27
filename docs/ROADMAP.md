@@ -33,7 +33,7 @@ NL→PQL (+offline fallback)     PyPI yayını + CI               (Snowflake/Dat
 3 şablon (churn/forecast/      Daha çok dikey şablon          Relational Foundation
 fraud)                         + testleri                     Model (in-context)
 eval (local + relbench)        Canlı Claude NL→PQL            Streaming / real-time
-12/12 test, sızıntı testi      RDL/GNN backend (relbench+PyG) Multimodal (metin sütun)
+20/20 test, sızıntı testi      RDL/GNN backend (relbench+PyG) Multimodal (metin sütun)
                                Kalibrasyon / belirsizlik      Managed / open-core
 ```
 
@@ -57,7 +57,7 @@ connect → PQL compile → DFS (cutoff-safe) → LightGBM/TabPFN → join-yolu 
 - [x] **3 dikey şablon** — `templates.py` + `engine.py`: `churn()`, `forecast()`, `fraud()`.
 - [x] **Eval** — `eval.py`: `evaluate_local()` (relational vs no-relational baseline) + `evaluate_relbench()` (eval extra ile).
 - [x] **CLI + Demo** — `cli.py` (make-sample/schema/ask/predict/eval), `demo_app.py` (Streamlit).
-- [x] **Testler** — `tests/`: 12/12 geçiyor; `test_leakage.py` anchor sonrası satırları silip feature matrix'in aynı kaldığını ispatlıyor.
+- [x] **Testler** — `tests/`: 20/20 geçiyor; `test_leakage.py` anchor sonrası satırları silip feature matrix'in aynı kaldığını ispatlıyor.
 
 **Doğrulanmış metrikler (sample DB):** churn ROC-AUC ~0.749 (entity-only baseline ~0.704, Δ +0.045); customer return-risk (2-hop join) ~0.689 ROC-AUC; product demand forecast (varsayılan 3 ay) MAE ~8.4 (ilişkisel lift yok; churn asıl gösterge).
 

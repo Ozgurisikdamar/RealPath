@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)**
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: vertical-template testleri (`tests/test_templates.py`, **20/20**).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
 
@@ -17,7 +17,7 @@
 - **NL → PQL:** Claude (anthropic SDK) yolu + API key yoksa **offline deterministik sablon fallback** (churn/forecast/fraud keyword routing, TR+EN). Cikti her zaman tekrar-parse edilerek dogrulanir.
 - **Aciklanabilirlik:** global importance + per-entity join-path karti (SHAP varsa, yoksa LightGBM gain fallback).
 - **Eval:** `evaluate_local()` relpath full relational feature'lari ile entity-only baseline'i karsilastirir.
-- **Testler:** 12/12 gecer. `test_leakage.py` gelecek-sizintisi olmadigini, anchor sonrasi tum satirlari silip feature matrix'in ayni kaldigini gostererek **kanitlar**; ayrica label penceresinin kesin olarak gelecekte oldugunu dogrular.
+- **Testler:** 20/20 gecer. `test_leakage.py` gelecek-sizintisi olmadigini, anchor sonrasi tum satirlari silip feature matrix'in ayni kaldigini gostererek **kanitlar**; ayrica label penceresinin kesin olarak gelecekte oldugunu dogrular.
 
 ### Dogrulanmis metrikler (sample DB uzerinde)
 
@@ -26,7 +26,7 @@
 | Churn (classification) | ROC-AUC | **~0.749** | entity-only baseline ~0.704, delta **+0.045** |
 | Customer return-risk (2-hop join) | ROC-AUC | **~0.689** | musteri seviyesine reframe edildi |
 | Product demand forecast (varsayılan 3 ay `SUM(quantity)`) | MAE | **~8.41** (rmse ~10.1) | ilişkisel lift YOK (baseline ~7.48); 2 ay varyant ~6.75. **Churn asıl gösterge.** |
-| Test suite | pytest | **12/12 pass** | |
+| Test suite | pytest | **20/20 pass** | |
 
 ### Git durumu
 
@@ -52,7 +52,7 @@
 - [x] Streamlit demo (`demo_app.py`, port 8501, Turkce UI).
 - [x] Sentetik e-ticaret DB generator (`data/make_sample_db.py`, 4 tablo, seed 42).
 - [x] Encoding-safe I/O (`_io.py`: `sprint`, `use_utf8`).
-- [x] Testler: `test_pql_parser.py` (6), `test_leakage.py` (2 + helper), `conftest.py` fixture — **12/12**.
+- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8: churn/forecast/fraud + builders + NL routing), `conftest.py` (sample_db + engine fixtures) — **20/20**.
 - [x] Bilingual README (TR/EN) + `docs/RELPATH_SPEC_v2.md` (+ .docx/.html) + logo.
 
 ---
@@ -66,12 +66,6 @@
   - WHY: Su an sadece offline template fallback dogrulandi; canli yol untested.
   - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
   - ACCEPTANCE: `relpath ask "hangi musteriler iade yapacak" --db data/shop.duckdb` gecerli PQL dondurur ve `NLResult.source` Claude yolunu (offline degil) gosterir.
-
-- [ ] **forecast ve fraud sablonlari icin test ekle**
-  - WHAT: `churn` disindaki sablonlara da test coverage; forecast (regression) ve fraud (classification) yollarini kapsa.
-  - WHY: Su an sadece churn metrigi ve parser testleri var; vertical sablonlar regresyona karsi korumasiz.
-  - WHERE: `relpath/templates.py` (`forecast_pql`, `fraud_pql`), yeni `tests/test_templates.py`, fixture `tests/conftest.py`.
-  - ACCEPTANCE: `python -m pytest tests/ -q` toplam test sayisi artar ve hepsi gecer; forecast MAE / fraud metrigi smoke-assert edilir.
 
 - [ ] **Postgres connector (open_backend / DuckDBBackend arkasinda)**
   - WHAT: Postgres URL'leri icin gercek backend; su an `NotImplementedError` (Phase-2).
@@ -143,7 +137,7 @@ Windows venv yorumlayicisi: `.venv\Scripts\python.exe`. Konsol Turkce icin once 
 
 # 5) Testler
 .venv\Scripts\python.exe -m pytest tests\ -q
-#   beklenen: 12 passed
+#   beklenen: 20 passed
 
 # 6) (opsiyonel) Streamlit demo
 .venv\Scripts\python.exe -m streamlit run relpath\demo_app.py

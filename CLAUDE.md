@@ -20,7 +20,7 @@ bağlarsın, tahmin sorusunu düz dilde ya da **PQL** ile sorarsın, veriyi hiç
 |---|---|
 | Faz | **Phase 1 PoC — tamam** (çalışan uçtan uca hat) |
 | Versiyon | `0.1.0` |
-| Testler | **12/12 geçiyor** |
+| Testler | **20/20 geçiyor** |
 | Git | lokal repo, **1 commit** (`5953440`), branch **`master`**, **remote YOK**, **push YOK** |
 | Python | **3.11.9**, venv `.venv\` |
 | pandas | **2.2.3 (PİNLİ — yükseltme!)** |
@@ -79,7 +79,7 @@ $env:PYTHONUTF8 = "1"                               # Türkçe konsol çıktıs�
 ```powershell
 $env:PYTHONUTF8 = "1"
 .venv\Scripts\python.exe data\make_sample_db.py data\shop.duckdb   # .duckdb gitignored — yeniden üret
-.venv\Scripts\python.exe -m pytest tests\ -q                       # 12 passed beklenir
+.venv\Scripts\python.exe -m pytest tests\ -q                       # 20 passed beklenir
 .venv\Scripts\python.exe -m relpath.eval                           # relational vs no-relational baseline
 # opsiyonel demo:
 streamlit run relpath\demo_app.py                                  # http://localhost:8501
@@ -89,9 +89,9 @@ streamlit run relpath\demo_app.py                                  # http://loca
 
 | Kontrol | Beklenen |
 |---|---|
-| pytest | **12 passed** |
+| pytest | **20 passed** |
 | churn ROC-AUC | **~0.749** (entity-only baseline ~0.704, **delta +0.045**) |
-| customer return-risk (2-hop join, 90 günlük pencere) | **~0.689** ROC-AUC |
+| customer return-risk (2-hop join, 30 günlük pencere) | **~0.689** ROC-AUC (60d ~0.699, 90d ~0.690) |
 | product demand forecast (varsayılan `forecast()`: `SUM(transactions.quantity)`, 3 ay) | **MAE ~8.4** (rmse ~10.1) |
 
 > Not: forecast metriği, engine'in varsayılan `forecast()` helper'ına — yani
@@ -125,7 +125,7 @@ relpath/
 └── _io.py                 # sprint (encoding-safe print), use_utf8
 
 data/make_sample_db.py     # sentetik e-ticaret DuckDB üretir (seed 42)
-tests/                     # conftest (sample_db fixture) + test_pql_parser (10) + test_leakage (2) = 12 pass
+tests/                     # conftest (sample_db + engine fixtures) + test_pql_parser (10) + test_leakage (2) + test_templates (8) = 20 pass
 docs/                      # aşağıdaki DOCUMENT INDEX
 ```
 
@@ -168,5 +168,5 @@ PREDICT AGG(table.col|*, start, end, unit) [op value] FOR EACH entity_table.prim
 ## 7. YENİ SESSION İSEN — 3 SATIRLIK CHECKLIST
 
 - [ ] **`docs/HANDOVER.md`** "Sıradaki İş"i oku, en üstteki işaretsiz maddeyi al.
-- [ ] Bölüm 5 smoke test'i çalıştır (**12 passed** görmelisin), sonra Bölüm 2 protokolünü izle.
+- [ ] Bölüm 5 smoke test'i çalıştır (**20 passed** görmelisin), sonra Bölüm 2 protokolünü izle.
 - [ ] İş bitince **sadece lokal commit** — kullanıcı **"pushla"** demeden **push YOK** (Bölüm 3).

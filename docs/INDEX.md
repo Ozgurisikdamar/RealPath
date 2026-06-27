@@ -75,7 +75,7 @@ relpath eval    [--db data\shop.duckdb] [--pql "<PQL>"] [--dataset <RelBench>] [
 Testler ve eval modülü:
 
 ```powershell
-.venv\Scripts\python.exe -m pytest tests\ -q          # 12/12 pass
+.venv\Scripts\python.exe -m pytest tests\ -q          # 20/20 pass
 .venv\Scripts\python.exe -m relpath.eval              # [--db --pql --dataset --task --max-depth (vars. 2)]
 ```
 
@@ -112,7 +112,7 @@ PREDICT AGG(table.col|*, start, end, unit) [op value]
 
 AGG ∈ {COUNT, SUM, AVG, MIN, MAX} · unit ∈ {days, weeks, months} · op ∈ {==, !=, >, >=, <, <=}. Comparison varsa **classification**, yoksa **regression**. `WHERE` = label'a sayılan target satırlarını süzer; `ASSUMING` = hangi entity'lerin skorlanacağını kısıtlar.
 
-**Doğrulanmış metrikler** (sample DB): churn ROC-AUC ~0.749 / accuracy ~0.737 (entity-only baseline ROC-AUC ~0.704, Δ +0.045) · customer-level return-risk (2-hop join) ~0.689 ROC-AUC · product demand forecast (varsayılan 3 ay) MAE ~8.4 (bu sentetik veride ilişkisel lift yok; churn asıl gösterge). Testler: **12/12 pass**.
+**Doğrulanmış metrikler** (sample DB): churn ROC-AUC ~0.749 / accuracy ~0.737 (entity-only baseline ROC-AUC ~0.704, Δ +0.045) · customer-level return-risk (2-hop join) ~0.689 ROC-AUC · product demand forecast (varsayılan 3 ay) MAE ~8.4 (bu sentetik veride ilişkisel lift yok; churn asıl gösterge). Testler: **20/20 pass**.
 
 ---
 

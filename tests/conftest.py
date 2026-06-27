@@ -19,3 +19,13 @@ def sample_db(tmp_path_factory) -> str:
     out = tmp_path_factory.mktemp("relpath_data") / "shop.duckdb"
     build(out)
     return str(out)
+
+
+@pytest.fixture(scope="session")
+def engine(sample_db):
+    """A connected Engine on the sample DB, shared across tests (EntitySet built once)."""
+    import relpath as rp
+
+    eng = rp.connect(sample_db)
+    yield eng
+    eng.close()
