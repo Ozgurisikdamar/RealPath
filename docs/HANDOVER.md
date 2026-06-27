@@ -59,9 +59,10 @@
 
 ## 3) SIRADAKI IS (oncelik sirali)
 
-> Her madde: **WHAT / WHY / WHERE / ACCEPTANCE**. En ust isaretsiz kutu = bir sonraki is.
+> Her madde: **WHAT / WHY / WHERE / ACCEPTANCE**. En ust **AKTIF** (isaretsiz, bloke olmayan) kutu = bir sonraki is.
+> `⏸️ BLOKE` etiketli maddeyi atla (dis bir sey bekliyor); ilk aktif maddeden devam et.
 
-- [ ] **Canli Claude NL→PQL yolunu API key ile dogrula**
+- [ ] ⏸️ **BLOKE** — **Canli Claude NL→PQL yolunu API key ile dogrula** (env'de `ANTHROPIC_API_KEY` YOK; kullanici saglayana kadar atla, sonraki aktif madde = Postgres connector)
   - WHAT: Gercek `ANTHROPIC_API_KEY` ile `nl_to_pql`'in Claude yolunu (offline fallback degil) calistir.
   - WHY: Su an sadece offline template fallback dogrulandi; canli yol untested.
   - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
