@@ -5,8 +5,8 @@ __pycache__/
 .pytest_cache/
 .ruff_cache/
 
-# Virtualenv
-.venv/
+# Virtualenv (.venv, .venv_eval, .venv_ci, ...)
+.venv*/
 venv/
 
 # Generated artifacts (regenerate with: python data/make_sample_db.py)

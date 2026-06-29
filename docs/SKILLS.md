@@ -207,7 +207,10 @@ Seed 42, ~18 ay geçmiş, **~1200 customers, ~14343 transactions, ~2209 returns*
 .venv\Scripts\python.exe -m relpath.eval --dataset <relbench_dataset> --task <task>
 ```
 
-> **Dürüst not:** `relbench`/`torch` bu ortamda **kurulu değil**, ve `relbench_adapter.run_relbench_task()` build ortamında **çalıştırılmadı** (untested here). RelBench yolu network indirme gerektirir; local-first değildir, yalnızca benchmark içindir.
+> **Not:** RelBench yolu `eval` extra'sını (torch+relbench) ister ve **izole bir venv'de** kurulmalıdır
+> (`.venv_eval`) ki çekirdek `.venv` bozulmasın. `relbench_adapter.run_relbench_task()` **rel-f1 ile
+> doğrulandı** (driver-dnf AUC ~0.592, driver-position MAE ~3.61). İlk koşu dataset'i indirir →
+> local-first değildir, yalnızca benchmark içindir.
 
 **Dosyalar:** `relpath/eval.py` (`evaluate_local`, `evaluate_relbench`, `main()`), `relpath/relbench_adapter.py`, `relpath/cli.py` (`eval` subcommand), `pyproject.toml` (`[project.optional-dependencies] eval`).
 

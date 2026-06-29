@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: Postgres connector (docker `postgres:16` ile uçtan-uca doğrulandı, churn 0.7492) + CONTRIBUTING.
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: RelBench adapter doğrulandı (`.venv_eval` + rel-f1; driver-dnf 0.592 / driver-position MAE 3.61).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
 
@@ -59,6 +59,7 @@
 - [x] Per-entity probability **calibration** (opt-in isotonic): `model.py` (`fit_model(calibrate=)`, `reliability()` Brier+ECE), `engine.predict(calibrate=)`, `result.reliability()`. Doğrulandı: ECE 0.033→0.014, AUC korunur; **default kapalı** (headline 0.749 değişmedi).
 - [x] **Postgres connector**: `connect.py` `PostgresBackend` + `open_backend` `postgres://` yolu + `postgres` extra (`psycopg`). `?`→`%s` çevirisi, `public` şema introspection. **Docker `postgres:16` ile UÇTAN-UCA DOĞRULANDI**: şema/FK çıkarımı + churn ROC-AUC **0.7492** (DuckDB ile birebir aynı). `data/load_postgres.py` yükleyici, `tests/test_postgres.py` (`RELPATH_TEST_PG` yoksa skip).
 - [x] **CONTRIBUTING.md** (repo kökü): kurulum, test/lint, opt-in Postgres testi, guardrail'ler (sızıntı-güvenliği, local-first, lisans), recipe pointer'ları. Setup komutları doğrulanmış (`pip install -e ".[dev]"` → 23 passed, 1 skipped).
+- [x] **RelBench adapter DOĞRULANDI**: `relbench_adapter.py` sertleştirildi (dtype normalize, `ignore_columns`, etiketi `cutoff_time`'a koyup X/y hizalama, test maskeli→`val` fallback). İzole `.venv_eval` (torch+relbench) ile `rel-f1` koşturuldu: **driver-dnf AUC ~0.592, driver-position MAE ~3.61** (basit DFS baseline; tuned RDL'in altında, beklenen).
 
 ---
 
@@ -67,24 +68,36 @@
 > Her madde: **WHAT / WHY / WHERE / ACCEPTANCE**. En ust **AKTIF** (isaretsiz, bloke olmayan) kutu = bir sonraki is.
 > `⏸️ BLOKE` etiketli maddeyi atla (dis bir sey bekliyor); ilk aktif maddeden devam et.
 
-- [ ] ⏸️ **BLOKE** — **Canli Claude NL→PQL yolunu API key ile dogrula** (env'de `ANTHROPIC_API_KEY` YOK; kullanici saglayana kadar atla, sonraki aktif madde = RelBench adapter)
+- [ ] ⏸️ **BLOKE** — **Canli Claude NL→PQL yolunu API key ile dogrula** (env'de `ANTHROPIC_API_KEY` YOK; kullanici saglayana kadar atla; asagidaki ilk AKTIF maddeden devam et)
   - WHAT: Gercek `ANTHROPIC_API_KEY` ile `nl_to_pql`'in Claude yolunu (offline fallback degil) calistir.
   - WHY: Su an sadece offline template fallback dogrulandi; canli yol untested.
   - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
   - ACCEPTANCE: `relpath ask "hangi musteriler iade yapacak" --db data/shop.duckdb` gecerli PQL dondurur ve `NLResult.source` Claude yolunu (offline degil) gosterir.
 
-- [ ] **RelBench adapter'i eval extra ile calistir/dogrula**
-  - WHAT: `relbench_adapter.run_relbench_task`'i gercek bir RelBench task'inda kosturup feature/model yeniden-kullanimini dogrula.
-  - WHY: Modul bu ortamda **hic calistirilmadi** (untested); torch+relbench kurulu degil.
-  - WHERE: `relpath/relbench_adapter.py`, `relpath/eval.py` (`evaluate_relbench`), extra: `pip install -e ".[eval]"`.
-  - ACCEPTANCE: `python -m relpath.eval --dataset rel-hm --task user-churn` bir metrik tablosu uretir; hatalar duzeltilir; sonuc bu dosyaya yazilir.
+- [ ] **CLI/`predict` icin `--calibrate` bayragi**
+  - WHAT: `relpath predict ... --calibrate` (engine.predict(calibrate=) ZATEN var, sadece CLI'a bagla); ciktida `result.reliability()` goster.
+  - WHY: Kalibrasyon ozelligi CLI/demo'dan erisilebilir olsun.
+  - WHERE: `relpath/cli.py` (`_cmd_predict`, argparse), opsiyonel `relpath/demo_app.py`.
+  - ACCEPTANCE: `--calibrate` kalibre olasilik dondurur ve Brier/ECE yazdirir; kucuk bir test eklenir; 23+→ artar.
+
+- [ ] **MySQL connector (Postgres'i ornek al)**
+  - WHAT: `mysql://` icin `MySQLBackend`; ayni kucuk arayuz; yeni `mysql` extra.
+  - WHY: Self-host kurumsal MySQL'lere acilim.
+  - WHERE: `relpath/connect.py` (`open_backend`, `MySQLBackend`), `pyproject` `mysql` extra.
+  - ACCEPTANCE: docker `mysql` ile uctan-uca churn calisir; `tests/test_mysql.py` (RELPATH_TEST_MYSQL yoksa skip).
+
+- [ ] **RDL/GNN backend (relbench + PyG) — L**
+  - WHAT: Faz-2 GNN backend; link-prediction/oneri ve derin temporal gorevler icin.
+  - WHY: Baseline'in tavan yaptigi yerlerde (SPEC §2.4) GNN ustunlugu — rel-f1'de DFS baseline 0.59, RDL ustu beklenir.
+  - WHERE: yeni `relpath/gnn/` (eval extra: torch+relbench+PyG ZATEN `.venv_eval`'de kurulu), `engine`/`model` backend secimi.
+  - ACCEPTANCE: En az bir RelBench gorevinde GNN, DFS baseline'i gecer; opsiyonel/plugin kalir (cekirdek torch'suz).
 
 ---
 
 ## 4) BILINEN SORUNLAR / DIKKAT
 
 - **pandas 3.0 KIRIYOR.** `pandas==2.2.x` (pinli **2.2.3**) sart. pandas 3.0'da `.ww` woodwork accessor semasi kalici olmuyor → Featuretools EntitySet build cokuyor. **Yukseltme.**
-- **`relbench_adapter.py` bu ortamda calistirilmadi (untested).** torch+relbench (`[eval]` extra) kurulu degil; dogrulama "SIRADAKI IS"te.
+- **RelBench adapter `rel-f1` ile DOGRULANDI** (driver-dnf AUC ~0.592, driver-position MAE ~3.61). `eval` extra'sini **izole `.venv_eval`'de** kur (cekirdek `.venv`'i bozma). Basit DFS baseline tuned RDL'in altinda — beklenen; GNN backend "SIRADAKI IS"te.
 - **fraud sinyali sentetik veride zayif.** Bu yuzden return-risk, musteri seviyesinde **2-hop join** olarak reframe edildi (~0.689 ROC-AUC).
 - **Windows cp1252 encoding.** Turkce konsol ciktisi icin `PYTHONUTF8=1` ayarla; kutuphane zaten `relpath._io.sprint` ile encoding-safe yazar ve CLI/eval `_io.use_utf8()` cagirir.
 - **NL→PQL canli yol API key ister.** `ANTHROPIC_API_KEY` yoksa offline template fallback devreye girer (churn/forecast/fraud keyword routing). Default model `claude-sonnet-4-6`, override env `RELPATH_LLM_MODEL`.

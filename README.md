@@ -110,8 +110,8 @@ python -m relpath.eval                              # local: relational vs no-fe
 python -m relpath.eval --dataset rel-hm --task user-churn   # RelBench (needs: pip install -e ".[eval]")
 ```
 
-`relbench` yolu torch çeker ve çekirdekten izoledir; bu ortamda çalıştırılmadı — kendiniz
-tekrar üretebilirsiniz.
+`relbench` yolu torch çeker ve çekirdekten izoledir; `rel-f1` ile doğrulandı (driver-dnf,
+driver-position) — başka datasetlerde kendiniz tekrar üretebilirsiniz.
 
 ## Mimari / Architecture
 

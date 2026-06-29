@@ -215,7 +215,9 @@ Paket: `relpath/`. Aşağıdaki her satır gerçek imzaya sadıktır.
   baseline), `evaluate_relbench(dataset, task)` (eval extra ister), `main()` eval CLI'si. Çalıştırma:
   `python -m relpath.eval [--db --pql --dataset --task --max-depth]`.
 - `relbench_adapter.py`: `run_relbench_task()` — relbench+torch (eval extra) ile özniteliklerimizi
-  RelBench görevlerine bağlar. **Bu ortamda çalıştırılmadı (untested here)** — dürüst not.
+  RelBench görevlerine bağlar (etiketi `cutoff_time`'a koyarak X/y hizalar, id'leri `ignore_columns`'a
+  alır). **`rel-f1` ile doğrulandı**: driver-dnf AUC ~0.592, driver-position MAE ~3.61 (test etiketleri
+  maskeliyse `val`'a düşer). Not: bu basit DFS baseline, tuned RDL/GNN'in altında — beklenen.
 - `cli.py`: argparse alt komutları `make-sample`, `schema`, `ask`, `predict`, `eval`.
   Entry point: `relpath` (veya `python -m relpath.cli`).
 - `demo_app.py`: Streamlit (`streamlit run relpath/demo_app.py`, port 8501). Türkçe UI.

@@ -98,7 +98,7 @@ Local-first tezi korunur — yeni konnektörler hep **opsiyon**, asla zorunluluk
 
 ### 2.5 RDL / GNN backend (relbench + PyG) — **L**
 - **Gerekçe:** GNN'in net üstünlüğü link-prediction / öneri ve derin çok-hop görevlerde (SPEC §2.4). Tablo-düzeyi clf/reg için baseline yeter; GNN talep geldikçe.
-- **Bağımlılık:** `relbench_adapter.py` iskeleti var ama **build ortamında çalıştırılmadı (untested)** — relbench/torch kurulu değil. Önce eval extra'sını kurup adapter'ı gerçekten koşturmak gerekir. Opsiyonel/plugin olarak kalır; çekirdek torch'suz.
+- **Durum:** `relbench_adapter.py` **rel-f1 ile doğrulandı** (driver-dnf clf + driver-position reg, eval extra). Adapter özniteliklerimizi RelBench verisinde çalıştırıyor; GNN backend'i bunun üstüne gelir. Opsiyonel/plugin kalır; çekirdek torch'suz.
 
 ### 2.6 Kalibrasyon / belirsizlik — **M**
 - **Gerekçe:** Sınıflandırma olasılıkları (churn/fraud) karar için kalibre olmalı; tahmine güven aralığı eklemek açıklanabilirliği (SPEC §7) güçlendirir.
@@ -141,7 +141,7 @@ Uzun-vadeli, talep ve gelir kanıtlandıkça. Hiçbiri local-first sözünü boz
 | 2.2 | PyPI yayını + CI | 2 | M | pyproject extras; CI'de pandas 2.2.x kuralını dayat; "pushla" onayı |
 | 2.3 | Daha çok dikey şablon + test | 2 | M | templates.py / engine.py / join_path |
 | 2.4 | Canlı Claude NL→PQL demo | 2 | M | nlp.py; ANTHROPIC_API_KEY; offline fallback |
-| 2.5 | RDL/GNN backend (relbench+PyG) | 2 | L | relbench_adapter (untested); eval extra |
+| 2.5 | RDL/GNN backend (relbench+PyG) | 2 | L | relbench_adapter (rel-f1 doğrulandı); eval extra |
 | 2.6 | Kalibrasyon / belirsizlik | 2 | M | model.py predict; result.py |
 | 3.1 | Warehouse read (Snowflake/Databricks) | 3 | L | 2.1 backend olgunluğu |
 | 3.2 | Relational Foundation Model | 3 | L | 2.5 GNN; compute; lisans disiplini |
