@@ -34,6 +34,9 @@ Yeni bir oturuma (session) başlayan herkesin **tavsiye edilen okuma sırası**:
 | **`docs/RELPATH_SPEC_v2.md`** (+ `.docx` / `.html`) | Strateji & teknik spec (v2) | Ürün konumlandırması ve vizyon bağlamı gerektiğinde |
 | **`README.md`** (kök) | İki dilli (TR/EN) quickstart | İlk kurulum / dışarıya tanıtım / hızlı demo |
 | **`CONTRIBUTING.md`** (kök) | Geliştirici kurulum + katkı kuralları + guardrail'ler | Dış katkı / yeni geliştirici onboarding |
+| **`docs/BENCHMARKS.md`** | Doğrulanmış sayılar + reprodüksiyon | "Hangi metrik ne, nasıl üretilir?" |
+| **`docs/PITCH.md`** | Tek sayfa konumlandırma (business) | Dışarıya tanıtım / yatırımcı / launch |
+| **`docs/LAUNCH_CHECKLIST.md`** | OSS yayın öncesi checklist | Halka açık launch hazırlığında |
 | **`docs/logo.svg` · `docs/logo.png`** | Proje logosu (varlık) | README / demo / sunum görselleri için |
 
 ---

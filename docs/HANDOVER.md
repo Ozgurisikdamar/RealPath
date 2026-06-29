@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: Sprint 1 — Streamlit demo'ya kalibrasyon toggle (Brier/ECE).
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: **Sprint 1 ✅ 8/8 TAMAM** (LICENSE, demo kalibrasyon, PyPI build dry-run+paket bug fix, quickstart.ipynb, BENCHMARKS, PITCH, open-core, launch checklist). Guncel sprint: **Sprint 2**.
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam` dendiginde once **`docs/SPRINTS.md`** (🟢 guncel sprint) okunur; **bu dosya canli durumdur** (ne bitti, bilinen sorunlar, dogrulama).
 

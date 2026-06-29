@@ -7,7 +7,7 @@
 > Kararların **gerekçeleri** [`DECISIONS.md`](DECISIONS.md)'de (ADR + Business Decisions).
 > Canlı durum [`HANDOVER.md`](HANDOVER.md)'de. API [`API.md`](API.md)'de.
 >
-> **Son güncelleme:** 2026-06-19 · **Güncel sprint:** **Sprint 1 — OSS Launch Readiness** (2/7: LICENSE, demo kalibrasyon)
+> **Son güncelleme:** 2026-06-19 · **Güncel sprint:** **Sprint 2 — Real RDL (Linux/CI)** · Sprint 1 ✅ **8/8 TAMAM**
 
 ---
 
@@ -38,7 +38,7 @@
 
 ---
 
-## Sprint 1 — OSS Launch Readiness 🟢 GÜNCEL
+## Sprint 1 — OSS Launch Readiness ✅ TAMAM (8/8)
 
 **Hedef:** Projeyi *halka açık yayına hazır* hale getir — temiz paket, cilalı demo, kanıt
 tablosu, ve net konumlandırma. Hepsi **bu makinede (Windows) yapılabilir.**
@@ -46,31 +46,23 @@ tablosu, ve net konumlandırma. Hepsi **bu makinede (Windows) yapılabilir.**
 **Software**
 - [x] **LICENSE dosyası ekle (MIT)** — repo kökü. ✅ Kök `LICENSE` (MIT, "2026 relpath.dev contributors"); pyproject/README ile tutarlı.
 - [x] **Streamlit demo'ya kalibrasyon** ✅ — `demo_app.py`: "Olasılık kalibrasyonu" toggle → `predict(calibrate=True)` + `result.reliability()` caption (Brier/ECE). `AppTest` ile doğrulandı (BRIER 0.20, ECE 0.085, no-exception).
-- [ ] **PyPI build dry-run** — paketleme sağlığı.
-  - WHAT: `python -m build` → sdist+wheel; temiz venv'de `pip install dist/*.whl` → `import relpath`.
-  - ACCEPTANCE: Wheel temiz kurulur, `relpath` CLI çalışır; (yayın değil, sadece doğrulama).
-- [ ] **`examples/quickstart.ipynb`** — notebook.
-  - WHAT: connect → ask → predict → explain → forecast; çıktılı hücreler.
-  - ACCEPTANCE: Notebook baştan sona hatasız çalışır (nbconvert --execute).
-- [ ] **`docs/BENCHMARKS.md`** — kanıt tablosu.
-  - WHAT: Connector parity (DuckDB/PG/MySQL=0.7492), DFS-vs-baseline (+0.045), RelBench adapter
-    (rel-f1 driver-dnf 0.592 / driver-position MAE 3.61), GNN durumu (kod doğrulandı, temporal bloke).
-  - ACCEPTANCE: Tek tabloda tüm doğrulanmış sayılar + nasıl yeniden üretilir.
+- [x] **PyPI build dry-run** ✅ — `python -m build` (wheel+sdist; `twine check` PASSED). Temiz venv'de wheel kuruldu (pandas **2.2.3** pin korundu), `relpath make-sample` + `predict` çalıştı (0.7492). **Bug bulundu+düzeltildi:** generator paket içine taşındı (`relpath/sample_data.py`) — pip kullanıcısı için `make-sample` artık çalışıyor. `dist/`,`build/` gitignore.
+- [x] **`examples/quickstart.ipynb`** ✅ — connect→ask→predict→explain→forecast (14 hücre); nbclient ile baştan sona **hatasız çalıştırıldı** (8/8 kod hücresi çıktılı).
+- [x] **`docs/BENCHMARKS.md`** ✅ — connector parity (0.7492 ×3), DFS-vs-baseline (+0.045), vertical
+  şablonlar, kalibrasyon (ECE 0.033→0.014), RelBench adapter (rel-f1 0.592/3.61), GNN durumu — hepsi
+  reprodüksiyon komutlarıyla.
 
 **Business**
-- [ ] **`docs/PITCH.md`** — tek sayfa konumlandırma.
-  - WHAT: Problem → çözüm → 4 moat → "neden Kumo değil" → hedef kullanıcı → CTA. SPEC'in özeti.
-  - ACCEPTANCE: 1 sayfa, dışarıya gösterilebilir; SPEC ile tutarlı.
-- [ ] **Open-core sınırı kararı** → [`DECISIONS.md`](DECISIONS.md) BD-002'yi netleştir.
-  - WHAT: Neyin ücretsiz (çekirdek, connectors, CLI/demo) / neyin ticari (managed, warehouse
-    konnektörleri, destek) olduğunu yaz.
-  - ACCEPTANCE: DECISIONS'ta net bir sınır tablosu; SPRINTS sonraki sprint'lerle tutarlı.
-- [ ] **OSS launch checklist** (bu sprint sonunda) — README rozetleri, topics, CONTRIBUTING (var),
-  CODE_OF_CONDUCT (opsiyonel), "Show HN" taslağı.
+- [x] **`docs/PITCH.md`** ✅ — tek sayfa: problem → çözüm → 4 moat → "neden Kumo değil" → hedef
+  kullanıcı → traction → open-core → CTA.
+- [x] **Open-core sınırı kararı** ✅ — [`DECISIONS.md`](DECISIONS.md) **BD-002**'de net sınır tablosu
+  (ücretsiz: çekirdek/connectors/CLI/demo · ticari: managed/warehouse/governance/destek).
+- [x] **OSS launch checklist** ✅ — [`docs/LAUNCH_CHECKLIST.md`](LAUNCH_CHECKLIST.md): repo hygiene,
+  kanıt/mesaj, dağıtım (PyPI), Show HN taslağı; bitenler işaretli, kalanlar Sprint 4'e devrediliyor.
 
 ---
 
-## Sprint 2 — Real RDL (Linux/CI) ⏭️
+## Sprint 2 — Real RDL (Linux/CI) 🟢 GÜNCEL
 
 **Hedef:** GNN'i **adil, leakage-safe temporal** olarak koştur ve DFS baseline'ı geç — bunun
 için Linux gerekir (`pyg-lib`). Bu makinede (Windows) **kısmen bloke**; CI/WSL'de yapılır.

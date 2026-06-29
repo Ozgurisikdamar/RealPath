@@ -16,11 +16,7 @@ from ._io import sprint, use_utf8
 
 
 def _cmd_make_sample(args):
-    import sys
-    from pathlib import Path
-
-    sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-    from data.make_sample_db import build
+    from .sample_data import build
 
     build(args.out)
 
