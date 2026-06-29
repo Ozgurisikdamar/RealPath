@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: CLI `--calibrate` bayrağı (kalibre olasılık + Brier/ECE; test_cli).
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: MySQL connector (docker `mysql:8` ile doğrulandı; 3. backend, churn 0.7492).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
 
@@ -26,7 +26,7 @@
 | Churn (classification) | ROC-AUC | **~0.749** | entity-only baseline ~0.704, delta **+0.045** |
 | Customer return-risk (2-hop join) | ROC-AUC | **~0.689** | musteri seviyesine reframe edildi |
 | Product demand forecast (varsayılan 3 ay `SUM(quantity)`) | MAE | **~8.41** (rmse ~10.1) | ilişkisel lift YOK (baseline ~7.48); 2 ay varyant ~6.75. **Churn asıl gösterge.** |
-| Test suite | pytest | **25/25 pass** (+1 skip: Postgres) | |
+| Test suite | pytest | **25/25 pass** (+2 skip: Postgres, MySQL) | |
 
 ### Git durumu
 
@@ -52,7 +52,7 @@
 - [x] Streamlit demo (`demo_app.py`, port 8501, Turkce UI).
 - [x] Sentetik e-ticaret DB generator (`data/make_sample_db.py`, 4 tablo, seed 42).
 - [x] Encoding-safe I/O (`_io.py`: `sprint`, `use_utf8`).
-- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3), `test_cli.py` (2), `conftest.py` (sample_db + engine fixtures) — **25/25** (+1 skip: `test_postgres.py`).
+- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3), `test_cli.py` (2), `conftest.py` (sample_db + engine fixtures) — **25/25** (+2 skip: `test_postgres.py`, `test_mysql.py`).
 - [x] Bilingual README (TR/EN) + `docs/RELPATH_SPEC_v2.md` (+ .docx/.html) + logo.
 - [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3.
 - [x] GitHub'a push: **private** repo `Ozgurisikdamar/relpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
@@ -61,6 +61,7 @@
 - [x] **CONTRIBUTING.md** (repo kökü): kurulum, test/lint, opt-in Postgres testi, guardrail'ler (sızıntı-güvenliği, local-first, lisans), recipe pointer'ları. Setup komutları doğrulanmış (`pip install -e ".[dev]"` → 25 passed, 1 skipped).
 - [x] **RelBench adapter DOĞRULANDI**: `relbench_adapter.py` sertleştirildi (dtype normalize, `ignore_columns`, etiketi `cutoff_time`'a koyup X/y hizalama, test maskeli→`val` fallback). İzole `.venv_eval` (torch+relbench) ile `rel-f1` koşturuldu: **driver-dnf AUC ~0.592, driver-position MAE ~3.61** (basit DFS baseline; tuned RDL'in altında, beklenen).
 - [x] **CLI `--calibrate` bayrağı**: `relpath predict ... --calibrate` → kalibre olasılık + `result.reliability()` (Brier/ECE) yazdırır. `tests/test_cli.py` (2: schema + predict --calibrate). Canlı doğrulandı: brier ~0.20, ece ~0.085.
+- [x] **MySQL connector** (3. backend): `connect.py` `MySQLBackend` (pymysql, `mysql` extra) + `open_backend` `mysql://`. ANSI_QUOTES (çift-tırnak SQL çalışsın) + `DATABASE()` introspection + `?`→`%s`; `_NUMERIC`'e `INT`, `_TEMPORAL`'e `DATETIME` eklendi. **Docker `mysql:8` ile UÇTAN-UCA DOĞRULANDI**: şema/FK + churn **0.7492** (DuckDB/Postgres ile birebir). `data/load_mysql.py`, `tests/test_mysql.py` (skip). → **DuckDB + Postgres + MySQL** üçü de aynı sonucu veriyor (backend-agnostik).
 
 ---
 
@@ -74,12 +75,6 @@
   - WHY: Su an sadece offline template fallback dogrulandi; canli yol untested.
   - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
   - ACCEPTANCE: `relpath ask "hangi musteriler iade yapacak" --db data/shop.duckdb` gecerli PQL dondurur ve `NLResult.source` Claude yolunu (offline degil) gosterir.
-
-- [ ] **MySQL connector (Postgres'i ornek al)**
-  - WHAT: `mysql://` icin `MySQLBackend`; ayni kucuk arayuz; yeni `mysql` extra.
-  - WHY: Self-host kurumsal MySQL'lere acilim.
-  - WHERE: `relpath/connect.py` (`open_backend`, `MySQLBackend`), `pyproject` `mysql` extra.
-  - ACCEPTANCE: docker `mysql` ile uctan-uca churn calisir; `tests/test_mysql.py` (RELPATH_TEST_MYSQL yoksa skip).
 
 - [ ] **RDL/GNN backend (relbench + PyG) — L**
   - WHAT: Faz-2 GNN backend; link-prediction/oneri ve derin temporal gorevler icin.

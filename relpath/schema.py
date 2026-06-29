@@ -17,10 +17,10 @@ from dataclasses import dataclass, field
 
 from .connect import DuckDBBackend
 
-# DuckDB SQL type prefixes we treat as numeric / temporal.
-_NUMERIC = ("BIGINT", "INTEGER", "SMALLINT", "TINYINT", "HUGEINT", "UBIGINT",
-            "UINTEGER", "DOUBLE", "FLOAT", "REAL", "DECIMAL", "NUMERIC")
-_TEMPORAL = ("TIMESTAMP", "DATE", "TIME")
+# SQL type prefixes we treat as numeric / temporal (DuckDB, Postgres, MySQL).
+_NUMERIC = ("BIGINT", "INTEGER", "INT", "MEDIUMINT", "SMALLINT", "TINYINT", "HUGEINT",
+            "UBIGINT", "UINTEGER", "DOUBLE", "FLOAT", "REAL", "DECIMAL", "NUMERIC")
+_TEMPORAL = ("TIMESTAMP", "DATETIME", "DATE", "TIME")
 _CATEGORICAL_MAX_RATIO = 0.5  # distinct/rows below this → categorical
 
 

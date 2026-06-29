@@ -103,18 +103,21 @@ Paket: `relpath/`. Aşağıdaki her satır gerçek imzaya sadıktır.
 | `.load(table)` | tablo adı | `pd.DataFrame` (tüm satırlar) |
 | `.query(sql, params=None)` | SQL + parametreler | `pd.DataFrame` |
 | `.close()` | — | — |
-| `open_backend(source)` | yol / `:memory:` / `postgres://` URL | `DuckDBBackend` veya `PostgresBackend` |
+| `open_backend(source)` | yol / `:memory:` / `postgres://` / `mysql://` | `DuckDBBackend` / `PostgresBackend` / `MySQLBackend` |
 | `PostgresBackend(dsn, schema="public")` | `postgresql://` DSN | backend nesnesi (`postgres` extra) |
+| `MySQLBackend(dsn)` | `mysql://` DSN | backend nesnesi (`mysql` extra) |
 
 - `.distinct_count` ilk eleman `COUNT("column")`'dur — yani **NON-NULL** değer sayısı, satır
   sayısı **değil**. Kolonda hiç NULL yoksa `n_rows`'a eşittir (örn. `customers.country` NULL içermez
   ⇒ `(1200, 5)`). PK sezgisi (§8) bunu satır sayısına eşitlik için kullanır.
 - `open_backend`: `.duckdb`/`.db`/`.ddb` veya `:memory:` ⇒ DuckDB; `postgresql://`/`postgres://`
-  ⇒ **`PostgresBackend`** (`postgres` extra = `psycopg`). Diğer URL şemaları (MySQL vb.) **Phase-2**
-  yol haritasıdır ve net bir `NotImplementedError` fırlatır. Çıplak yol DuckDB varsayılır.
-- `PostgresBackend`: aynı arayüz; üretilen `?` placeholder'larını psycopg `%s`'e çevirir, `public`
-  şemasını introspect eder, read-only bağlanır. **Docker `postgres:16` ile uçtan-uca doğrulandı**
-  (şema/FK + churn 0.7492, DuckDB ile birebir). Yükleyici: `data/load_postgres.py`.
+  ⇒ **`PostgresBackend`** (`postgres` extra); `mysql://` ⇒ **`MySQLBackend`** (`mysql` extra). Diğer
+  URL şemaları **Phase-2**'dir ve net bir `NotImplementedError` fırlatır. Çıplak yol DuckDB varsayılır.
+- `PostgresBackend`: aynı arayüz; `?` placeholder'larını psycopg `%s`'e çevirir, `public` şemasını
+  introspect eder, read-only bağlanır. **Docker `postgres:16` ile doğrulandı** (churn 0.7492).
+- `MySQLBackend`: aynı arayüz; oturumda **`ANSI_QUOTES`** açar (çift-tırnaklı SQL çalışsın), `?`→`%s`,
+  `DATABASE()` ile introspect. **Docker `mysql:8` ile doğrulandı** (churn 0.7492, DuckDB/Postgres ile
+  birebir). Yükleyiciler: `data/load_postgres.py`, `data/load_mysql.py`.
 - Dosya backend'leri `read_only=True` açılır; `:memory:` için yok sayılır.
 
 ### `schema.py` — şema + FK grafiği sezgisi
@@ -477,8 +480,8 @@ Editable kurulum:
 ### Yeni bir DB connector eklemek
 - `connect.py`'de `DuckDBBackend`'in küçük yüzeyini (`tables/columns/row_count/distinct_count/load/query/close`)
   uygulayan bir backend yazın ve `open_backend` içinde URL şemasına göre yönlendirin.
-- **Postgres ZATEN VAR** (`PostgresBackend`, `postgres` extra) — örnek alın. MySQL vb. hâlâ
-  `NotImplementedError` veren **Phase-2** yer tutuculardır.
+- **Postgres ve MySQL ZATEN VAR** (`PostgresBackend`/`MySQLBackend`) — örnek alın. Diğer şemalar
+  (örn. BigQuery, Snowflake) hâlâ `NotImplementedError` veren **Phase-2** yer tutuculardır.
 - Şemanın geri kalanı (FK sezgisi, DFS, model, explain) backend-agnostiktir; aynı arayüze oturur.
 
 ### Yeni bir PQL agregasyonu eklemek
