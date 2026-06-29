@@ -39,6 +39,8 @@ dependencies = [
 nlp = ["anthropic>=0.40"]
 # Local explanations
 explain = ["shap>=0.44"]
+# PostgreSQL connector
+postgres = ["psycopg[binary]>=3.1"]
 # Small-data tabular foundation model
 tabpfn = ["tabpfn>=0.1"]
 # Interactive demo

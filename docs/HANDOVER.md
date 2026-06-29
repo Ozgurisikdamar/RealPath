@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: per-entity probability calibration (opt-in isotonic; ECE 0.033→0.014, AUC korunur).
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: Postgres connector (docker `postgres:16` ile uçtan-uca doğrulandı, churn 0.7492) + CONTRIBUTING.
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
 
@@ -57,6 +57,7 @@
 - [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3.
 - [x] GitHub'a push: **private** repo `Ozgurisikdamar/relpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
 - [x] Per-entity probability **calibration** (opt-in isotonic): `model.py` (`fit_model(calibrate=)`, `reliability()` Brier+ECE), `engine.predict(calibrate=)`, `result.reliability()`. Doğrulandı: ECE 0.033→0.014, AUC korunur; **default kapalı** (headline 0.749 değişmedi).
+- [x] **Postgres connector**: `connect.py` `PostgresBackend` + `open_backend` `postgres://` yolu + `postgres` extra (`psycopg`). `?`→`%s` çevirisi, `public` şema introspection. **Docker `postgres:16` ile UÇTAN-UCA DOĞRULANDI**: şema/FK çıkarımı + churn ROC-AUC **0.7492** (DuckDB ile birebir aynı). `data/load_postgres.py` yükleyici, `tests/test_postgres.py` (`RELPATH_TEST_PG` yoksa skip).
 
 ---
 
@@ -70,13 +71,6 @@
   - WHY: Su an sadece offline template fallback dogrulandi; canli yol untested.
   - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
   - ACCEPTANCE: `relpath ask "hangi musteriler iade yapacak" --db data/shop.duckdb` gecerli PQL dondurur ve `NLResult.source` Claude yolunu (offline degil) gosterir.
-
-- [ ] **Postgres connector (open_backend / DuckDBBackend arkasinda)**
-  - WHAT: Postgres URL'leri icin gercek backend; su an `NotImplementedError` (Phase-2).
-  - WHY: Local-first tezi korunarak self-host kurumsal DB'lere acilim.
-  - WHERE: `relpath/connect.py` (`open_backend`, yeni `PostgresBackend`, ayni interface: tables/columns/row_count/distinct_count/load/query/close).
-  - ACCEPTANCE: Bir Postgres DSN ile `connect(...)` sema cikarir ve en az churn sablonu uctan uca calisir; DuckDB default'u bozulmaz.
-  - NOT: Uctan-uca **dogrulama** icin erisilebilir bir Postgres gerekir (yoksa docker `postgres` ile yerel ayaga kaldir). Kod yazilabilir ama acceptance'i kanitlamak icin bir DB sart.
 
 - [ ] **RelBench adapter'i eval extra ile calistir/dogrula**
   - WHAT: `relbench_adapter.run_relbench_task`'i gercek bir RelBench task'inda kosturup feature/model yeniden-kullanimini dogrula.

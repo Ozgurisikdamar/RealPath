@@ -69,7 +69,7 @@ $env:PYTHONUTF8 = "1"                               # Türkçe konsol çıktıs�
 
 - **pandas == 2.2.3** pinli kalır (Altın Kural 3). `pip install -e .` bunu zaten pinler — elle bump etme.
 - Bu env'de **kurulu**: core + `anthropic` + `shap` + `streamlit` + `pytest`. **Kurulu DEĞİL**: `torch` / `relbench` / `tabpfn`.
-- Optional extras (pyproject): `nlp=anthropic`, `explain=shap`, `tabpfn=tabpfn`, `demo=streamlit`,
+- Optional extras (pyproject): `nlp=anthropic`, `explain=shap`, `postgres=psycopg`, `tabpfn=tabpfn`, `demo=streamlit`,
   `eval=relbench+torch+torch-frame`, `dev=pytest,ruff`.
 
 ---
@@ -105,7 +105,7 @@ streamlit run relpath\demo_app.py                                  # http://loca
 ```
 relpath/
 ├── __init__.py            # connect, Engine, PredictionResult, parse_pql, PredictiveTask; __version__ 0.1.0
-├── connect.py             # DuckDBBackend + open_backend(); DuckDB only (Postgres/MySQL -> NotImplementedError)
+├── connect.py             # DuckDBBackend + PostgresBackend + open_backend(); DuckDB & PostgreSQL (postgres extra); other URLs -> NotImplementedError
 ├── schema.py              # Column/ForeignKey/Table/RelationalSchema; infer_schema (PK/FK/time index), join_path (BFS), build_entityset
 ├── pql/
 │   ├── ast.py             # TimeWindow, TargetAgg, Comparison, Filter, PredictiveTask; AGGS={COUNT,SUM,AVG,MEAN,MIN,MAX}
@@ -125,7 +125,7 @@ relpath/
 └── _io.py                 # sprint (encoding-safe print), use_utf8
 
 data/make_sample_db.py     # sentetik e-ticaret DuckDB üretir (seed 42)
-tests/                     # conftest + test_pql_parser (10) + test_leakage (2) + test_templates (8) + test_calibration (3) = 23 pass
+tests/                     # test_pql_parser (10) + test_leakage (2) + test_templates (8) + test_calibration (3) = 23 pass (+ test_postgres, RELPATH_TEST_PG ile opt-in)
 docs/                      # aşağıdaki DOCUMENT INDEX
 ```
 
