@@ -4,7 +4,7 @@ Bu sayfa, projedeki tüm dokümanların **giriş noktasıdır**. Ne aradığın�
 
 > **relpath.dev** — açık kaynak, self-hostable, **local-first** ilişkisel (relational) tahmin motoru. Bir veritabanına bağlan, tahmin sorusunu düz dille veya **PQL** ile sor, **açıklamalı** bir cevap al — veriyi hiçbir yere taşımadan. Kumo.AI / KumoRFM'in açık kaynak karşılığı.
 
-> **Path notu:** Sadece `CLAUDE.md` ve `README.md` repo **kökünde** durur. Geri kalan tüm dokümanlar `docs/` altındadır (`docs/HANDOVER.md`, `docs/ARCHITECTURE.md` …). Aşağıda hepsi `docs/`-prefix'li yazılır.
+> **Path notu:** Sadece `CLAUDE.md`, `README.md` ve `CONTRIBUTING.md` repo **kökünde** durur. Geri kalan tüm dokümanlar `docs/` altındadır (`docs/HANDOVER.md`, `docs/ARCHITECTURE.md` …). Aşağıda hepsi `docs/`-prefix'li yazılır.
 
 ---
 
@@ -30,6 +30,7 @@ Yeni bir oturuma (session) başlayan herkesin **tavsiye edilen okuma sırası**:
 | **`docs/DECISIONS.md`** | ADR'ler — mimari kararlar ve gerekçeleri | "Neden DuckDB / neden pandas 2.2.x?" gibi sorularda |
 | **`docs/RELPATH_SPEC_v2.md`** (+ `.docx` / `.html`) | Strateji & teknik spec (v2) | Ürün konumlandırması ve vizyon bağlamı gerektiğinde |
 | **`README.md`** (kök) | İki dilli (TR/EN) quickstart | İlk kurulum / dışarıya tanıtım / hızlı demo |
+| **`CONTRIBUTING.md`** (kök) | Geliştirici kurulum + katkı kuralları + guardrail'ler | Dış katkı / yeni geliştirici onboarding |
 | **`docs/logo.svg` · `docs/logo.png`** | Proje logosu (varlık) | README / demo / sunum görselleri için |
 
 ---

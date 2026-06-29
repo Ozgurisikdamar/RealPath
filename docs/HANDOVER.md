@@ -58,6 +58,7 @@
 - [x] GitHub'a push: **private** repo `Ozgurisikdamar/relpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
 - [x] Per-entity probability **calibration** (opt-in isotonic): `model.py` (`fit_model(calibrate=)`, `reliability()` Brier+ECE), `engine.predict(calibrate=)`, `result.reliability()`. Doğrulandı: ECE 0.033→0.014, AUC korunur; **default kapalı** (headline 0.749 değişmedi).
 - [x] **Postgres connector**: `connect.py` `PostgresBackend` + `open_backend` `postgres://` yolu + `postgres` extra (`psycopg`). `?`→`%s` çevirisi, `public` şema introspection. **Docker `postgres:16` ile UÇTAN-UCA DOĞRULANDI**: şema/FK çıkarımı + churn ROC-AUC **0.7492** (DuckDB ile birebir aynı). `data/load_postgres.py` yükleyici, `tests/test_postgres.py` (`RELPATH_TEST_PG` yoksa skip).
+- [x] **CONTRIBUTING.md** (repo kökü): kurulum, test/lint, opt-in Postgres testi, guardrail'ler (sızıntı-güvenliği, local-first, lisans), recipe pointer'ları. Setup komutları doğrulanmış (`pip install -e ".[dev]"` → 23 passed, 1 skipped).
 
 ---
 
@@ -66,7 +67,7 @@
 > Her madde: **WHAT / WHY / WHERE / ACCEPTANCE**. En ust **AKTIF** (isaretsiz, bloke olmayan) kutu = bir sonraki is.
 > `⏸️ BLOKE` etiketli maddeyi atla (dis bir sey bekliyor); ilk aktif maddeden devam et.
 
-- [ ] ⏸️ **BLOKE** — **Canli Claude NL→PQL yolunu API key ile dogrula** (env'de `ANTHROPIC_API_KEY` YOK; kullanici saglayana kadar atla, sonraki aktif madde = Postgres connector)
+- [ ] ⏸️ **BLOKE** — **Canli Claude NL→PQL yolunu API key ile dogrula** (env'de `ANTHROPIC_API_KEY` YOK; kullanici saglayana kadar atla, sonraki aktif madde = RelBench adapter)
   - WHAT: Gercek `ANTHROPIC_API_KEY` ile `nl_to_pql`'in Claude yolunu (offline fallback degil) calistir.
   - WHY: Su an sadece offline template fallback dogrulandi; canli yol untested.
   - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
@@ -77,12 +78,6 @@
   - WHY: Modul bu ortamda **hic calistirilmadi** (untested); torch+relbench kurulu degil.
   - WHERE: `relpath/relbench_adapter.py`, `relpath/eval.py` (`evaluate_relbench`), extra: `pip install -e ".[eval]"`.
   - ACCEPTANCE: `python -m relpath.eval --dataset rel-hm --task user-churn` bir metrik tablosu uretir; hatalar duzeltilir; sonuc bu dosyaya yazilir.
-
-- [ ] **CONTRIBUTING guide yaz**
-  - WHAT: Kurulum, test calistirma, kod stili (ruff), commit kurallari, sizinti-guvenligi prensibi.
-  - WHY: Dis katki icin onkosul.
-  - WHERE: yeni `CONTRIBUTING.md`, `docs/DECISIONS.md`'ye atif.
-  - ACCEPTANCE: Yeni bir gelistirici dosyayi takip ederek env kurup `python -m pytest tests/ -q` calistirabilir.
 
 ---
 
