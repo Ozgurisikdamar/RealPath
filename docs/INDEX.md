@@ -13,8 +13,9 @@ Bu sayfa, projedeki tüm dokümanların **giriş noktasıdır**. Ne aradığın�
 Yeni bir oturuma (session) başlayan herkesin **tavsiye edilen okuma sırası**:
 
 1. **`CLAUDE.md`** (repo kökü) — operating manual + "devam-et" protokolü. **Her zaman ilk burası.**
-2. **`docs/HANDOVER.md`** — projenin şu anki durumu + sıradaki adımlar.
-3. Gerisi **ihtiyaç oldukça**: derin teknik için `docs/ARCHITECTURE.md`, hızlı reçeteler için `docs/SKILLS.md`, plan için `docs/ROADMAP.md`, neden-böyle için `docs/DECISIONS.md`, strateji için `docs/RELPATH_SPEC_v2.md`, hızlı başlangıç için `README.md`.
+2. **`docs/SPRINTS.md`** — 🟢 güncel sprint; **DEVAM buradan başlar** (backlog'un tek kaynağı).
+3. **`docs/HANDOVER.md`** — projenin **canlı durumu** (ne bitti, bilinen sorunlar, doğrulama).
+4. Gerisi **ihtiyaç oldukça**: API için `docs/API.md`, derin teknik için `docs/ARCHITECTURE.md`, reçeteler için `docs/SKILLS.md`, neden-böyle için `docs/DECISIONS.md`, strateji için `docs/RELPATH_SPEC_v2.md`.
 
 ---
 
@@ -23,8 +24,10 @@ Yeni bir oturuma (session) başlayan herkesin **tavsiye edilen okuma sırası**:
 | Doküman | Amaç (tek satır) | Ne zaman oku |
 |---|---|---|
 | **`CLAUDE.md`** (kök) | Operating manual + golden rules + devam-et protokolü | **Her oturumun ilk dosyası.** Kuralları (push yok, pandas pin, vb.) hatırlamak için |
-| **`docs/HANDOVER.md`** | Mevcut durum + bir sonraki adımlar | İkinci dosya. Nerede kaldık, sırada ne var sorusuna |
+| **`docs/SPRINTS.md`** | 🟢 Güncel sprint + plan; **DEVAM buradan başlar** | İkinci dosya. "Sırada ne var?" — backlog'un tek kaynağı |
+| **`docs/HANDOVER.md`** | **Canlı durum** + bilinen sorunlar + doğrulama checklist | "Nerede kaldık, ne bitti?" |
 | **`docs/ARCHITECTURE.md`** | Derin teknik: modüller, data-flow, tasarım | Bir modülü değiştirmeden / yeni özellik eklemeden önce |
+| **`docs/API.md`** | Python / CLI / PQL API referansı | "Hangi fonksiyon / komut / parametre var?" |
 | **`docs/SKILLS.md`** | Reçeteler (recipes): sık yapılan işlerin komutları | "Şunu nasıl çalıştırırım?" derken |
 | **`docs/ROADMAP.md`** | Fazlara bölünmüş plan (Phase-1/2…) | Önceliklendirme ve "bu iş roadmap'te nerede?" için |
 | **`docs/DECISIONS.md`** | ADR'ler — mimari kararlar ve gerekçeleri | "Neden DuckDB / neden pandas 2.2.x?" gibi sorularda |

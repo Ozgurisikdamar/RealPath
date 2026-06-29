@@ -29,16 +29,22 @@ bağlarsın, tahmin sorusunu düz dilde ya da **PQL** ile sorarsın, veriyi hiç
 
 ## 2. "DEVAM ET" PROTOKOLÜ
 
-Kullanıcı **"devam et" / "continue"** dediğinde, hangi model olursan ol şu adımları **sırayla** uygula:
+Kullanıcı **"devam et" / "devam" / "continue"** dediğinde, hangi model olursan ol şu adımları **sırayla** uygula:
 
-1. **`docs/HANDOVER.md`** dosyasının **"Sıradaki İş"** bölümünü oku — önceliklendirilmiş backlog buradadır.
-2. Gerekirse **`docs/ROADMAP.md`** ve **`docs/ARCHITECTURE.md`**'i oku (bağlam/karar için).
-3. **En üstteki işaretsiz (unchecked) maddeyi** seç.
-4. Env'in çalıştığını **smoke test** ile doğrula (Bölüm 5).
-5. **`docs/SKILLS.md`** reçetelerini izleyerek implemente et.
-6. **`python -m pytest tests/ -q`** + **`python -m relpath.eval`** çalıştır.
-7. **`docs/HANDOVER.md`**'i GÜNCELLE: maddeyi "done" işaretle, yeni sıradaki işleri ekle, tarih/model satırını güncelle.
-8. **Sadece lokal commit** at (Bölüm 3, Kural 1 — **push YOK**).
+1. **`docs/SPRINTS.md`**'i aç → **🟢 GÜNCEL** sprint'i bul → en üstteki **açık (`[ ]`) ve
+   bloke-olmayan** (`⏸️ BLOKE` DEĞİL) görevi al. **Backlog'un tek kaynağı SPRINTS'tir.**
+2. Görevin **WHAT / ACCEPTANCE**'ını oku. Gerekirse `docs/HANDOVER.md` (canlı durum),
+   `docs/DECISIONS.md` (kararlar/gerekçe), `docs/ARCHITECTURE.md` · `docs/API.md` (bağlam).
+3. Env'in çalıştığını **smoke test** ile doğrula (Bölüm 5).
+4. **`docs/SKILLS.md`** reçetelerini izleyerek implemente et + **doğrula** (gerçekten çalıştır).
+5. **`python -m pytest tests/ -q`** + ilgiliyse **`python -m relpath.eval`** çalıştır.
+6. **GÜNCELLE:** `docs/SPRINTS.md`'de görevi `[x]` yap (sprint'in tüm açık görevleri bittiyse
+   bir sonraki sprint'i **🟢 GÜNCEL** işaretle); `docs/HANDOVER.md`'i güncelle (tarih + durum +
+   varsa yeni bilinen-sorun). Yeni **karar** verdiysen `docs/DECISIONS.md`'e (ADR/BD) yaz.
+7. **Sadece lokal commit** at (Bölüm 3, Kural 1 — **push YOK**).
+
+> Güncel sprint'in tüm açık görevleri bloke/bittiyse: bunu söyle ve **yeni görev/sprint öner**
+> (SPRINTS'e ekle) — boş durma, ama bloke maddeyi zorlama.
 
 ---
 
@@ -157,11 +163,13 @@ PREDICT AGG(table.col|*, start, end, unit) [op value] FOR EACH entity_table.prim
 | Dosya | İçerik |
 |---|---|
 | [`docs/INDEX.md`](docs/INDEX.md) | Tüm dokümanların giriş haritası |
+| [`docs/SPRINTS.md`](docs/SPRINTS.md) | **Sprint planı — DEVAM buradan başlar (🟢 güncel sprint)** |
 | [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Mimari + modül kararları |
-| [`docs/HANDOVER.md`](docs/HANDOVER.md) | **"Sıradaki İş" backlog — DEVAM ET buradan başlar** |
+| [`docs/API.md`](docs/API.md) | Python / CLI / PQL API referansı |
+| [`docs/HANDOVER.md`](docs/HANDOVER.md) | **Canlı durum** + bilinen sorunlar + doğrulama checklist |
 | [`docs/SKILLS.md`](docs/SKILLS.md) | Implementasyon reçeteleri |
-| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Fazlar / yol haritası |
-| [`docs/DECISIONS.md`](docs/DECISIONS.md) | Karar günlüğü (ADR) |
+| [`docs/ROADMAP.md`](docs/ROADMAP.md) | Stratejik fazlar (SPRINTS = taktik yürütme) |
+| [`docs/DECISIONS.md`](docs/DECISIONS.md) | Karar günlüğü (ADR + Business Decisions) |
 | [`docs/RELPATH_SPEC_v2.md`](docs/RELPATH_SPEC_v2.md) | v2 strateji & teknik spec (`.docx`/`.html` + `logo.svg`/`logo.png` yanında) |
 
 ---

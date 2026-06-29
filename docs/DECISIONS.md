@@ -34,6 +34,12 @@ Her kayıt dört bölümden oluşur:
 | [ADR-008](#adr-008) | Çekirdek lisansı MIT/BSD/Apache; getML & TabPFN-2.5 karantinada | Accepted |
 | [ADR-009](#adr-009) | Şema/ilişki modeli için Featuretools EntitySet'i yeniden kullan | Accepted |
 | [ADR-010](#adr-010) | PK/FK/time-index için heuristik çıkarım | Accepted |
+| [ADR-011](#adr-011) | GNN backend opsiyonel; temporal sampling `pyg-lib` (Linux) ister | Accepted |
+| [ADR-012](#adr-012) | eval extra: `pytorch-frame` (impostor `torch-frame` değil) + PyG | Accepted |
+| [ADR-013](#adr-013) | Connector'lar tek küçük arayüz; MySQL ANSI_QUOTES; `?`→`%s` | Accepted |
+| [ADR-014](#adr-014) | Kalibrasyon opt-in (default kapalı) | Accepted |
+
+**İş/ürün kararları** ayrı bölümde: [Business Decisions (BD)](#business).
 
 ---
 
@@ -317,6 +323,104 @@ sızıntı pencereleri (ADR-005) bir FK grafiği ve time-index'e ihtiyaç duyar.
 - (+) Kısıtsız dump'larda bile "bağlan ve sor" çalışır — manuel şema tanımı gerekmez.
 - (+) Çok-hop join'ler otomatik (sample DB'de 2-hop return-risk ~0.689 ROC-AUC bununla mümkün).
 - (−) Heuristik yanılabilir (ör. aday anahtar yanlış seçimi); gelecekte açık şema override'ı eklenebilir.
+
+---
+
+<a id="adr-011"></a>
+## ADR-011 — GNN backend opsiyonel; temporal sampling `pyg-lib` (Linux) ister
+
+**Status:** Accepted · **Tarih:** 2026-06-19
+
+- **Context:** RDL/GNN backend (`relpath/gnn.py`), relbench + PyG ile heterojen temporal GNN.
+  Leakage-safe temporal (disjoint) neighbor sampling **`pyg-lib`** ister; pyg-lib'in **Windows
+  build'i yok**. `torch-sparse` non-temporal sampling yapar ama disjoint/temporal yapamaz.
+- **Decision:** GNN'i **opsiyonel/plugin** tut (çekirdek torch'suz, lazy import). Windows'ta
+  **non-temporal fallback** ile çalış (kod doğrulaması için), ama bu **LEAKY** → adil benchmark
+  DEĞİL. Adil temporal eval **Linux/WSL + pyg-lib** ile yapılır (Sprint 2).
+- **Consequences:** (+) Çekirdek hafif kalır; kod doğrulanabilir. (−) "GNN baseline'ı geçti"
+  iddiası bu platformda yapılamaz; Linux gerekir. Karşılaştırmalar her zaman temporal/leaky
+  durumuyla etiketlenir.
+
+<a id="adr-012"></a>
+## ADR-012 — eval extra gerçek paket `pytorch-frame` + PyG
+
+**Status:** Accepted · **Tarih:** 2026-06-19
+
+- **Context:** PyPI'da `torch-frame` (v1.x) **farklı/impostor** bir pakettir; pyg-team'in
+  ilişkisel-tablo kütüphanesi **`pytorch-frame`** olarak yayınlanır (import `torch_frame`).
+  İlk `eval` extra yanlışlıkla `torch-frame` kuruyordu → GNN `torch_frame.data` bulamıyordu.
+- **Decision:** `eval` extra = `relbench`, `torch`, **`pytorch-frame`**, `torch-geometric`.
+  `torch-sparse` (ve Linux'ta `pyg-lib`) PyG wheel index'inden ayrıca kurulur (platform-özgü,
+  pyproject'te pinlenmez). Tümü **izole `.venv_eval`**'de (çekirdek `.venv` bozulmasın).
+- **Consequences:** (+) GNN doğru çalışır. (−) Ek manuel adım (torch-sparse wheel index).
+
+<a id="adr-013"></a>
+## ADR-013 — Connector'lar tek küçük arayüz; MySQL ANSI_QUOTES; `?`→`%s`
+
+**Status:** Accepted · **Tarih:** 2026-06-19
+
+- **Context:** DuckDB/Postgres/MySQL backend'leri; üretilen SQL çift-tırnaklı identifier ve
+  `?` placeholder kullanır (DuckDB tarzı). Postgres/MySQL `%s` placeholder kullanır; MySQL
+  varsayılan olarak çift-tırnağı string sanır (backtick quoting).
+- **Decision:** Tüm backend'ler aynı **küçük arayüzü** uygular
+  (`tables/columns/row_count/distinct_count/load/query/close`). `query()` `?`→`%s` çevirir;
+  MySQL oturumda **`ANSI_QUOTES`** açar. Şema/DFS/model/explain **backend-agnostik** kalır.
+- **Consequences:** (+) Yeni connector eklemek tek küçük sınıf; üç backend birebir aynı sonuç.
+  (−) Filtre değerlerinde `?`/`%` literal'leri kaçınılır (PoC kısıtı).
+
+<a id="adr-014"></a>
+## ADR-014 — Kalibrasyon opt-in (default kapalı)
+
+**Status:** Accepted · **Tarih:** 2026-06-19
+
+- **Context:** İsotonik olasılık kalibrasyonu held-out dilimde fit edilir; base model %75 veriyle
+  eğitilir. ROC-AUC monotonik dönüşümle korunur ama default davranışı/sayıları değiştirir.
+- **Decision:** Kalibrasyon **opt-in** (`calibrate=True`, default kapalı). Böylece headline
+  metrikler (churn 0.749, eval +0.045) **değişmez**; isteyen `--calibrate` ile açar.
+- **Consequences:** (+) Doğrulanmış sayılar stabil. (−) Kalibrasyon varsayılan değil (kullanıcı
+  bilinçli açmalı).
+
+---
+
+<a id="business"></a>
+## İş / Ürün Kararları (Business Decisions, BD)
+
+> Stratejik/ticari kararlar. Teknik gerekçeler ADR'larda; bunlar **ürün ve pazar** kararları.
+
+### BD-001 — Konumlandırma
+**Karar:** relpath = **açık kaynak, self-hostable, local-first, açıklanabilir** relational
+prediction engine — **Kumo.AI / KumoRFM'in açık-kaynak karşıtı.** "Veritabanına bağlan, düz
+dille sor, açıklamalı cevap al — veri makineden çıkmadan."
+
+### BD-002 — Monetizasyon: Open-Core
+**Karar:** MIT çekirdek (ADR-008). Sınır:
+| Ücretsiz / OSS (çekirdek) | Ticari (gelecek) |
+|---|---|
+| Motor, PQL, DFS+LightGBM, kalibrasyon, açıklanabilirlik | Managed/hosted servis (SaaS) |
+| DuckDB + Postgres + MySQL connectors | Warehouse **managed** connectors (Snowflake/BigQuery), governance |
+| CLI, Streamlit demo, RelBench eval, GNN (OSS) | Takım/RBAC, destek/SLA, ölçek/operasyon |
+Çekirdek her zaman self-host edilebilir kalır (tez bu).
+
+### BD-003 — Go-to-Market
+**Karar:** **GitHub-first OSS launch.** Lead-magnet: **NL→PQL interaktif demo** (kendi şemanı
+yükle, düz dille sor, PQL+SDK kodu al). Dikey SEO içeriği: "open-source churn prediction",
+"self-hosted demand forecasting", "relational deep learning without GPUs". Kanal: Show HN /
+r/MachineLearning / dev toplulukları.
+
+### BD-004 — Hedef kullanıcı
+**Karar:** (1) veri bilimciler/ML mühendisleri (feature-engineering yükünden kurtulmak),
+(2) indie/startup geliştiriciler (ucuz, GPU'suz), (3) **düzenlemeli sektörler** (sağlık/kamu/
+finans) — self-host/gizlilik/açıklanabilirlik zorunluluğu olanlar.
+
+### BD-005 — Rekabet duruşu
+**Karar:** Kumo'nun sahasında (warehouse-native, kapalı foundation model) **savaşma.** Onun
+**yapısal olarak yapamadığında** kazan: açık kaynak · local-first/air-gap · açıklanabilirlik ·
+şeffaf/ücretsiz. GNN/Foundation-Model talep+gelir geldikçe eklenir (vitrin değil).
+
+### BD-006 — Öncelik sırası
+**Karar:** Önce **backend genişliği + ergonomi** (DFS baseline yeterince iyi ve ucuz —
+ADR-002), sonra **GNN** (Sprint 2), sonra **warehouse/managed** (Sprint 3) ve **product
+surface/GTM** (Sprint 4). Foundation model = icebox/vizyon.
 
 ---
 

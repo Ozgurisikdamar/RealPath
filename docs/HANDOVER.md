@@ -1,8 +1,8 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: RDL/GNN backend implementasyonu (`relpath/gnn.py`; kod doğrulandı, adil temporal eval pyg-lib/Linux bekliyor).
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: planlama dokumanlari (SPRINTS.md + API.md + DECISIONS business kararlari); devam artik SPRINTS'ten ilerler.
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
-> `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
+> `devam` dendiginde once **`docs/SPRINTS.md`** (🟢 guncel sprint) okunur; **bu dosya canli durumdur** (ne bitti, bilinen sorunlar, dogrulama).
 
 **relpath.dev** — acik kaynak, self-host, **local-first** relational prediction engine. Bir veritabani baglarsin, tahmin sorusunu duz dil veya PQL ile sorarsin, **aciklamali** bir cevap alirsin — veri makineden cikmadan. Kategori lideri **Kumo.AI / KumoRFM**'in acik-kaynak karsiti.
 
@@ -66,22 +66,13 @@
 
 ---
 
-## 3) SIRADAKI IS (oncelik sirali)
+## 3) SIRADAKI IS → **`docs/SPRINTS.md`**
 
-> Her madde: **WHAT / WHY / WHERE / ACCEPTANCE**. En ust **AKTIF** (isaretsiz, bloke olmayan) kutu = bir sonraki is.
-> `⏸️ BLOKE` etiketli maddeyi atla (dis bir sey bekliyor); ilk aktif maddeden devam et.
-
-- [ ] ⏸️ **BLOKE** — **Canli Claude NL→PQL yolunu API key ile dogrula** (env'de `ANTHROPIC_API_KEY` YOK; kullanici saglayana kadar atla; asagidaki ilk AKTIF maddeden devam et)
-  - WHAT: Gercek `ANTHROPIC_API_KEY` ile `nl_to_pql`'in Claude yolunu (offline fallback degil) calistir.
-  - WHY: Su an sadece offline template fallback dogrulandi; canli yol untested.
-  - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
-  - ACCEPTANCE: `relpath ask "hangi musteriler iade yapacak" --db data/shop.duckdb` gecerli PQL dondurur ve `NLResult.source` Claude yolunu (offline degil) gosterir.
-
-- [ ] ⏸️ **BLOKE (Windows)** — **GNN: adil leakage-safe temporal benchmark** (implementasyon TAMAM, bkz. Tamamlananlar)
-  - WHAT: `relpath/gnn.py` HeteroGNN'i **temporal (disjoint) sampling** ile koştur, DFS baseline'i (rel-f1/driver-dnf 0.592) **adilce** geç.
-  - WHY: Temporal disjoint sampling **pyg-lib** ister; pyg-lib'in **Windows build'i YOK**. Non-temporal fallback çalışıyor ama **LEAKY** (AUC 0.76 adil değil).
-  - WHERE: `relpath/gnn.py` `run_gnn_task(..., temporal=True)`; Linux/WSL/CI'da `pip install pyg-lib`.
-  - ACCEPTANCE: Linux'ta `temporal=True` ile GNN DFS baseline'i geçer; sayı buraya yazılır.
+> **Backlog artık SPRINTS'te.** `devam` → [`docs/SPRINTS.md`](SPRINTS.md) **🟢 GÜNCEL sprint**
+> (şu an **Sprint 1 — OSS Launch Readiness**) → en üst açık & bloke-olmayan görev.
+>
+> **Bloke maddeler** (atla; SPRINTS'te ilgili sprintte): canlı Claude NL→PQL (`ANTHROPIC_API_KEY`
+> yok → Sprint 4) · GNN adil temporal benchmark (`pyg-lib` Windows'ta yok → Sprint 2).
 
 ---
 
