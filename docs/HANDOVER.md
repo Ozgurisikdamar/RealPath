@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: MySQL connector (docker `mysql:8` ile doğrulandı; 3. backend, churn 0.7492).
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: RDL/GNN backend implementasyonu (`relpath/gnn.py`; kod doğrulandı, adil temporal eval pyg-lib/Linux bekliyor).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
 
@@ -62,6 +62,7 @@
 - [x] **RelBench adapter DOĞRULANDI**: `relbench_adapter.py` sertleştirildi (dtype normalize, `ignore_columns`, etiketi `cutoff_time`'a koyup X/y hizalama, test maskeli→`val` fallback). İzole `.venv_eval` (torch+relbench) ile `rel-f1` koşturuldu: **driver-dnf AUC ~0.592, driver-position MAE ~3.61** (basit DFS baseline; tuned RDL'in altında, beklenen).
 - [x] **CLI `--calibrate` bayrağı**: `relpath predict ... --calibrate` → kalibre olasılık + `result.reliability()` (Brier/ECE) yazdırır. `tests/test_cli.py` (2: schema + predict --calibrate). Canlı doğrulandı: brier ~0.20, ece ~0.085.
 - [x] **MySQL connector** (3. backend): `connect.py` `MySQLBackend` (pymysql, `mysql` extra) + `open_backend` `mysql://`. ANSI_QUOTES (çift-tırnak SQL çalışsın) + `DATABASE()` introspection + `?`→`%s`; `_NUMERIC`'e `INT`, `_TEMPORAL`'e `DATETIME` eklendi. **Docker `mysql:8` ile UÇTAN-UCA DOĞRULANDI**: şema/FK + churn **0.7492** (DuckDB/Postgres ile birebir). `data/load_mysql.py`, `tests/test_mysql.py` (skip). → **DuckDB + Postgres + MySQL** üçü de aynı sonucu veriyor (backend-agnostik).
+- [x] **RDL/GNN backend implementasyonu** (`relpath/gnn.py`): HeteroEncoder + HeteroTemporalEncoder + HeteroGraphSAGE + NeighborLoader + eğitim döngüsü; `relpath.eval --gnn`. **Kod uçtan-uca DOĞRULANDI** (rel-f1/driver-dnf: eğitilir loss 0.38→0.29, tahmin eder). **AMA** Windows'ta non-temporal fallback → AUC 0.76 **LEAKY, adil değil** (temporal disjoint sampling pyg-lib ister, Windows'ta yok). Adil temporal eval → SIRADAKI (Linux). Ayrıca pyproject `eval` extra düzeltildi: `torch-frame`(impostor)→**`pytorch-frame`** + `torch-geometric`. Opsiyonel/plugin; çekirdek torch'suz (25/2 değişmedi).
 
 ---
 
@@ -76,17 +77,18 @@
   - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
   - ACCEPTANCE: `relpath ask "hangi musteriler iade yapacak" --db data/shop.duckdb` gecerli PQL dondurur ve `NLResult.source` Claude yolunu (offline degil) gosterir.
 
-- [ ] **RDL/GNN backend (relbench + PyG) — L**
-  - WHAT: Faz-2 GNN backend; link-prediction/oneri ve derin temporal gorevler icin.
-  - WHY: Baseline'in tavan yaptigi yerlerde (SPEC §2.4) GNN ustunlugu — rel-f1'de DFS baseline 0.59, RDL ustu beklenir.
-  - WHERE: yeni `relpath/gnn/` (eval extra: torch+relbench+PyG ZATEN `.venv_eval`'de kurulu), `engine`/`model` backend secimi.
-  - ACCEPTANCE: En az bir RelBench gorevinde GNN, DFS baseline'i gecer; opsiyonel/plugin kalir (cekirdek torch'suz).
+- [ ] ⏸️ **BLOKE (Windows)** — **GNN: adil leakage-safe temporal benchmark** (implementasyon TAMAM, bkz. Tamamlananlar)
+  - WHAT: `relpath/gnn.py` HeteroGNN'i **temporal (disjoint) sampling** ile koştur, DFS baseline'i (rel-f1/driver-dnf 0.592) **adilce** geç.
+  - WHY: Temporal disjoint sampling **pyg-lib** ister; pyg-lib'in **Windows build'i YOK**. Non-temporal fallback çalışıyor ama **LEAKY** (AUC 0.76 adil değil).
+  - WHERE: `relpath/gnn.py` `run_gnn_task(..., temporal=True)`; Linux/WSL/CI'da `pip install pyg-lib`.
+  - ACCEPTANCE: Linux'ta `temporal=True` ile GNN DFS baseline'i geçer; sayı buraya yazılır.
 
 ---
 
 ## 4) BILINEN SORUNLAR / DIKKAT
 
 - **pandas 3.0 KIRIYOR.** `pandas==2.2.x` (pinli **2.2.3**) sart. pandas 3.0'da `.ww` woodwork accessor semasi kalici olmuyor → Featuretools EntitySet build cokuyor. **Yukseltme.**
+- **GNN temporal sampling `pyg-lib` ister (Windows'ta YOK).** `relpath/gnn.py` non-temporal fallback ile koşar ama **LEAKY** (adil benchmark değil). Leakage-safe temporal GNN için Linux/WSL + `pip install pyg-lib`. Ayrıca `eval` extra'da gerçek paket **`pytorch-frame`** (PyPI `torch-frame` impostor; düzeltildi) + `torch-sparse` PyG wheel index'ten.
 - **RelBench adapter `rel-f1` ile DOGRULANDI** (driver-dnf AUC ~0.592, driver-position MAE ~3.61). `eval` extra'sini **izole `.venv_eval`'de** kur (cekirdek `.venv`'i bozma). Basit DFS baseline tuned RDL'in altinda — beklenen; GNN backend "SIRADAKI IS"te.
 - **fraud sinyali sentetik veride zayif.** Bu yuzden return-risk, musteri seviyesinde **2-hop join** olarak reframe edildi (~0.689 ROC-AUC).
 - **Windows cp1252 encoding.** Turkce konsol ciktisi icin `PYTHONUTF8=1` ayarla; kutuphane zaten `relpath._io.sprint` ile encoding-safe yazar ve CLI/eval `_io.use_utf8()` cagirir.

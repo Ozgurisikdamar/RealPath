@@ -118,8 +118,9 @@ relpath/
 ├── result.py              # PredictionResult (global_importance/explain/top/head/to_csv); _io.sprint
 ├── engine.py              # Engine.predict (PQL vs NL auto-detect); churn/forecast/fraud templates; _metrics
 ├── templates.py           # TEMPLATES + churn_pql/forecast_pql/fraud_pql
-├── eval.py                # evaluate_local (relational vs baseline), evaluate_relbench (eval extra), CLI main()
+├── eval.py                # evaluate_local (relational vs baseline), evaluate_relbench, evaluate_gnn (--gnn), CLI main()
 ├── relbench_adapter.py    # run_relbench_task (relbench+torch, lazy); eval extra; rel-f1 ile DOĞRULANDI
+├── gnn.py                 # OPSIYONEL RDL/GNN backend (relbench+PyG, lazy); kod doğrulandı; temporal eval pyg-lib/Linux ister
 ├── cli.py                 # argparse: make-sample, schema, ask, predict, eval; entry point relpath
 ├── demo_app.py            # Streamlit app (port 8501, Türkçe UI)
 └── _io.py                 # sprint (encoding-safe print), use_utf8

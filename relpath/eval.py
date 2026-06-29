@@ -97,6 +97,13 @@ def evaluate_relbench(dataset: str, task: str) -> dict:  # pragma: no cover - ne
     return run_relbench_task(dataset, task)
 
 
+def evaluate_gnn(dataset: str, task: str) -> dict:  # pragma: no cover - needs extra + PyG
+    """Train the heterogeneous GNN backend on a RelBench task (needs eval extra + PyG)."""
+    from .gnn import run_gnn_task  # lazy, isolated module
+
+    return run_gnn_task(dataset, task)
+
+
 def main(argv=None):
     use_utf8()
     ap = argparse.ArgumentParser(prog="relpath.eval", description="relpath evaluation harness")
@@ -104,10 +111,13 @@ def main(argv=None):
     ap.add_argument("--pql", default=None, help="PQL to evaluate (local mode)")
     ap.add_argument("--dataset", default=None, help="RelBench dataset (needs extra)")
     ap.add_argument("--task", default=None, help="RelBench task name")
+    ap.add_argument("--gnn", action="store_true", help="use the GNN backend (needs PyG)")
     ap.add_argument("--max-depth", type=int, default=2)
     args = ap.parse_args(argv)
 
-    if args.dataset:
+    if args.dataset and args.gnn:
+        evaluate_gnn(args.dataset, args.task)
+    elif args.dataset:
         evaluate_relbench(args.dataset, args.task)
     else:
         evaluate_local(args.db, args.pql, max_depth=args.max_depth)

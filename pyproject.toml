@@ -47,8 +47,11 @@ mysql = ["pymysql>=1.1"]
 tabpfn = ["tabpfn>=0.1"]
 # Interactive demo
 demo = ["streamlit>=1.30"]
-# RelBench evaluation harness (pulls in torch + pyg — kept isolated from the core)
-eval = ["relbench>=1.0", "torch>=2.0", "torch-frame>=0.2"]
+# RelBench evaluation harness + GNN backend (heavy; isolate in a separate venv — NOT core).
+# Note: the GNN's temporal neighbor sampling also needs torch-sparse (and pyg-lib on Linux for
+# leakage-safe temporal sampling), installed from the PyG wheel index:
+#   pip install torch-sparse -f https://data.pyg.org/whl/torch-${TORCH}+cpu.html
+eval = ["relbench>=1.0", "torch>=2.0", "pytorch-frame>=0.2", "torch-geometric>=2.5"]
 dev = ["pytest>=7", "ruff>=0.4"]
 
 [project.scripts]
