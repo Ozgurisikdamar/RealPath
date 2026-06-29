@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: **Sprint 1 ✅ 8/8 TAMAM** (LICENSE, demo kalibrasyon, PyPI build dry-run+paket bug fix, quickstart.ipynb, BENCHMARKS, PITCH, open-core, launch checklist). Guncel sprint: **Sprint 2**.
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: **Sprint 2 (3/4)** — DFS tuning (driver-dnf 0.592→**0.658**), ek RelBench task (driver-top3 0.769), GNN CI workflow (`ci/gnn-eval.yml`). Kalan: GNN adil temporal SAYISI **infra-bloke** (disk %100 doldu, Docker bozuldu → GitHub Linux CI'da koşacak).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam` dendiginde once **`docs/SPRINTS.md`** (🟢 guncel sprint) okunur; **bu dosya canli durumdur** (ne bitti, bilinen sorunlar, dogrulama).
 
@@ -80,6 +80,8 @@
 
 - **pandas 3.0 KIRIYOR.** `pandas==2.2.x` (pinli **2.2.3**) sart. pandas 3.0'da `.ww` woodwork accessor semasi kalici olmuyor → Featuretools EntitySet build cokuyor. **Yukseltme.**
 - **GNN temporal sampling `pyg-lib` ister (Windows'ta YOK).** `relpath/gnn.py` non-temporal fallback ile koşar ama **LEAKY** (adil benchmark değil). Leakage-safe temporal GNN için Linux/WSL + `pip install pyg-lib`. Ayrıca `eval` extra'da gerçek paket **`pytorch-frame`** (PyPI `torch-frame` impostor; düzeltildi) + `torch-sparse` PyG wheel index'ten.
+- **⚠️ DİSK %100 DOLDU + Docker BOZULDU.** GNN'i Linux Docker'da koşma denemesi (torch+PyG ≈2 GB) **C: diskini doldurdu** (0 boş) ve Docker WSL2 storage'ı bozdu (`input/output error`). `.venv_eval` + pip cache silinerek ~2.8 GB açıldı. **Docker artık çalışmıyor** — kullanıcının **Docker Desktop → Troubleshoot → Clean/Purge data** (ya da `wsl --shutdown`) ile sıfırlaması gerekir. Postgres/MySQL testleri Docker'a bağlı (şimdilik skip). GNN adil temporal → GitHub Linux CI (`ci/gnn-eval.yml`).
+- **CI workflow'ları `ci/` klasöründe** (`.github/workflows/` değil — token'da `workflow` scope yok). Aktive etmek: `gh auth refresh -s workflow` + `git mv ci/*.yml .github/workflows/`. Lokal `ci` branch artık gereksiz (içerik `ci/`'de).
 - **RelBench adapter `rel-f1` ile DOGRULANDI** (driver-dnf AUC ~0.592, driver-position MAE ~3.61). `eval` extra'sini **izole `.venv_eval`'de** kur (cekirdek `.venv`'i bozma). Basit DFS baseline tuned RDL'in altinda — beklenen; GNN backend "SIRADAKI IS"te.
 - **fraud sinyali sentetik veride zayif.** Bu yuzden return-risk, musteri seviyesinde **2-hop join** olarak reframe edildi (~0.689 ROC-AUC).
 - **Windows cp1252 encoding.** Turkce konsol ciktisi icin `PYTHONUTF8=1` ayarla; kutuphane zaten `relpath._io.sprint` ile encoding-safe yazar ve CLI/eval `_io.use_utf8()` cagirir.

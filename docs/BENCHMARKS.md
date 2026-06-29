@@ -62,24 +62,35 @@ Our cheap baseline run through the RelBench harness (needs `relpath[eval]` + iso
 Honest: a simple DFS+GBDT — **below** tuned RDL/GNN on these temporal F1 tasks (expected; that's
 the Phase-2 GNN's job).
 
-| Dataset / task | Type | Metric | (RelBench RDL baseline, ref.) |
+| Dataset / task | Type | Metric | Note |
 |---|---|---|---|
-| `rel-f1` / `driver-dnf` | classification | ROC-AUC **0.592** | ~0.72 |
-| `rel-f1` / `driver-position` | regression | MAE **3.61** | — |
+| `rel-f1` / `driver-dnf` (DFS depth 2, 120 feats) | classification | ROC-AUC **0.592** | RelBench RDL ref ~0.72 |
+| `rel-f1` / `driver-dnf` (**DFS depth 3**, 869 feats) | classification | ROC-AUC **0.658** | **tuning: +0.066** |
+| `rel-f1` / `driver-top3` (depth 2) | classification | ROC-AUC **0.769** | extra task |
+| `rel-f1` / `driver-position` (depth 2) | regression | MAE **3.61** | — |
 
-Reproduce: `python -m relpath.eval --dataset rel-f1 --task driver-dnf`.
+Reproduce: `python -m relpath.eval --dataset rel-f1 --task driver-dnf` (or `run_relbench_task(..., max_depth=3)`).
+**DFS-depth tuning** (Sprint 2): raising `max_depth` 2→3 lifts driver-dnf **0.592 → 0.658** (deeper
+cross-table aggregations); at a compute cost (120→869 features).
 
 ---
 
 ## 6. GNN backend (relbench + PyG)
 
 `relpath/gnn.py` — heterogeneous temporal GNN. **Code verified** (trains + predicts on rel-f1).
-The **leakage-safe temporal** sampling needs `pyg-lib` (Linux); on Windows it falls back to
-non-temporal sampling, which is **leaky** → not a fair benchmark, so no "beats baseline" number
-is claimed here. Fair temporal eval is a Sprint 2 item (Linux/CI). See
-[DECISIONS ADR-011](DECISIONS.md).
+The **leakage-safe temporal** (disjoint) sampling needs `pyg-lib`, which has **no Windows build**.
+On Windows it falls back to non-temporal sampling (**leaky** → not a fair benchmark, so no
+"beats baseline" number is claimed). See [DECISIONS ADR-011](DECISIONS.md).
 
-Reproduce (Linux, after `pip install pyg-lib`): `python -m relpath.eval --dataset rel-f1 --task driver-dnf --gnn`.
+**Fair temporal eval — status:** attempted in a **Linux Docker container** (where `pyg-lib`'s
+cp311 wheels exist for torch 2.5); the build failed because **this machine's disk filled to 100%**
+(torch+PyG ≈2 GB) and Docker's storage corrupted — an infrastructure limit, not a code issue. The
+proper venue is a **GitHub Actions Linux runner** (clean, no disk constraint): the workflow
+`gnn-eval.yml` (on the local `ci` branch) installs `pyg-lib`+`torch-sparse` and runs the fair
+temporal GNN. The number will be filled in once that CI runs (needs a `workflow`-scoped push).
+
+Reproduce (any Linux): `pip install pyg-lib torch-sparse -f https://data.pyg.org/whl/torch-2.5.0+cpu.html`
+then `python -m relpath.eval --dataset rel-f1 --task driver-dnf --gnn`.
 
 ---
 

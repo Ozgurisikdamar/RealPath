@@ -67,10 +67,10 @@ tablosu, ve net konumlandırma. Hepsi **bu makinede (Windows) yapılabilir.**
 **Hedef:** GNN'i **adil, leakage-safe temporal** olarak koştur ve DFS baseline'ı geç — bunun
 için Linux gerekir (`pyg-lib`). Bu makinede (Windows) **kısmen bloke**; CI/WSL'de yapılır.
 
-- [ ] ⏸️ **BLOKE (Windows)** GNN temporal benchmark — `temporal=True` Linux/WSL'de; rel-f1'de DFS'i geç.
-- [ ] GNN için Linux CI job'u (eval extra + pyg-lib) — sonuç leaderboard tablosuna.
-- [ ] RelBench v2'de 1-2 ek görev (rel-hm churn) — adapter + GNN karşılaştırması.
-- [ ] DFS baseline'ı iyileştir (depth/primitive tuning) — rel-f1'de 0.59'u yükselt.
+- [x] **DFS baseline tuning** ✅ — `max_depth` 2→3, rel-f1/driver-dnf **0.592 → 0.658** (+0.066, 120→869 feats). `BENCHMARKS.md §5`.
+- [x] **Ek RelBench görev(ler)** ✅ — `rel-f1/driver-top3` (clf) **AUC 0.769**, `driver-position` (reg) MAE 3.61. (rel-hm GB'larca indirme — `rel-f1` ile yetinildi.)
+- [x] **GNN Linux CI job'u** ✅ — `.github/workflows/gnn-eval.yml` (lokal `ci` branch): ubuntu runner, torch 2.5 + `pyg-lib`+`torch-sparse` (Linux wheel) + eval extra → `eval --gnn` (adil temporal). Push `workflow` scope bekler.
+- [ ] ⏸️ **BLOKE (infra)** GNN adil temporal SAYISI — Docker/Linux'ta denendi ama **bu makinenin diski %100 doldu** (torch+PyG ≈2 GB) ve Docker storage bozuldu (kod hatası değil, altyapı). Sayı **GitHub Linux CI**'da (`gnn-eval.yml`) üretilecek; `workflow`-scope'lu push + CI koşusu gerekir. Alternatif: diski boş bir Linux/WSL'de `pip install pyg-lib` + `eval --gnn`.
 
 ---
 

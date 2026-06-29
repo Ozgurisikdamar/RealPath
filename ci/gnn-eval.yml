@@ -1,0 +1,37 @@
+name: GNN eval (RelBench, Linux)
+
+# Heavy: torch + PyG + pyg-lib + a RelBench dataset download. Manual trigger only.
+# This is where the FAIR, leakage-safe temporal GNN benchmark runs — a clean Linux runner where
+# pyg-lib (required for disjoint temporal neighbor sampling) is available with disk to spare.
+on:
+  workflow_dispatch:
+    inputs:
+      task:
+        description: "RelBench task (rel-f1)"
+        default: "driver-dnf"
+
+jobs:
+  gnn:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install torch + PyG + pyg-lib (Linux wheels)
+        run: |
+          python -m pip install --upgrade pip
+          pip install torch==2.5.1 torchvision==0.20.1 --index-url https://download.pytorch.org/whl/cpu
+          pip install tensorboard
+          pip install pyg_lib==0.4.0 torch_sparse==0.6.18 -f https://data.pyg.org/whl/torch-2.5.0+cpu.html
+          pip install -e ".[eval]"
+
+      - name: Fair temporal GNN vs DFS baseline (rel-f1)
+        run: |
+          python -c "import importlib.util as u; print('pyg_lib present:', u.find_spec('pyg_lib') is not None)"
+          echo "## GNN (fair temporal, pyg-lib)"
+          python -m relpath.eval --dataset rel-f1 --task "${{ github.event.inputs.task }}" --gnn
+          echo "## DFS baseline (same task)"
+          python -m relpath.eval --dataset rel-f1 --task "${{ github.event.inputs.task }}"
