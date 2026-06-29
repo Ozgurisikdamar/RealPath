@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: Sprint 1 başladı — kök `LICENSE` (MIT) eklendi.
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: Sprint 1 — Streamlit demo'ya kalibrasyon toggle (Brier/ECE).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam` dendiginde once **`docs/SPRINTS.md`** (🟢 guncel sprint) okunur; **bu dosya canli durumdur** (ne bitti, bilinen sorunlar, dogrulama).
 

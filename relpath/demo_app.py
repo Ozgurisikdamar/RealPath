@@ -27,15 +27,16 @@ def get_engine(db_path: str):
 
 
 @st.cache_data(show_spinner=True)
-def run_prediction(db_path: str, query: str):
+def run_prediction(db_path: str, query: str, calibrate: bool = False):
     eng = get_engine(db_path)
-    res = eng.predict(query, evaluate=True)
+    res = eng.predict(query, evaluate=True, calibrate=calibrate)
     imp = res.global_importance(top_n=12)
     return {
         "pql": res.task.raw or res.task.column_label(),
         "task_type": res.task.task_type,
         "entity_key": res.entity_key,
         "metrics": res.metrics,
+        "reliability": res.reliability() if calibrate else {},
         "predictions": res.predictions,
         "importance": imp,
         "_res": res,
@@ -59,6 +60,11 @@ with st.sidebar:
     st.code("\n".join(str(fk) for fk in eng.schema.foreign_keys), language="text")
 
 st.subheader("1) Bir tahmin sorun")
+calibrate = st.checkbox(
+    "Olasılık kalibrasyonu (isotonic) — Brier/ECE göster",
+    value=False,
+    help="Sınıflandırma olasılıklarını held-out isotonic ile kalibre eder. ROC-AUC korunur.",
+)
 tabs = st.tabs(["Doğal dil / PQL", "Şablonlar"])
 query = None
 with tabs[0]:
@@ -82,7 +88,7 @@ with tabs[1]:
             query = fraud_pql("customers", "customer_id", "returns", 30)
 
 if query:
-    out = run_prediction(db_path, query)
+    out = run_prediction(db_path, query, calibrate)
     st.session_state["out"] = out
     st.session_state["db_path"] = db_path
 
@@ -93,6 +99,10 @@ if out:
     cols = st.columns(len(out["metrics"]) or 1)
     for (k, v), col in zip(out["metrics"].items(), cols):
         col.metric(k, f"{v:.4f}")
+    rel = out.get("reliability") or {}
+    if rel:
+        st.caption("🎯 Kalibrasyon kalitesi (düşük = iyi): "
+                   + "  ·  ".join(f"**{k.upper()}** {v:.4f}" for k, v in rel.items()))
 
     left, right = st.columns([1.1, 1])
     with left:
