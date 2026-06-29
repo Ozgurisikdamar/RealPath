@@ -1,11 +1,11 @@
-"""relpath command-line interface.
+"""realpath command-line interface.
 
-    relpath make-sample                         # generate the bundled demo DB
-    relpath schema  --db data/shop.duckdb
-    relpath ask     "churn edecek musteriler"  --db data/shop.duckdb
-    relpath predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 \
+    realpath make-sample                         # generate the bundled demo DB
+    realpath schema  --db data/shop.duckdb
+    realpath ask     "churn edecek musteriler"  --db data/shop.duckdb
+    realpath predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 \
                      FOR EACH customers.customer_id" --db data/shop.duckdb --explain
-    relpath eval                                # local relational-vs-baseline proof
+    realpath eval                                # local relational-vs-baseline proof
 """
 from __future__ import annotations
 
@@ -75,7 +75,7 @@ def _cmd_eval(args):
 def main(argv=None):
     use_utf8()
     warnings.filterwarnings("ignore")
-    p = argparse.ArgumentParser(prog="relpath", description="The open-source relational prediction engine.")
+    p = argparse.ArgumentParser(prog="realpath", description="The open-source relational prediction engine.")
     sub = p.add_subparsers(dest="cmd", required=True)
 
     sp = sub.add_parser("make-sample", help="generate the bundled synthetic DuckDB")
@@ -105,7 +105,7 @@ def main(argv=None):
     sp = sub.add_parser("eval", help="evaluate (local relational-vs-baseline, or RelBench)")
     sp.add_argument("--db", default="data/shop.duckdb")
     sp.add_argument("--pql", default=None)
-    sp.add_argument("--dataset", default=None, help="RelBench dataset (needs relpath[eval])")
+    sp.add_argument("--dataset", default=None, help="RelBench dataset (needs realpath[eval])")
     sp.add_argument("--task", default=None)
     sp.set_defaults(func=_cmd_eval)
 

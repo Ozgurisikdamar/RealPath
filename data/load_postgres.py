@@ -2,7 +2,7 @@
 Postgres connector). Reads the tables from the local DuckDB sample so the data is identical.
 
 Usage:
-    python data/load_postgres.py "postgresql://postgres:relpath@localhost:55432/shop"
+    python data/load_postgres.py "postgresql://postgres:realpath@localhost:55432/shop"
 """
 from __future__ import annotations
 
@@ -53,6 +53,6 @@ def load(dsn: str, duckdb_path: str = "data/shop.duckdb") -> None:
 
 
 if __name__ == "__main__":
-    dsn = sys.argv[1] if len(sys.argv) > 1 else "postgresql://postgres:relpath@localhost:55432/shop"
+    dsn = sys.argv[1] if len(sys.argv) > 1 else "postgresql://postgres:realpath@localhost:55432/shop"
     load(dsn)
     print("done")

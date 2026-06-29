@@ -1,5 +1,5 @@
 """CLI smoke tests (argparse wiring + the --calibrate flag)."""
-from relpath import cli
+from realpath import cli
 
 
 def test_schema_command(sample_db, capsys):

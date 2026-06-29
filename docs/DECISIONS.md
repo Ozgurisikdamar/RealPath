@@ -1,4 +1,4 @@
-# relpath.dev — Mimari Karar Kayıtları (DECISIONS.md)
+# realpath.dev — Mimari Karar Kayıtları (DECISIONS.md)
 
 > **Architecture Decision Records (ADR)** — *neyi neden seçtik.*
 > Bu dosya, projedeki temel mühendislik kararlarının **kalıcı kaydıdır.** Amaç: bir kararı
@@ -6,7 +6,7 @@
 > (no re-litigation). Bir kararı değiştirmek isteyen biri, önce ilgili ADR'ı okumalı ve
 > yeni bir ADR ile **Supersedes** ilişkisi kurmalıdır.
 >
-> **Tarih:** 2026-06-19 · **Sürüm:** relpath 0.1.0 · **Konum:** *open-source, self-hostable,
+> **Tarih:** 2026-06-19 · **Sürüm:** realpath 0.1.0 · **Konum:** *open-source, self-hostable,
 > local-first relational prediction engine* — Kumo.AI / KumoRFM'in açık kaynak karşıtı.
 
 ---
@@ -119,7 +119,7 @@ giremediği** bir köşe (pazar haritasında sağ-üst: açık kaynak/self-host 
 
 ### Decision
 Varsayılan ve birinci-sınıf backend **DuckDB**'dir (`connect.DuckDBBackend`). Ürün tezi
-**local-first:** veri hiçbir buluta/SaaS'a gitmez — relpath verinin *yanında* çalışır.
+**local-first:** veri hiçbir buluta/SaaS'a gitmez — realpath verinin *yanında* çalışır.
 Postgres/MySQL bağlantı URL'leri şimdilik `NotImplementedError` verir (Faz 2 yol haritası);
 warehouse bağlantısı bir **opsiyon**, asla zorunluluk değildir.
 
@@ -237,7 +237,7 @@ sözünü (ADR-003) bozar: API yoksa/internet yoksa ürün çalışmaz olur.
 ### Decision
 `nlp.nl_to_pql()` doğal dili PQL'e çevirir ve çıktıyı **tekrar parse ederek doğrular**
 (parse hatası LLM'e geri beslenip retry yapılır — self-correction). LLM **pluggable:**
-varsayılan Claude (anthropic SDK; model env `RELPATH_LLM_MODEL` veya `claude-sonnet-4-6`).
+varsayılan Claude (anthropic SDK; model env `REALPATH_LLM_MODEL` veya `claude-sonnet-4-6`).
 anthropic kurulu değilse ya da `ANTHROPIC_API_KEY` yoksa, **offline deterministik şablon
 eşleyici** devreye girer (churn/forecast/fraud anahtar-kelime yönlendirme; Türkçe+İngilizce).
 
@@ -331,7 +331,7 @@ sızıntı pencereleri (ADR-005) bir FK grafiği ve time-index'e ihtiyaç duyar.
 
 **Status:** Accepted · **Tarih:** 2026-06-19
 
-- **Context:** RDL/GNN backend (`relpath/gnn.py`), relbench + PyG ile heterojen temporal GNN.
+- **Context:** RDL/GNN backend (`realpath/gnn.py`), relbench + PyG ile heterojen temporal GNN.
   Leakage-safe temporal (disjoint) neighbor sampling **`pyg-lib`** ister; pyg-lib'in **Windows
   build'i yok**. `torch-sparse` non-temporal sampling yapar ama disjoint/temporal yapamaz.
 - **Decision:** GNN'i **opsiyonel/plugin** tut (çekirdek torch'suz, lazy import). Windows'ta
@@ -388,7 +388,7 @@ sızıntı pencereleri (ADR-005) bir FK grafiği ve time-index'e ihtiyaç duyar.
 > Stratejik/ticari kararlar. Teknik gerekçeler ADR'larda; bunlar **ürün ve pazar** kararları.
 
 ### BD-001 — Konumlandırma
-**Karar:** relpath = **açık kaynak, self-hostable, local-first, açıklanabilir** relational
+**Karar:** realpath = **açık kaynak, self-hostable, local-first, açıklanabilir** relational
 prediction engine — **Kumo.AI / KumoRFM'in açık-kaynak karşıtı.** "Veritabanına bağlan, düz
 dille sor, açıklamalı cevap al — veri makineden çıkmadan."
 
@@ -431,4 +431,4 @@ surface/GTM** (Sprint 4). Foundation model = icebox/vizyon.
 3. GOLDEN kuralları (ADR-001 pandas pin, ADR-003 local-first, ADR-007 LLM fallback,
    ADR-008 lisans karantinası) değiştirmek **açık onay** ister; bunlar ürün tezini taşır.
 
-> *relpath.dev — açık kaynak, self-hostable, local-first.*
+> *realpath.dev — açık kaynak, self-hostable, local-first.*

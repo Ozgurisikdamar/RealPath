@@ -1,10 +1,10 @@
-"""RelBench adapter (optional — requires ``relpath[eval]``).
+"""RelBench adapter (optional — requires ``realpath[eval]``).
 
-Reuses relpath's own feature synthesis + model on Stanford RelBench tasks so we can compare
+Reuses realpath's own feature synthesis + model on Stanford RelBench tasks so we can compare
 against published baselines on the *same* data. Kept in a separate module so importing the
 core engine never pulls in torch/relbench.
 
-Run via: ``python -m relpath.eval --dataset rel-f1 --task driver-dnf`` (needs the eval extra).
+Run via: ``python -m realpath.eval --dataset rel-f1 --task driver-dnf`` (needs the eval extra).
 """
 from __future__ import annotations
 
@@ -93,7 +93,7 @@ def run_relbench_task(dataset_name: str, task_name: str, max_depth: int = 2) -> 
     Xtr, ytr = featurize("train")
     Xte, yte = featurize("test")
     if Xte is None:  # test labels masked (leaderboard split) -> fall back to val
-        sprint("[relpath] test labels unavailable; using 'val' split for evaluation")
+        sprint("[realpath] test labels unavailable; using 'val' split for evaluation")
         Xte, yte = featurize("val")
 
     Xte = Xte.reindex(columns=Xtr.columns)

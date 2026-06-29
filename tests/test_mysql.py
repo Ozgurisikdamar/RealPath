@@ -1,26 +1,26 @@
 """MySQL connector test — proves the engine is backend-agnostic (DuckDB/Postgres/MySQL).
 
-Opt-in: set ``RELPATH_TEST_MYSQL`` to a ``mysql://`` DSN whose database has the sample schema
+Opt-in: set ``REALPATH_TEST_MYSQL`` to a ``mysql://`` DSN whose database has the sample schema
 loaded (``python data/load_mysql.py <dsn>``). Skipped otherwise, so CI doesn't need MySQL.
 
-    docker run -d --name relpath-mysql -e MYSQL_ROOT_PASSWORD=relpath -e MYSQL_DATABASE=shop \
+    docker run -d --name realpath-mysql -e MYSQL_ROOT_PASSWORD=realpath -e MYSQL_DATABASE=shop \
         -p 33060:3306 mysql:8
-    python data/load_mysql.py mysql://root:relpath@localhost:33060/shop
-    set RELPATH_TEST_MYSQL=mysql://root:relpath@localhost:33060/shop
+    python data/load_mysql.py mysql://root:realpath@localhost:33060/shop
+    set REALPATH_TEST_MYSQL=mysql://root:realpath@localhost:33060/shop
     pytest tests/test_mysql.py -q
 """
 import os
 
 import pytest
 
-MY_DSN = os.environ.get("RELPATH_TEST_MYSQL")
+MY_DSN = os.environ.get("REALPATH_TEST_MYSQL")
 pytestmark = pytest.mark.skipif(
-    not MY_DSN, reason="set RELPATH_TEST_MYSQL to a mysql:// DSN (with sample data) to run"
+    not MY_DSN, reason="set REALPATH_TEST_MYSQL to a mysql:// DSN (with sample data) to run"
 )
 
 
 def test_mysql_schema_inference_and_churn():
-    import relpath as rp
+    import realpath as rp
 
     eng = rp.connect(MY_DSN)
     try:

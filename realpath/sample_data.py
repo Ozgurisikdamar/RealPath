@@ -1,8 +1,8 @@
 """Generate a small, fully synthetic e-commerce database as a local DuckDB file.
 
-Zero external downloads — this is what makes the relpath demo *local-first*: you can run the
+Zero external downloads — this is what makes the realpath demo *local-first*: you can run the
 whole engine end-to-end with nothing but this generated file. Shipped **inside the package**
-so `relpath make-sample` works for pip-installed users too.
+so `realpath make-sample` works for pip-installed users too.
 
 Schema (a classic multi-table relational shape):
 

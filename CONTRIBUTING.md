@@ -1,6 +1,6 @@
-# Contributing to relpath.dev
+# Contributing to realpath.dev
 
-Thanks for your interest! relpath is an open-source, self-hostable, **local-first**
+Thanks for your interest! realpath is an open-source, self-hostable, **local-first**
 relational prediction engine. This guide gets you from clone to green tests.
 
 > Deep dives: [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) (how it works),
@@ -31,21 +31,21 @@ python data/make_sample_db.py data/shop.duckdb
 
 ```bash
 pytest tests/ -q          # expect: 25 passed, 1 skipped
-ruff check relpath/ tests/ data/
+ruff check realpath/ tests/ data/
 ```
 
 On Windows, set `PYTHONUTF8=1` if you see encoding errors on Turkish output (the library
-also prints encoding-safely via `relpath._io.sprint`).
+also prints encoding-safely via `realpath._io.sprint`).
 
 ### The Postgres test (opt-in)
 
 `tests/test_postgres.py` is skipped unless you point it at a Postgres with the sample data:
 
 ```bash
-docker run -d --name relpath-pg -e POSTGRES_PASSWORD=relpath -e POSTGRES_DB=shop \
+docker run -d --name realpath-pg -e POSTGRES_PASSWORD=realpath -e POSTGRES_DB=shop \
     -p 55432:5432 postgres:16
-python data/load_postgres.py postgresql://postgres:relpath@localhost:55432/shop
-RELPATH_TEST_PG=postgresql://postgres:relpath@localhost:55432/shop pytest tests/test_postgres.py -q
+python data/load_postgres.py postgresql://postgres:realpath@localhost:55432/shop
+REALPATH_TEST_PG=postgresql://postgres:realpath@localhost:55432/shop pytest tests/test_postgres.py -q
 ```
 
 ## Guardrails (please respect these)
@@ -62,7 +62,7 @@ RELPATH_TEST_PG=postgresql://postgres:relpath@localhost:55432/shop pytest tests/
 
 ## Common contributions (recipes in [`docs/SKILLS.md`](docs/SKILLS.md))
 
-- **New vertical template** → `relpath/templates.py` builder + `Engine` method + a test.
+- **New vertical template** → `realpath/templates.py` builder + `Engine` method + a test.
 - **New DB connector** → implement the `DuckDBBackend` surface
   (`tables/columns/row_count/distinct_count/load/query/close`) and route it in
   `open_backend`. `PostgresBackend` is a worked example.

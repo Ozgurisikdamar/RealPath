@@ -1,4 +1,4 @@
-# relpath.dev — SESSION BRAIN (her session bunu OKU)
+# realpath.dev — SESSION BRAIN (her session bunu OKU)
 
 > Bu dosya **otomatik yüklenir** ve bir session'ın okuduğu **ilk** şeydir. Amaç: kullanıcının hiçbir şeyi
 > tekrar anlatmak zorunda kalmaması. Burası operasyon kılavuzu — tek doğruluk kaynağı. Faktları uydurma;
@@ -6,9 +6,9 @@
 
 ---
 
-## 1. relpath NEDİR + DURUM
+## 1. realpath NEDİR + DURUM
 
-**relpath**, açık kaynaklı, self-hostable, **LOCAL-FIRST** bir relational prediction engine'dir. Bir veritabanı
+**realpath**, açık kaynaklı, self-hostable, **LOCAL-FIRST** bir relational prediction engine'dir. Bir veritabanı
 bağlarsın, tahmin sorusunu düz dilde ya da **PQL** ile sorarsın, veriyi hiçbir yere taşımadan **açıklamalı**
 (explained) bir cevap alırsın. Konumlandırma: **Kumo.AI / KumoRFM'in açık kaynak karşılığı.** Akış:
 `connect → schema (FK grafiği) → PQL compile (join çıkarımı + zaman penceresi izolasyonu) → features
@@ -21,7 +21,7 @@ bağlarsın, tahmin sorusunu düz dilde ya da **PQL** ile sorarsın, veriyi hiç
 | Faz | **Phase 1 PoC — tamam** (çalışan uçtan uca hat) |
 | Versiyon | `0.1.0` |
 | Testler | **25/25 geçiyor** |
-| Git | repo **`Ozgurisikdamar/relpath` (private)**, branch **`master`**, remote `origin`, push edildi. Yeni iş için yine **"pushla" bekle** (Bölüm 3). |
+| Git | repo **`Ozgurisikdamar/realpath` (private)**, branch **`master`**, remote `origin`, push edildi. Yeni iş için yine **"pushla" bekle** (Bölüm 3). |
 | Python | **3.11.9**, venv `.venv\` |
 | pandas | **2.2.3 (PİNLİ — yükseltme!)** |
 
@@ -37,7 +37,7 @@ Kullanıcı **"devam et" / "devam" / "continue"** dediğinde, hangi model olursa
    `docs/DECISIONS.md` (kararlar/gerekçe), `docs/ARCHITECTURE.md` · `docs/API.md` (bağlam).
 3. Env'in çalıştığını **smoke test** ile doğrula (Bölüm 5).
 4. **`docs/SKILLS.md`** reçetelerini izleyerek implemente et + **doğrula** (gerçekten çalıştır).
-5. **`python -m pytest tests/ -q`** + ilgiliyse **`python -m relpath.eval`** çalıştır.
+5. **`python -m pytest tests/ -q`** + ilgiliyse **`python -m realpath.eval`** çalıştır.
 6. **GÜNCELLE:** `docs/SPRINTS.md`'de görevi `[x]` yap (sprint'in tüm açık görevleri bittiyse
    bir sonraki sprint'i **🟢 GÜNCEL** işaretle); `docs/HANDOVER.md`'i güncelle (tarih + durum +
    varsa yeni bilinen-sorun). Yeni **karar** verdiysen `docs/DECISIONS.md`'e (ADR/BD) yaz.
@@ -59,17 +59,17 @@ Kullanıcı **"devam et" / "devam" / "continue"** dediğinde, hangi model olursa
 4. **Core bağımlılıklar permissive lisanslı kalır** (MIT/BSD/Apache). **getML (ELv2)** ve **TabPFN-2.5
    (non-commercial)** KARANTİNADA — sadece optional/plugin, **asla** core dependency.
 5. **NL→PQL** için Claude yolu **`ANTHROPIC_API_KEY`** ister; yoksa **offline template fallback** devreye girer.
-   Varsayılan model id **`claude-sonnet-4-6`** (env **`RELPATH_LLM_MODEL`** ile override).
+   Varsayılan model id **`claude-sonnet-4-6`** (env **`REALPATH_LLM_MODEL`** ile override).
 6. **Local-first ürün tezidir:** veri makineden çıkmak zorunda **olmamalı**. **DuckDB varsayılan kalır.**
-7. **Windows'ta `PYTHONUTF8=1`** tercih et (ya da `relpath._io.sprint`'e güven) ki Türkçe metin cp1252 konsolu çökertmesin.
+7. **Windows'ta `PYTHONUTF8=1`** tercih et (ya da `realpath._io.sprint`'e güven) ki Türkçe metin cp1252 konsolu çökertmesin.
 
 ---
 
 ## 4. HIZLI KURULUM
 
 ```powershell
-# repo kökü: C:\Users\isiko\OneDrive\Desktop\AI Projects\relpath
-.venv\Scripts\python.exe -m pip install -e .       # editable install; entry point: relpath
+# repo kökü: C:\Users\isiko\OneDrive\Desktop\AI Projects\realpath
+.venv\Scripts\python.exe -m pip install -e .       # editable install; entry point: realpath
 $env:PYTHONUTF8 = "1"                               # Türkçe konsol çıktısı için
 ```
 
@@ -86,9 +86,9 @@ $env:PYTHONUTF8 = "1"                               # Türkçe konsol çıktıs�
 $env:PYTHONUTF8 = "1"
 .venv\Scripts\python.exe data\make_sample_db.py data\shop.duckdb   # .duckdb gitignored — yeniden üret
 .venv\Scripts\python.exe -m pytest tests\ -q                       # 25 passed beklenir
-.venv\Scripts\python.exe -m relpath.eval                           # relational vs no-relational baseline
+.venv\Scripts\python.exe -m realpath.eval                           # relational vs no-relational baseline
 # opsiyonel demo:
-streamlit run relpath\demo_app.py                                  # http://localhost:8501
+streamlit run realpath\demo_app.py                                  # http://localhost:8501
 ```
 
 **Beklenen sonuçlar** (sample DB üzerinde doğrulanmış):
@@ -109,7 +109,7 @@ streamlit run relpath\demo_app.py                                  # http://loca
 ## 6. REPO HARİTASI
 
 ```
-relpath/
+realpath/
 ├── __init__.py            # connect, Engine, PredictionResult, parse_pql, PredictiveTask; __version__ 0.1.0
 ├── connect.py             # DuckDBBackend + PostgresBackend + MySQLBackend + open_backend(); DuckDB/PostgreSQL/MySQL; diğer URL'ler -> NotImplementedError
 ├── schema.py              # Column/ForeignKey/Table/RelationalSchema; infer_schema (PK/FK/time index), join_path (BFS), build_entityset
@@ -127,7 +127,7 @@ relpath/
 ├── eval.py                # evaluate_local (relational vs baseline), evaluate_relbench, evaluate_gnn (--gnn), CLI main()
 ├── relbench_adapter.py    # run_relbench_task (relbench+torch, lazy); eval extra; rel-f1 ile DOĞRULANDI
 ├── gnn.py                 # OPSIYONEL RDL/GNN backend (relbench+PyG, lazy); kod doğrulandı; temporal eval pyg-lib/Linux ister
-├── cli.py                 # argparse: make-sample, schema, ask, predict, eval; entry point relpath
+├── cli.py                 # argparse: make-sample, schema, ask, predict, eval; entry point realpath
 ├── demo_app.py            # Streamlit app (port 8501, Türkçe UI)
 └── _io.py                 # sprint (encoding-safe print), use_utf8
 
@@ -170,7 +170,7 @@ PREDICT AGG(table.col|*, start, end, unit) [op value] FOR EACH entity_table.prim
 | [`docs/SKILLS.md`](docs/SKILLS.md) | Implementasyon reçeteleri |
 | [`docs/ROADMAP.md`](docs/ROADMAP.md) | Stratejik fazlar (SPRINTS = taktik yürütme) |
 | [`docs/DECISIONS.md`](docs/DECISIONS.md) | Karar günlüğü (ADR + Business Decisions) |
-| [`docs/RELPATH_SPEC_v2.md`](docs/RELPATH_SPEC_v2.md) | v2 strateji & teknik spec (`.docx`/`.html` + `logo.svg`/`logo.png` yanında) |
+| [`docs/REALPATH_SPEC_v2.md`](docs/REALPATH_SPEC_v2.md) | v2 strateji & teknik spec (`.docx`/`.html` + `logo.svg`/`logo.png` yanında) |
 
 ---
 

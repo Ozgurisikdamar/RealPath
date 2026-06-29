@@ -1,6 +1,6 @@
-# relpath.dev — API Reference
+# realpath.dev — API Reference
 
-Public Python API, CLI, PQL, and connector reference for **relpath 0.1.0**.
+Public Python API, CLI, PQL, and connector reference for **realpath 0.1.0**.
 Conceptual background: [`ARCHITECTURE.md`](ARCHITECTURE.md) · decisions: [`DECISIONS.md`](DECISIONS.md).
 
 ---
@@ -25,7 +25,7 @@ pip install -e ".[eval]"               # RelBench/GNN (torch, relbench, pytorch-
 Open a database and infer its relational schema. Local-first: nothing leaves the machine.
 
 ```python
-import relpath as rp
+import realpath as rp
 engine = rp.connect("data/shop.duckdb")                              # DuckDB file
 engine = rp.connect("postgresql://user:pw@host:5432/db")            # Postgres ([postgres] extra)
 engine = rp.connect("mysql://root:pw@localhost:3306/db")            # MySQL ([mysql] extra)
@@ -98,16 +98,16 @@ FOR EACH <entity_table>.<primary_key>
 `op ∈ {==, !=, >, >=, <, <=}`. **Comparison present ⇒ classification, absent ⇒ regression.**
 
 ```python
-from relpath import parse_pql
+from realpath import parse_pql
 task = parse_pql("PREDICT SUM(transactions.quantity, 0, 3, months) FOR EACH products.product_id")
 task.task_type        # 'regression'
 task.entity_table     # 'products'
 task.column_label()   # 'SUM(transactions.quantity, 0, 3, months)'
 ```
 
-**Templates** (`relpath.templates`) build PQL strings:
+**Templates** (`realpath.templates`) build PQL strings:
 ```python
-from relpath.templates import churn_pql, forecast_pql, fraud_pql
+from realpath.templates import churn_pql, forecast_pql, fraud_pql
 churn_pql("customers", "customer_id", "transactions", 30)
 forecast_pql("products", "product_id", "transactions", "quantity", 3)
 fraud_pql("transactions", "tx_id", "returns", 60, where="transactions.amount > 1000")
@@ -115,24 +115,24 @@ fraud_pql("transactions", "tx_id", "returns", 60, where="transactions.amount > 1
 
 ---
 
-## 5. NL → PQL (`relpath.nlp`)
+## 5. NL → PQL (`realpath.nlp`)
 
 ```python
-from relpath.nlp import nl_to_pql
+from realpath.nlp import nl_to_pql
 nl = nl_to_pql("hangi müşteriler iade yapacak", engine.schema)
 nl.pql        # generated PQL string
 nl.source     # 'llm' (Claude) or 'template' (offline fallback)
 ```
-Uses Claude when `ANTHROPIC_API_KEY` is set (model via `RELPATH_LLM_MODEL`, default
+Uses Claude when `ANTHROPIC_API_KEY` is set (model via `REALPATH_LLM_MODEL`, default
 `claude-sonnet-4-6`); output is **re-parsed to validate**. Otherwise an offline keyword
 template matcher (churn/forecast/fraud, TR+EN) — so local-first holds without a key.
 
 ---
 
-## 6. Model layer (`relpath.model`)
+## 6. Model layer (`realpath.model`)
 
 ```python
-from relpath.model import fit_model, reliability
+from realpath.model import fit_model, reliability
 m = fit_model(X, y, task_type="classification", calibrate=True)   # isotonic on a held-out slice
 proba = m.predict(X_new)                                          # class-1 probability
 m.importance()                                                   # LightGBM gain (Series)
@@ -145,22 +145,22 @@ Default model = **LightGBM**; optional **TabPFN** for small classification (if i
 ## 7. CLI
 
 ```bash
-relpath make-sample [--out data/shop.duckdb]
-relpath schema  --db data/shop.duckdb
-relpath ask     "..." --db data/shop.duckdb
-relpath predict "<PQL or NL>" --db data/shop.duckdb [--explain] [--calibrate] [--top N] [--csv out.csv] [--no-eval]
-relpath eval    [--db ...] [--pql ...]                       # local: relational vs no-feature baseline
-relpath eval    --dataset rel-f1 --task driver-dnf           # RelBench adapter (needs [eval] extra)
-relpath eval    --dataset rel-f1 --task driver-dnf --gnn     # GNN backend (needs [eval] + PyG)
+realpath make-sample [--out data/shop.duckdb]
+realpath schema  --db data/shop.duckdb
+realpath ask     "..." --db data/shop.duckdb
+realpath predict "<PQL or NL>" --db data/shop.duckdb [--explain] [--calibrate] [--top N] [--csv out.csv] [--no-eval]
+realpath eval    [--db ...] [--pql ...]                       # local: relational vs no-feature baseline
+realpath eval    --dataset rel-f1 --task driver-dnf           # RelBench adapter (needs [eval] extra)
+realpath eval    --dataset rel-f1 --task driver-dnf --gnn     # GNN backend (needs [eval] + PyG)
 ```
-Entry point `relpath` ≡ `python -m relpath.cli`.
+Entry point `realpath` ≡ `python -m realpath.cli`.
 
 ---
 
-## 8. Evaluation & GNN (`relpath.eval`, `relpath.gnn`)
+## 8. Evaluation & GNN (`realpath.eval`, `realpath.gnn`)
 
 ```python
-from relpath.eval import evaluate_local, evaluate_relbench, evaluate_gnn
+from realpath.eval import evaluate_local, evaluate_relbench, evaluate_gnn
 evaluate_local("data/shop.duckdb")                     # relational vs entity-only baseline
 evaluate_relbench("rel-f1", "driver-dnf")              # our DFS+LGBM on a RelBench task ([eval])
 evaluate_gnn("rel-f1", "driver-dnf")                   # HeteroGNN ([eval] + PyG + torch-sparse)
@@ -170,7 +170,7 @@ evaluate_gnn("rel-f1", "driver-dnf")                   # HeteroGNN ([eval] + PyG
 
 ---
 
-## 9. Schema objects (`relpath.schema`)
+## 9. Schema objects (`realpath.schema`)
 
 `infer_schema(backend) -> RelationalSchema`. A `RelationalSchema` has `.tables` (dict of `Table`
 with `.primary_key`, `.time_index`, `.columns`), `.foreign_keys`, and `.join_path(src, dst)` (BFS

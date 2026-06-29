@@ -1,7 +1,7 @@
 """Automatic schema + foreign-key graph inference.
 
 Most real databases dumped into a warehouse (or a CSV-built DuckDB) carry *no declared*
-primary/foreign keys. relpath recovers the relational topology heuristically:
+primary/foreign keys. realpath recovers the relational topology heuristically:
 
 * **Primary key** — a `*_id` / `id` column whose values are unique within the table.
 * **Foreign key** — a non-PK `*_id` column whose name matches another table's primary key.

@@ -1,7 +1,7 @@
 """Vertical templates — pre-packaged predictive questions as parametrized PQL.
 
 These turn a domain problem into a one-liner so users never start from a blank page.
-The :class:`~relpath.engine.Engine` exposes them as ``engine.churn(...)`` etc.; here they
+The :class:`~realpath.engine.Engine` exposes them as ``engine.churn(...)`` etc.; here they
 are also available as plain PQL builders for the CLI and for inspection.
 """
 from __future__ import annotations

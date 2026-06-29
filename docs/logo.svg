@@ -31,7 +31,7 @@
     <circle cx="137" cy="115" r="6" fill="#3B82F6" />
     <circle cx="103" cy="91" r="4" fill="#FFFFFF" filter="url(#neonGlow)" />
   </g>
-  <text x="215" y="115" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="800" font-size="56" fill="#FFFFFF" letter-spacing="-1">relpath</text>
+  <text x="215" y="115" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="800" font-size="56" fill="#FFFFFF" letter-spacing="-1">realpath</text>
   <text x="420" y="115" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="300" font-size="56" fill="url(#emeraldGrad)">.dev</text>
   <text x="218" y="148" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="600" font-size="14" fill="#4B5563" letter-spacing="4.5">NEURAL DATABASE PREDICTIVE ENGINE</text>
 </svg>

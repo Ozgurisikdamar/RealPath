@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from .pql import PQLSyntaxError, parse_pql
 from .schema import RelationalSchema
 
-DEFAULT_MODEL = os.environ.get("RELPATH_LLM_MODEL", "claude-sonnet-4-6")
+DEFAULT_MODEL = os.environ.get("REALPATH_LLM_MODEL", "claude-sonnet-4-6")
 
 _GRAMMAR = """\
 PQL grammar:

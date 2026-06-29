@@ -1,10 +1,10 @@
-# relpath.dev — Benchmarks & Verified Results
+# realpath.dev — Benchmarks & Verified Results
 
 All numbers below were **measured** (not vendor-claimed) on this codebase. Each row lists how to
 reproduce it. Synthetic sample DB = `data/make_sample_db.py` (seed 42, deterministic).
 
 > Test suite: **25 passed, 2 skipped** (the 2 skips are the opt-in Postgres/MySQL connector
-> tests; run them with `RELPATH_TEST_PG` / `RELPATH_TEST_MYSQL`). `pytest tests/ -q`.
+> tests; run them with `REALPATH_TEST_PG` / `REALPATH_TEST_MYSQL`). `pytest tests/ -q`.
 
 ---
 
@@ -15,7 +15,7 @@ three backends (same data, same pipeline).
 
 | Backend | Churn ROC-AUC | How |
 |---|---|---|
-| DuckDB (default) | **0.7492** | `relpath predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id" --db data/shop.duckdb` |
+| DuckDB (default) | **0.7492** | `realpath predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id" --db data/shop.duckdb` |
 | PostgreSQL (`postgres` extra) | **0.7492** | `data/load_postgres.py` → `connect("postgresql://...")` (Docker `postgres:16`) |
 | MySQL (`mysql` extra) | **0.7492** | `data/load_mysql.py` → `connect("mysql://...")` (Docker `mysql:8`) |
 
@@ -25,11 +25,11 @@ three backends (same data, same pipeline).
 
 The core claim: cross-table feature synthesis (DFS) adds real signal vs entity-own columns only.
 
-| Görev | Metrik | relpath (full relational) | Baseline (entity-only) | Δ |
+| Görev | Metrik | realpath (full relational) | Baseline (entity-only) | Δ |
 |---|---|---|---|---|
 | Churn (classification) | ROC-AUC | **0.7492** | 0.7043 | **+0.045** |
 
-Reproduce: `python -m relpath.eval` → "relational features HELP".
+Reproduce: `python -m realpath.eval` → "relational features HELP".
 
 ---
 
@@ -52,13 +52,13 @@ Isotonic calibration on a held-out slice. ROC-AUC preserved (monotonic), probabi
 | uncalibrated | 0.0325 | 0.0411 |
 | **calibrated** | **0.0144** | **0.0392** |
 
-Reproduce: `relpath predict "..." --db data/shop.duckdb --calibrate` (prints Brier/ECE).
+Reproduce: `realpath predict "..." --db data/shop.duckdb --calibrate` (prints Brier/ECE).
 
 ---
 
 ## 5. RelBench (our DFS+LightGBM via the adapter)
 
-Our cheap baseline run through the RelBench harness (needs `relpath[eval]` + isolated venv).
+Our cheap baseline run through the RelBench harness (needs `realpath[eval]` + isolated venv).
 Honest: a simple DFS+GBDT — **below** tuned RDL/GNN on these temporal F1 tasks (expected; that's
 the Phase-2 GNN's job).
 
@@ -69,7 +69,7 @@ the Phase-2 GNN's job).
 | `rel-f1` / `driver-top3` (depth 2) | classification | ROC-AUC **0.769** | extra task |
 | `rel-f1` / `driver-position` (depth 2) | regression | MAE **3.61** | — |
 
-Reproduce: `python -m relpath.eval --dataset rel-f1 --task driver-dnf` (or `run_relbench_task(..., max_depth=3)`).
+Reproduce: `python -m realpath.eval --dataset rel-f1 --task driver-dnf` (or `run_relbench_task(..., max_depth=3)`).
 **DFS-depth tuning** (Sprint 2): raising `max_depth` 2→3 lifts driver-dnf **0.592 → 0.658** (deeper
 cross-table aggregations); at a compute cost (120→869 features).
 
@@ -77,7 +77,7 @@ cross-table aggregations); at a compute cost (120→869 features).
 
 ## 6. GNN backend (relbench + PyG)
 
-`relpath/gnn.py` — heterogeneous temporal GNN. **Code verified** (trains + predicts on rel-f1).
+`realpath/gnn.py` — heterogeneous temporal GNN. **Code verified** (trains + predicts on rel-f1).
 The **leakage-safe temporal** (disjoint) sampling needs `pyg-lib`, which has **no Windows build**.
 On Windows it falls back to non-temporal sampling (**leaky** → not a fair benchmark, so no
 "beats baseline" number is claimed). See [DECISIONS ADR-011](DECISIONS.md).
@@ -90,10 +90,10 @@ proper venue is a **GitHub Actions Linux runner** (clean, no disk constraint): t
 temporal GNN. The number will be filled in once that CI runs (needs a `workflow`-scoped push).
 
 Reproduce (any Linux): `pip install pyg-lib torch-sparse -f https://data.pyg.org/whl/torch-2.5.0+cpu.html`
-then `python -m relpath.eval --dataset rel-f1 --task driver-dnf --gnn`.
+then `python -m realpath.eval --dataset rel-f1 --task driver-dnf --gnn`.
 
 ---
 
 > Reproducing from scratch: `pip install -e ".[dev]"` → `python data/make_sample_db.py data/shop.duckdb`
-> → `pytest tests/ -q` → `python -m relpath.eval`. Heavy paths (RelBench/GNN) use `pip install -e ".[eval]"`
+> → `pytest tests/ -q` → `python -m realpath.eval`. Heavy paths (RelBench/GNN) use `pip install -e ".[eval]"`
 > in an **isolated** venv (see [SKILLS.md](SKILLS.md)).

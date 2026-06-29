@@ -1,4 +1,4 @@
-# relpath.dev — OSS Launch Checklist
+# realpath.dev — OSS Launch Checklist
 
 Pre-launch checklist for the public GitHub / Show HN release. (Repo is currently **private**.)
 
@@ -19,7 +19,7 @@ Pre-launch checklist for the public GitHub / Show HN release. (Repo is currently
 - [x] [BENCHMARKS.md](BENCHMARKS.md) — verified numbers + reproduction.
 - [x] [PITCH.md](PITCH.md) — one-page positioning.
 - [x] [`examples/quickstart.ipynb`](../examples/quickstart.ipynb) — runnable in 60 seconds.
-- [ ] Short demo GIF / asciinema of `relpath predict … --explain`.
+- [ ] Short demo GIF / asciinema of `realpath predict … --explain`.
 
 ## Distribution
 - [x] PyPI build dry-run green (`python -m build` + `twine check` PASSED; wheel installs clean).
@@ -27,9 +27,9 @@ Pre-launch checklist for the public GitHub / Show HN release. (Repo is currently
 - [ ] NL→PQL interactive web demo (Streamlit Cloud / HF Spaces) — lead magnet (Sprint 4).
 
 ## Announce (drafts)
-- [ ] **Show HN** draft: *"Show HN: relpath – open-source, local-first alternative to Kumo.AI
+- [ ] **Show HN** draft: *"Show HN: realpath – open-source, local-first alternative to Kumo.AI
       (predict over your relational DB in plain English)"*. Body: problem (feature-engineering
-      hell) → 4 moats → benchmarks → `pip install relpath`.
+      hell) → 4 moats → benchmarks → `pip install realpath`.
 - [ ] r/MachineLearning / r/dataengineering post.
 - [ ] Vertical SEO posts: "open-source churn prediction", "self-hosted demand forecasting",
       "relational deep learning without GPUs".

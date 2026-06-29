@@ -1,8 +1,8 @@
 <p align="center">
-  <img src="docs/logo.png" alt="relpath.dev" width="560">
+  <img src="docs/logo.png" alt="realpath.dev" width="560">
 </p>
 
-<h1 align="center">relpath.dev — Neural Database Predictive Engine</h1>
+<h1 align="center">realpath.dev — Neural Database Predictive Engine</h1>
 
 <p align="center">
   <b>The open-source, self-hostable relational prediction engine.</b><br>
@@ -11,7 +11,7 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Ozgurisikdamar/relpath/actions/workflows/ci.yml"><img src="https://github.com/Ozgurisikdamar/relpath/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <a href="https://github.com/Ozgurisikdamar/realpath/actions/workflows/ci.yml"><img src="https://github.com/Ozgurisikdamar/realpath/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
 </p>
 
 ---
@@ -20,12 +20,12 @@
 
 Kurumsal verinin çoğu çok-tablolu **ilişkisel** veritabanlarında yaşar, ama klasik ML
 araçları yalnızca tek bir düz tabloyu görebilir — aradaki boşluğu aylar süren elle SQL JOIN
-ve "öznitelik mühendisliği" kapatır. **relpath** bu süreci otomatikleştirir: şemanızı ve
+ve "öznitelik mühendisliği" kapatır. **realpath** bu süreci otomatikleştirir: şemanızı ve
 foreign-key grafiğini çıkarır, sorduğunuz tahmini sızıntısız özniteliklere derler, bir model
 eğitir ve **hangi ilişkisel yolun kararı verdiğini** açıklar.
 
 Bu, kategori lideri **Kumo.AI / KumoRFM**'in açık-kaynak, self-host, **local-first** karşıtıdır.
-Detaylı strateji & teknik doküman: [`docs/RELPATH_SPEC_v2.md`](docs/RELPATH_SPEC_v2.md).
+Detaylı strateji & teknik doküman: [`docs/REALPATH_SPEC_v2.md`](docs/REALPATH_SPEC_v2.md).
 
 ## Farklılaştırıcılar / Differentiators
 
@@ -53,7 +53,7 @@ python examples/quickstart.py
 ```
 
 ```python
-import relpath as rp
+import realpath as rp
 
 engine = rp.connect("data/shop.duckdb")          # local-first
 result = engine.predict(                          # PQL or plain language
@@ -67,19 +67,19 @@ result.explain(entity_id=9)                       # why THIS customer
 ## CLI
 
 ```bash
-relpath make-sample
-relpath schema  --db data/shop.duckdb
-relpath ask     "hangi musteriler iade yapacak" --db data/shop.duckdb
-relpath predict "gelecek 30 gunde islem yapmayacak musteriler" --db data/shop.duckdb --explain
-relpath predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id" \
+realpath make-sample
+realpath schema  --db data/shop.duckdb
+realpath ask     "hangi musteriler iade yapacak" --db data/shop.duckdb
+realpath predict "gelecek 30 gunde islem yapmayacak musteriler" --db data/shop.duckdb --explain
+realpath predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id" \
                 --db data/shop.duckdb --calibrate   # kalibre olasılık + Brier/ECE
-relpath eval                                       # relational-vs-baseline proof
+realpath eval                                       # relational-vs-baseline proof
 ```
 
 ## Interaktif demo (Streamlit)
 
 ```bash
-streamlit run relpath/demo_app.py
+streamlit run realpath/demo_app.py
 # http://localhost:8501
 ```
 
@@ -108,8 +108,8 @@ pytest tests/test_leakage.py -q
 ## Değerlendirme / Evaluation
 
 ```bash
-python -m relpath.eval                              # local: relational vs no-feature baseline
-python -m relpath.eval --dataset rel-hm --task user-churn   # RelBench (needs: pip install -e ".[eval]")
+python -m realpath.eval                              # local: relational vs no-feature baseline
+python -m realpath.eval --dataset rel-hm --task user-churn   # RelBench (needs: pip install -e ".[eval]")
 ```
 
 `relbench` yolu torch çeker ve çekirdekten izoledir; `rel-f1` ile doğrulandı (driver-dnf,

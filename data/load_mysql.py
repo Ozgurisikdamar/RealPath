@@ -2,7 +2,7 @@
 connector). Reads the tables from the local DuckDB sample so the data is identical.
 
 Usage:
-    python data/load_mysql.py "mysql://root:relpath@localhost:33060/shop"
+    python data/load_mysql.py "mysql://root:realpath@localhost:33060/shop"
 """
 from __future__ import annotations
 
@@ -63,6 +63,6 @@ def load(dsn: str, duckdb_path: str = "data/shop.duckdb") -> None:
 
 
 if __name__ == "__main__":
-    dsn = sys.argv[1] if len(sys.argv) > 1 else "mysql://root:relpath@localhost:33060/shop"
+    dsn = sys.argv[1] if len(sys.argv) > 1 else "mysql://root:realpath@localhost:33060/shop"
     load(dsn)
     print("done")

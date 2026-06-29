@@ -27,7 +27,7 @@ jobs:
           pip install -e ".[dev]"
 
       - name: Lint (ruff)
-        run: ruff check relpath/ tests/ data/
+        run: ruff check realpath/ tests/ data/
 
       - name: Test (pytest)
         run: pytest tests/ -q

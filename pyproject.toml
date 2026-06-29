@@ -3,13 +3,13 @@ requires = ["setuptools>=68"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "relpath"
+name = "realpath"
 version = "0.1.0"
 description = "The open-source, self-hostable relational prediction engine. Connect a database, ask a predictive question in plain language, get an explained answer — local-first."
 readme = "README.md"
 requires-python = ">=3.10"
 license = { text = "MIT" }
-authors = [{ name = "relpath.dev" }]
+authors = [{ name = "realpath.dev" }]
 keywords = ["relational deep learning", "predictive query", "automl", "feature engineering", "duckdb", "local-first"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -55,19 +55,19 @@ eval = ["relbench>=1.0", "torch>=2.0", "pytorch-frame>=0.2", "torch-geometric>=2
 dev = ["pytest>=7", "ruff>=0.4"]
 
 [project.scripts]
-relpath = "relpath.cli:main"
+realpath = "realpath.cli:main"
 
 [project.urls]
-Homepage = "https://github.com/Ozgurisikdamar/relpath"
-Repository = "https://github.com/Ozgurisikdamar/relpath"
-Issues = "https://github.com/Ozgurisikdamar/relpath/issues"
+Homepage = "https://github.com/Ozgurisikdamar/realpath"
+Repository = "https://github.com/Ozgurisikdamar/realpath"
+Issues = "https://github.com/Ozgurisikdamar/realpath/issues"
 
 [tool.setuptools.packages.find]
 where = ["."]
-include = ["relpath*"]
+include = ["realpath*"]
 
 [tool.setuptools.package-data]
-relpath = ["templates/*.json"]
+realpath = ["templates/*.json"]
 
 [tool.ruff]
 line-length = 110
@@ -75,4 +75,4 @@ target-version = "py310"
 
 [tool.ruff.lint.per-file-ignores]
 # demo_app suppresses warnings before importing heavy libs — intentional import order.
-"relpath/demo_app.py" = ["E402"]
+"realpath/demo_app.py" = ["E402"]

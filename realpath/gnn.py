@@ -8,7 +8,7 @@ relational/temporal structure matters.
 
 HEAVY + optional. Needs the ``eval`` extra (torch, relbench, pytorch-frame) **plus** PyG and a
 neighbor-sampling backend (``torch-sparse`` / ``pyg-lib``). Kept out of the core; import only
-through ``relpath.eval --gnn``. Text columns are dropped to avoid a text-embedder dependency.
+through ``realpath.eval --gnn``. Text columns are dropped to avoid a text-embedder dependency.
 """
 from __future__ import annotations
 
@@ -68,7 +68,7 @@ def run_gnn_task(
     # the metric is not a fair benchmark vs the (leakage-safe) DFS baseline.
     if temporal and not _has_pyg_lib():
         temporal = False
-        sprint("[relpath] pyg-lib bulunamadi -> NON-TEMPORAL sampling (LEAKY; sadece kod "
+        sprint("[realpath] pyg-lib bulunamadi -> NON-TEMPORAL sampling (LEAKY; sadece kod "
                "dogrulamasi, adil benchmark DEGIL). Adil temporal egitim icin pyg-lib (Linux) gerekir.")
 
     class Model(torch.nn.Module):

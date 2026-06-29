@@ -1,15 +1,15 @@
-# relpath.dev — Neural Database Predictive Engine
+# realpath.dev — Neural Database Predictive Engine
 
 ### Strateji, Teknik Mimari ve Go-to-Market Dokümanı — **v2.0**
 
 > **Versiyon:** 2.0.0 · **Tarih:** Haziran 2026
 > **Konumlandırma:** *The open-source, self-hostable relational prediction engine.*
 > **Bir cümlede:** Veritabanınıza bağlanın, düz İngilizce/Türkçe ile bir tahmin sorun;
-> relpath join'leri kendi bulur, sızıntısız öznitelik üretir, modeli eğitir ve **hangi
+> realpath join'leri kendi bulur, sızıntısız öznitelik üretir, modeli eğitir ve **hangi
 > ilişkisel yolun kararı verdiğini** açıklayarak yanıtı döndürür — veriyi hiçbir yere
 > taşımadan, kendi makinenizde.
 
-![relpath.dev logo](logo.svg)
+![realpath.dev logo](logo.svg)
 
 ---
 
@@ -79,16 +79,16 @@ damgası.[^rdl] Böylece "öznitelik mühendisliği" otomatikleşir — model, i
 tarayarak hangi sinyalin önemli olduğunu kendisi keşfeder. Bu fikrin akademik temeli
 Stanford'da (Fey, Leskovec ve ark., ICML'24) atıldı; ticari öncüsü **Kumo.AI**.[^rdl][^kumo]
 
-### 1.3 relpath.dev'in Vizyonu
+### 1.3 realpath.dev'in Vizyonu
 
 > **"Relational Deep Learning'i demokratikleştirmek."**
 
-Kumo bu teknolojiyi kurumsal, kapalı ve bulut-kilitli bir SaaS olarak sunuyor. relpath.dev
+Kumo bu teknolojiyi kurumsal, kapalı ve bulut-kilitli bir SaaS olarak sunuyor. realpath.dev
 aynı değeri **açık kaynak, self-hostable ve local-first** olarak sunar. Bir veri bilimci
 veya geliştirici, kendi dizüstü bilgisayarında, verisini hiçbir yere taşımadan, üç satır
 kodla (ya da bir cümle düz dille) ilişkisel tahmin alabilmeli.
 
-**Dürüst kapsam notu:** relpath.dev bir "foundation model" (KumoRFM gibi sıfır-eğitim
+**Dürüst kapsam notu:** realpath.dev bir "foundation model" (KumoRFM gibi sıfır-eğitim
 in-context model) **değildir** — en azından bugün değil. v2 prototipi, bilinçli olarak
 **görev-başına hızlı eğitilen güçlü bir baseline** (Deep Feature Synthesis + Gradient
 Boosting) üzerine kuruludur. Bu, basit görünebilir; ama §2.4 ve §8'de göstereceğimiz gibi,
@@ -115,7 +115,7 @@ veritabanı üzerinde, **görev-başına eğitim olmadan** (in-context learning)
 - **Agent-native:** MCP server + Python SDK.[^kumo-mcp]
 
 **Yapısal zayıflıkları (bizim açtığımız kapılar):**
-| Zayıflık | Açıklama | relpath fırsatı |
+| Zayıflık | Açıklama | realpath fırsatı |
 |---|---|---|
 | **Kapalı kaynak** | Model ağırlıkları/kodu kapalı, satış-odaklı | Açık kaynak çekirdek |
 | **Şeffaf olmayan fiyat** | Genel fiyat sayfası yok; enterprise = "contact sales" | Self-host = ücretsiz; küçük-veri bedava |
@@ -145,7 +145,7 @@ veritabanı üzerinde, **görev-başına eğitim olmadan** (in-context learning)
 ```
                  Açık Kaynak / Self-host
                           ▲
-        Featuretools •    │    • relpath.dev  ◀── BOŞ KÖŞE (hedefimiz)
+        Featuretools •    │    • realpath.dev  ◀── BOŞ KÖŞE (hedefimiz)
             getML •       │
    ───────────────────────┼───────────────────────▶  Push-button
    Manuel öznitelik       │              Otomatik ilişkisel tahmin
@@ -157,7 +157,7 @@ veritabanı üzerinde, **görev-başına eğitim olmadan** (in-context learning)
 ```
 
 Sağ-üst köşe — **otomatik ilişkisel tahmin + açık kaynak/self-host** — bugün **boş**.
-relpath.dev'in tüm stratejisi bu köşeyi sahiplenmektir.
+realpath.dev'in tüm stratejisi bu köşeyi sahiplenmektir.
 
 ### 2.4 Kritik Bulgu: "GNN Şart Değil" (80/20)
 
@@ -213,7 +213,7 @@ Her sütun, "**Kumo bunu neden kolayca yapamaz?**" sorusuyla gerekçelendirilmi�
 ### Sütun 4 — Dikey Şablonlar (Vertical Templates)
 - **Ne:** Yatay sorgu diline ek olarak, hazır paketlenmiş çözümler: `churn`, `fraud`,
   `forecast`. Her biri parametrik bir PQL + makul varsayılanlar + alana özgü açıklama.
-  `relpath.churn(entity="customers", horizon="30 days")` → bitti.
+  `realpath.churn(entity="customers", horizon="30 days")` → bitti.
 - **Neden moat:** Kumo yatay bir platform satar; alıcı yine de problemi modellemeli.
   Şablonlar "time-to-value"yu dakikalara indirir ve dikey pazarlama (SEO, içerik) sağlar.
 
@@ -260,7 +260,7 @@ foundation-model, kanıtlanmış talep ve gelir geldikçe eklenir — vitrin de�
 
 v1 bunu "warehouse içinde çalış" diye tanımlıyordu (Snowflake SPCS). Biz daha radikal
 yorumluyoruz: **veri zaten makinenizde** (DuckDB dosyası) ya da kendi sunucunuzda (Postgres);
-relpath onun *yanında* çalışır. Hiçbir SaaS'a, hiçbir buluta veri gitmez. Warehouse'a bağlanmak
+realpath onun *yanında* çalışır. Hiçbir SaaS'a, hiçbir buluta veri gitmez. Warehouse'a bağlanmak
 (Faz 2) bir *opsiyon*'dur, *zorunluluk* değil — Kumo'nun aksine.
 
 ### 4.4 Teknoloji Yığını ve Lisanslar
@@ -355,7 +355,7 @@ eğitilmesidir (label leakage). Akademi bunu RDL'in **çözülmemiş açık prob
 çoğu sistem bunu ad-hoc halleder.[^survey][^leak] v1 bunu "Anchor Timestamp" diye anıyordu
 ama mekanizma soyuttu.
 
-**relpath'in çözümü — yapısal garanti.** Her entity'ye bir **anchor timestamp** `t*` atanır.
+**realpath'in çözümü — yapısal garanti.** Her entity'ye bir **anchor timestamp** `t*` atanır.
 Tüm öznitelikler Featuretools `cutoff_time` ile üretilir; bu, motorun **yalnızca `t ≤ t*`
 olan satırları** öznitelik hesabına dahil etmesini *garanti* eder. Etiket ise yalnızca
 `(t*, t*+horizon]` penceresinden hesaplanır. İki pencere asla kesişmez:
@@ -417,13 +417,13 @@ Stanford **RelBench v2** (11 DB / 66 görev) üzerinde, başlangıçta 2 temsili
 
 | Karşılaştırma | Amaç |
 |---|---|
-| relpath (DFS+LGBM) **vs** LightGBM-no-features | Öznitelik üretiminin değerini kanıtla |
-| relpath **vs** yayınlanan RDL/GNN baseline | "Ucuz baseline yarışıyor" tezini doğrula (§2.4) |
+| realpath (DFS+LGBM) **vs** LightGBM-no-features | Öznitelik üretiminin değerini kanıtla |
+| realpath **vs** yayınlanan RDL/GNN baseline | "Ucuz baseline yarışıyor" tezini doğrula (§2.4) |
 | **Sızıntı testi** | Hiçbir özniteliğin anchor sonrası veri kullanmadığını CI'da kanıtla |
 | **PQL parser birim testleri** | Gramerin doğruluğu |
 
-**Tek komut:** `python -m relpath.eval --dataset rel-hm --task user-churn` → skor + baseline
-farkı yazdırır. (relbench, `relpath[eval]` opsiyonel extra'sında izole; çekirdek torch'suz.)
+**Tek komut:** `python -m realpath.eval --dataset rel-hm --task user-churn` → skor + baseline
+farkı yazdırır. (relbench, `realpath[eval]` opsiyonel extra'sında izole; çekirdek torch'suz.)
 
 ---
 
@@ -498,5 +498,5 @@ farkı yazdırır. (relbench, `relpath[eval]` opsiyonel extra'sında izole; çek
 
 ---
 
-> *relpath.dev — "tablolardan grafik patikalarına ve sinirsel tahminlere giden ilişkisel yol."*
+> *realpath.dev — "tablolardan grafik patikalarına ve sinirsel tahminlere giden ilişkisel yol."*
 > Açık kaynak. Self-hostable. Local-first.

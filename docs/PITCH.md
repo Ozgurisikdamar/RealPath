@@ -1,4 +1,4 @@
-# relpath.dev — One-Page Pitch
+# realpath.dev — One-Page Pitch
 
 **The open-source, self-hostable, local-first relational prediction engine.**
 Connect a database, ask a predictive question in plain language, get an *explained* answer —
@@ -15,12 +15,12 @@ LightGBM) only see **one flat table**. Closing that gap is months of hand-writte
 
 ## The solution
 
-relpath connects to your database, **auto-discovers the foreign-key graph**, compiles your
+realpath connects to your database, **auto-discovers the foreign-key graph**, compiles your
 predictive question (plain language → **PQL**) into leakage-safe features, trains a model, and
 explains **which join path drove the answer** — all locally.
 
 ```python
-engine = relpath.connect("postgresql://…")     # or DuckDB / MySQL — same result
+engine = realpath.connect("postgresql://…")     # or DuckDB / MySQL — same result
 engine.predict("which customers will churn in the next 30 days").explain()
 ```
 
@@ -54,5 +54,5 @@ warehouse **managed** connectors (Snowflake/BigQuery), team/governance, support.
 
 ## Call to action
 
-⭐ Star the repo · try the **NL→PQL demo** · `pip install relpath` and predict on your own DB in
+⭐ Star the repo · try the **NL→PQL demo** · `pip install realpath` and predict on your own DB in
 60 seconds. *"The end of feature-engineering hell — open-source, on your machine."*

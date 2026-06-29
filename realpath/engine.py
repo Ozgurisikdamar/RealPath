@@ -1,6 +1,6 @@
 """The high-level engine — ties connect → schema → PQL → features → model → explain.
 
-    import relpath as rp
+    import realpath as rp
     engine = rp.connect("data/shop.duckdb")
     result = engine.predict("PREDICT COUNT(transactions.*, 0, 30, days) == 0 "
                             "FOR EACH customers.customer_id")
@@ -56,8 +56,8 @@ class Engine:
         compiled = compile_task(task, self.schema, self.backend)
         train_anchor, test_anchor = compiled.default_anchors()
         if verbose:
-            print(f"[relpath] {task}")
-            print(f"[relpath] anchors: train={train_anchor.date()} test={test_anchor.date()}")
+            print(f"[realpath] {task}")
+            print(f"[realpath] anchors: train={train_anchor.date()} test={test_anchor.date()}")
 
         # TRAIN: features (cutoff <= train_anchor) + labels (future window)
         train_split = compiled.build_split(train_anchor)
@@ -65,7 +65,7 @@ class Engine:
                                         train_split.cutoff, max_depth=max_depth)
         Xtr, ytr = _features.align_xy(train_fm, train_split.labels)
         if verbose:
-            print(f"[relpath] train: {Xtr.shape[0]} rows × {Xtr.shape[1]} features")
+            print(f"[realpath] train: {Xtr.shape[0]} rows × {Xtr.shape[1]} features")
         model = fit_model(Xtr, ytr, task.task_type, calibrate=calibrate)
 
         # SCORE: features at test_anchor → predictions (+ eval vs ground truth)

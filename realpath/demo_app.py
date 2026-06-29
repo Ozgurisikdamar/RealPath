@@ -1,6 +1,6 @@
-"""relpath interactive demo (Streamlit).
+"""realpath interactive demo (Streamlit).
 
-    streamlit run relpath/demo_app.py
+    streamlit run realpath/demo_app.py
 
 Local-first: everything runs against a local DuckDB file. Nothing leaves the machine.
 """
@@ -14,11 +14,11 @@ warnings.filterwarnings("ignore")
 import pandas as pd
 import streamlit as st
 
-from relpath.engine import connect
-from relpath.explain import explain_entity, format_card
-from relpath.templates import churn_pql, forecast_pql, fraud_pql
+from realpath.engine import connect
+from realpath.explain import explain_entity, format_card
+from realpath.templates import churn_pql, forecast_pql, fraud_pql
 
-st.set_page_config(page_title="relpath.dev", layout="wide")
+st.set_page_config(page_title="realpath.dev", layout="wide")
 
 
 @st.cache_resource(show_spinner=False)
@@ -43,7 +43,7 @@ def run_prediction(db_path: str, query: str, calibrate: bool = False):
     }
 
 
-st.title("relpath.dev — Neural Database Predictive Engine")
+st.title("realpath.dev — Neural Database Predictive Engine")
 st.caption("Açık kaynak · self-host · **local-first** — veriniz makinenizden çıkmaz.")
 
 with st.sidebar:

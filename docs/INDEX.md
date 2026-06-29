@@ -1,8 +1,8 @@
-# relpath.dev — Dokümantasyon Haritası (INDEX)
+# realpath.dev — Dokümantasyon Haritası (INDEX)
 
 Bu sayfa, projedeki tüm dokümanların **giriş noktasıdır**. Ne aradığını bul, doğru dosyaya git. Her satırda bir *one-line purpose* ve *"ne zaman oku"* notu var.
 
-> **relpath.dev** — açık kaynak, self-hostable, **local-first** ilişkisel (relational) tahmin motoru. Bir veritabanına bağlan, tahmin sorusunu düz dille veya **PQL** ile sor, **açıklamalı** bir cevap al — veriyi hiçbir yere taşımadan. Kumo.AI / KumoRFM'in açık kaynak karşılığı.
+> **realpath.dev** — açık kaynak, self-hostable, **local-first** ilişkisel (relational) tahmin motoru. Bir veritabanına bağlan, tahmin sorusunu düz dille veya **PQL** ile sor, **açıklamalı** bir cevap al — veriyi hiçbir yere taşımadan. Kumo.AI / KumoRFM'in açık kaynak karşılığı.
 
 > **Path notu:** Sadece `CLAUDE.md`, `README.md` ve `CONTRIBUTING.md` repo **kökünde** durur. Geri kalan tüm dokümanlar `docs/` altındadır (`docs/HANDOVER.md`, `docs/ARCHITECTURE.md` …). Aşağıda hepsi `docs/`-prefix'li yazılır.
 
@@ -15,7 +15,7 @@ Yeni bir oturuma (session) başlayan herkesin **tavsiye edilen okuma sırası**:
 1. **`CLAUDE.md`** (repo kökü) — operating manual + "devam-et" protokolü. **Her zaman ilk burası.**
 2. **`docs/SPRINTS.md`** — 🟢 güncel sprint; **DEVAM buradan başlar** (backlog'un tek kaynağı).
 3. **`docs/HANDOVER.md`** — projenin **canlı durumu** (ne bitti, bilinen sorunlar, doğrulama).
-4. Gerisi **ihtiyaç oldukça**: API için `docs/API.md`, derin teknik için `docs/ARCHITECTURE.md`, reçeteler için `docs/SKILLS.md`, neden-böyle için `docs/DECISIONS.md`, strateji için `docs/RELPATH_SPEC_v2.md`.
+4. Gerisi **ihtiyaç oldukça**: API için `docs/API.md`, derin teknik için `docs/ARCHITECTURE.md`, reçeteler için `docs/SKILLS.md`, neden-böyle için `docs/DECISIONS.md`, strateji için `docs/REALPATH_SPEC_v2.md`.
 
 ---
 
@@ -31,7 +31,7 @@ Yeni bir oturuma (session) başlayan herkesin **tavsiye edilen okuma sırası**:
 | **`docs/SKILLS.md`** | Reçeteler (recipes): sık yapılan işlerin komutları | "Şunu nasıl çalıştırırım?" derken |
 | **`docs/ROADMAP.md`** | Fazlara bölünmüş plan (Phase-1/2…) | Önceliklendirme ve "bu iş roadmap'te nerede?" için |
 | **`docs/DECISIONS.md`** | ADR'ler — mimari kararlar ve gerekçeleri | "Neden DuckDB / neden pandas 2.2.x?" gibi sorularda |
-| **`docs/RELPATH_SPEC_v2.md`** (+ `.docx` / `.html`) | Strateji & teknik spec (v2) | Ürün konumlandırması ve vizyon bağlamı gerektiğinde |
+| **`docs/REALPATH_SPEC_v2.md`** (+ `.docx` / `.html`) | Strateji & teknik spec (v2) | Ürün konumlandırması ve vizyon bağlamı gerektiğinde |
 | **`README.md`** (kök) | İki dilli (TR/EN) quickstart | İlk kurulum / dışarıya tanıtım / hızlı demo |
 | **`CONTRIBUTING.md`** (kök) | Geliştirici kurulum + katkı kuralları + guardrail'ler | Dış katkı / yeni geliştirici onboarding |
 | **`docs/BENCHMARKS.md`** | Doğrulanmış sayılar + reprodüksiyon | "Hangi metrik ne, nasıl üretilir?" |
@@ -49,9 +49,9 @@ Bunlar **her oturumda** geçerlidir; detay ve istisnalar için `CLAUDE.md`.
 - **Commit kimliği** global gitconfig'ten gelir (author: Ozgur Isik Damar, GitHub no-reply). **Asla** `Co-Authored-By: Claude` veya Claude trailer ekleme. Mesajlar kısa, insanca, **İngilizce**.
 - **pandas 2.2.x'te sabit** (pin politikası `2.2.3`). pandas 3.0 woodwork'ü kırar (`.ww` accessor şeması kalıcı olmaz → Featuretools EntitySet build patlar). **Yükseltme.** Not: `pyproject.toml` daha gevşek `pandas>=2.0` ister — gerçek pin (`2.2.3`) bu spec'ten daha sıkıdır; çalışırken `2.2.x`'te kal.
 - **Core deps permissive** (MIT/BSD/Apache) kalır. getML (ELv2) ve TabPFN-2.5 (non-commercial) **karantinada** — yalnız optional/plugin, asla core değil.
-- **NL→PQL** için `ANTHROPIC_API_KEY` gerekir (Claude yolu); yoksa **offline template fallback** devreye girer. Varsayılan model `claude-sonnet-4-6` (env `RELPATH_LLM_MODEL` ile override).
+- **NL→PQL** için `ANTHROPIC_API_KEY` gerekir (Claude yolu); yoksa **offline template fallback** devreye girer. Varsayılan model `claude-sonnet-4-6` (env `REALPATH_LLM_MODEL` ile override).
 - **Local-first** ürün tezidir: veri makineden çıkmak zorunda olmamalı. **DuckDB varsayılan** kalır.
-- **Windows'ta** `PYTHONUTF8=1` tercih et (ya da `relpath._io.sprint`'e güven) — Türkçe metin cp1252 konsolunu çökertmesin.
+- **Windows'ta** `PYTHONUTF8=1` tercih et (ya da `realpath._io.sprint`'e güven) — Türkçe metin cp1252 konsolunu çökertmesin.
 
 ---
 
@@ -69,31 +69,31 @@ Bunlar **her oturumda** geçerlidir; detay ve istisnalar için `CLAUDE.md`.
 .venv\Scripts\python.exe data\make_sample_db.py data\shop.duckdb
 ```
 
-Çekirdek akış (CLI entry point: `relpath` veya `python -m relpath.cli`). Köşeli parantezler opsiyonel flag'ler, `--db` zorunlu:
+Çekirdek akış (CLI entry point: `realpath` veya `python -m realpath.cli`). Köşeli parantezler opsiyonel flag'ler, `--db` zorunlu:
 
 ```powershell
-relpath make-sample [--out data\shop.duckdb]
-relpath schema  --db data\shop.duckdb
-relpath ask     "churn edecek musteriler" --db data\shop.duckdb
-relpath predict "<PQL ya da düz soru>" --db data\shop.duckdb [--top 10] [--explain] [--no-eval] [--csv out.csv]
-relpath eval    [--db data\shop.duckdb] [--pql "<PQL>"] [--dataset <RelBench>] [--task <task>]
+realpath make-sample [--out data\shop.duckdb]
+realpath schema  --db data\shop.duckdb
+realpath ask     "churn edecek musteriler" --db data\shop.duckdb
+realpath predict "<PQL ya da düz soru>" --db data\shop.duckdb [--top 10] [--explain] [--no-eval] [--csv out.csv]
+realpath eval    [--db data\shop.duckdb] [--pql "<PQL>"] [--dataset <RelBench>] [--task <task>]
 ```
 
 Testler ve eval modülü:
 
 ```powershell
 .venv\Scripts\python.exe -m pytest tests\ -q          # 25/25 pass
-.venv\Scripts\python.exe -m relpath.eval              # [--db --pql --dataset --task --max-depth (vars. 2)]
+.venv\Scripts\python.exe -m realpath.eval              # [--db --pql --dataset --task --max-depth (vars. 2)]
 ```
 
 Demo (Streamlit, varsayılan port 8501):
 
 ```powershell
-streamlit run relpath\demo_app.py
+streamlit run realpath\demo_app.py
 ```
 
 > Türkçe konsol çıktısı için: `set PYTHONUTF8=1` (CLI/eval zaten `_io.use_utf8()` çağırır).
-> Not: `relpath eval` CLI subcommand'ında `--max-depth` **yok**; bu flag yalnız `python -m relpath.eval` modül girişinde var.
+> Not: `realpath eval` CLI subcommand'ında `--max-depth` **yok**; bu flag yalnız `python -m realpath.eval` modül girişinde var.
 
 ---
 
@@ -130,5 +130,5 @@ AGG ∈ {COUNT, SUM, AVG, MIN, MAX} · unit ∈ {days, weeks, months} · op ∈ 
 - Komut/işlem hatırlamam lazım → **`docs/SKILLS.md`** (ya da yukarıdaki komut referansı)
 - Sıradaki iş ne / öncelik → **`docs/ROADMAP.md`** + **`docs/HANDOVER.md`**
 - "Neden böyle yapılmış?" → **`docs/DECISIONS.md`**
-- Strateji / konumlandırma → **`docs/RELPATH_SPEC_v2.md`**
+- Strateji / konumlandırma → **`docs/REALPATH_SPEC_v2.md`**
 - Dışarıya göstereceğim / hızlı kurulum → **`README.md`**

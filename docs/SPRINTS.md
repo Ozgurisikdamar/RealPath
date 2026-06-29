@@ -1,4 +1,4 @@
-# relpath.dev — SPRINTS (yürütme planı)
+# realpath.dev — SPRINTS (yürütme planı)
 
 > **Bu dosya, "ne yapılacak"ın TEK kaynağıdır.** İş (business) ve yazılım (software) kararları
 > burada **sprint**'lere bölünür. `CLAUDE.md`'deki **"devam" protokolü** bu dosyayı okur:
@@ -44,9 +44,9 @@
 tablosu, ve net konumlandırma. Hepsi **bu makinede (Windows) yapılabilir.**
 
 **Software**
-- [x] **LICENSE dosyası ekle (MIT)** — repo kökü. ✅ Kök `LICENSE` (MIT, "2026 relpath.dev contributors"); pyproject/README ile tutarlı.
+- [x] **LICENSE dosyası ekle (MIT)** — repo kökü. ✅ Kök `LICENSE` (MIT, "2026 realpath.dev contributors"); pyproject/README ile tutarlı.
 - [x] **Streamlit demo'ya kalibrasyon** ✅ — `demo_app.py`: "Olasılık kalibrasyonu" toggle → `predict(calibrate=True)` + `result.reliability()` caption (Brier/ECE). `AppTest` ile doğrulandı (BRIER 0.20, ECE 0.085, no-exception).
-- [x] **PyPI build dry-run** ✅ — `python -m build` (wheel+sdist; `twine check` PASSED). Temiz venv'de wheel kuruldu (pandas **2.2.3** pin korundu), `relpath make-sample` + `predict` çalıştı (0.7492). **Bug bulundu+düzeltildi:** generator paket içine taşındı (`relpath/sample_data.py`) — pip kullanıcısı için `make-sample` artık çalışıyor. `dist/`,`build/` gitignore.
+- [x] **PyPI build dry-run** ✅ — `python -m build` (wheel+sdist; `twine check` PASSED). Temiz venv'de wheel kuruldu (pandas **2.2.3** pin korundu), `realpath make-sample` + `predict` çalıştı (0.7492). **Bug bulundu+düzeltildi:** generator paket içine taşındı (`realpath/sample_data.py`) — pip kullanıcısı için `make-sample` artık çalışıyor. `dist/`,`build/` gitignore.
 - [x] **`examples/quickstart.ipynb`** ✅ — connect→ask→predict→explain→forecast (14 hücre); nbclient ile baştan sona **hatasız çalıştırıldı** (8/8 kod hücresi çıktılı).
 - [x] **`docs/BENCHMARKS.md`** ✅ — connector parity (0.7492 ×3), DFS-vs-baseline (+0.045), vertical
   şablonlar, kalibrasyon (ECE 0.033→0.014), RelBench adapter (rel-f1 0.592/3.61), GNN durumu — hepsi

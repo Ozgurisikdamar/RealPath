@@ -8,8 +8,8 @@ import math
 
 import pytest
 
-from relpath.pql import parse_pql
-from relpath.templates import churn_pql, forecast_pql, fraud_pql
+from realpath.pql import parse_pql
+from realpath.templates import churn_pql, forecast_pql, fraud_pql
 
 
 # ---- PQL builders (fast, no DB) -------------------------------------

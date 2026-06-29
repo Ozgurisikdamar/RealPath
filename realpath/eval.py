@@ -2,17 +2,17 @@
 
 Two modes:
 
-* **local** (default, no heavy deps): on any DuckDB, compares relpath's full relational
+* **local** (default, no heavy deps): on any DuckDB, compares realpath's full relational
   features against a *no-relational-features* baseline (entity-own columns only). This
   demonstrates the core claim — cross-table feature synthesis adds real signal — and runs
   anywhere, instantly.
 * **relbench** (``--dataset``): runs the same pipeline on a Stanford RelBench task to compare
-  against published baselines. Requires the optional ``relpath[eval]`` extra (pulls in
+  against published baselines. Requires the optional ``realpath[eval]`` extra (pulls in
   torch + relbench).
 
-    python -m relpath.eval                       # local, on the sample DB
-    python -m relpath.eval --pql "PREDICT ..."   # local, custom PQL
-    python -m relpath.eval --dataset rel-hm --task user-churn   # RelBench (needs extra)
+    python -m realpath.eval                       # local, on the sample DB
+    python -m realpath.eval --pql "PREDICT ..."   # local, custom PQL
+    python -m realpath.eval --dataset rel-hm --task user-churn   # RelBench (needs extra)
 """
 from __future__ import annotations
 
@@ -66,12 +66,12 @@ def evaluate_local(db: str, pql: str | None = None, max_depth: int = 2) -> dict:
     base = run(direct)
     full = run(list(Xtr.columns))
 
-    sprint(f"\nrelpath local eval  —  {task}")
+    sprint(f"\nrealpath local eval  —  {task}")
     sprint(f"  db={db}  anchors: train={train_anchor.date()} test={test_anchor.date()}")
     sprint(f"  features: {len(direct)} entity-only  vs  {len(Xtr.columns)} relational\n")
     key = "roc_auc" if task.task_type == "classification" else "mae"
     better = "higher=better" if task.task_type == "classification" else "lower=better"
-    sprint(f"  {'metric':<10}{'baseline (no rel.)':>20}{'relpath (full)':>18}   ({better})")
+    sprint(f"  {'metric':<10}{'baseline (no rel.)':>20}{'realpath (full)':>18}   ({better})")
     for k in sorted(set(base) | set(full)):
         bv, fv = base.get(k), full.get(k)
         sprint(f"  {k:<10}{bv:>20.4f}{fv:>18.4f}")
@@ -81,7 +81,7 @@ def evaluate_local(db: str, pql: str | None = None, max_depth: int = 2) -> dict:
         or (task.task_type == "regression" and delta < 0)
     ) else "no improvement"
     sprint(f"\n  => {key} delta = {delta:+.4f}  ({verdict})\n")
-    return {"baseline": base, "relpath": full}
+    return {"baseline": base, "realpath": full}
 
 
 def evaluate_relbench(dataset: str, task: str) -> dict:  # pragma: no cover - needs extra
@@ -90,7 +90,7 @@ def evaluate_relbench(dataset: str, task: str) -> dict:  # pragma: no cover - ne
     except Exception:
         raise SystemExit(
             "RelBench eval needs the optional extra:\n"
-            "  pip install 'relpath[eval]'\n"
+            "  pip install 'realpath[eval]'\n"
             "(this pulls in torch + relbench)."
         )
     from .relbench_adapter import run_relbench_task  # lazy, isolated module
@@ -106,7 +106,7 @@ def evaluate_gnn(dataset: str, task: str) -> dict:  # pragma: no cover - needs e
 
 def main(argv=None):
     use_utf8()
-    ap = argparse.ArgumentParser(prog="relpath.eval", description="relpath evaluation harness")
+    ap = argparse.ArgumentParser(prog="realpath.eval", description="realpath evaluation harness")
     ap.add_argument("--db", default="data/shop.duckdb", help="DuckDB path for local eval")
     ap.add_argument("--pql", default=None, help="PQL to evaluate (local mode)")
     ap.add_argument("--dataset", default=None, help="RelBench dataset (needs extra)")

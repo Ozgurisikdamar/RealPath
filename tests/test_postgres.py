@@ -1,27 +1,27 @@
 """PostgreSQL connector test — proves the engine is backend-agnostic.
 
-Opt-in: set ``RELPATH_TEST_PG`` to a ``postgresql://`` DSN whose database has the sample
+Opt-in: set ``REALPATH_TEST_PG`` to a ``postgresql://`` DSN whose database has the sample
 schema loaded (``python data/load_postgres.py <dsn>``). Skipped otherwise, so CI / fresh
 checkouts don't require a running Postgres.
 
-    docker run -d --name relpath-pg -e POSTGRES_PASSWORD=relpath -e POSTGRES_DB=shop \
+    docker run -d --name realpath-pg -e POSTGRES_PASSWORD=realpath -e POSTGRES_DB=shop \
         -p 55432:5432 postgres:16
-    python data/load_postgres.py postgresql://postgres:relpath@localhost:55432/shop
-    set RELPATH_TEST_PG=postgresql://postgres:relpath@localhost:55432/shop
+    python data/load_postgres.py postgresql://postgres:realpath@localhost:55432/shop
+    set REALPATH_TEST_PG=postgresql://postgres:realpath@localhost:55432/shop
     pytest tests/test_postgres.py -q
 """
 import os
 
 import pytest
 
-PG_DSN = os.environ.get("RELPATH_TEST_PG")
+PG_DSN = os.environ.get("REALPATH_TEST_PG")
 pytestmark = pytest.mark.skipif(
-    not PG_DSN, reason="set RELPATH_TEST_PG to a postgresql:// DSN (with sample data) to run"
+    not PG_DSN, reason="set REALPATH_TEST_PG to a postgresql:// DSN (with sample data) to run"
 )
 
 
 def test_postgres_schema_inference_and_churn():
-    import relpath as rp
+    import realpath as rp
 
     eng = rp.connect(PG_DSN)
     try:

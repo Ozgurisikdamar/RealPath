@@ -1,10 +1,10 @@
-# HANDOVER — relpath.dev
+# HANDOVER — realpath.dev
 
 > **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: **Sprint 2 (3/4)** — DFS tuning (driver-dnf 0.592→**0.658**), ek RelBench task (driver-top3 0.769), GNN CI workflow (`ci/gnn-eval.yml`). Kalan: GNN adil temporal SAYISI **infra-bloke** (disk %100 doldu, Docker bozuldu → GitHub Linux CI'da koşacak).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam` dendiginde once **`docs/SPRINTS.md`** (🟢 guncel sprint) okunur; **bu dosya canli durumdur** (ne bitti, bilinen sorunlar, dogrulama).
 
-**relpath.dev** — acik kaynak, self-host, **local-first** relational prediction engine. Bir veritabani baglarsin, tahmin sorusunu duz dil veya PQL ile sorarsin, **aciklamali** bir cevap alirsin — veri makineden cikmadan. Kategori lideri **Kumo.AI / KumoRFM**'in acik-kaynak karsiti.
+**realpath.dev** — acik kaynak, self-host, **local-first** relational prediction engine. Bir veritabani baglarsin, tahmin sorusunu duz dil veya PQL ile sorarsin, **aciklamali** bir cevap alirsin — veri makineden cikmadan. Kategori lideri **Kumo.AI / KumoRFM**'in acik-kaynak karsiti.
 
 ---
 
@@ -16,7 +16,7 @@
 - **Dikey sablonlar:** `churn`, `forecast`, `fraud` (fraud, sentetik veride zayif sinyal — asagi bak).
 - **NL → PQL:** Claude (anthropic SDK) yolu + API key yoksa **offline deterministik sablon fallback** (churn/forecast/fraud keyword routing, TR+EN). Cikti her zaman tekrar-parse edilerek dogrulanir.
 - **Aciklanabilirlik:** global importance + per-entity join-path karti (SHAP varsa, yoksa LightGBM gain fallback).
-- **Eval:** `evaluate_local()` relpath full relational feature'lari ile entity-only baseline'i karsilastirir.
+- **Eval:** `evaluate_local()` realpath full relational feature'lari ile entity-only baseline'i karsilastirir.
 - **Testler:** 25/25 gecer. `test_leakage.py` gelecek-sizintisi olmadigini, anchor sonrasi tum satirlari silip feature matrix'in ayni kaldigini gostererek **kanitlar**; ayrica label penceresinin kesin olarak gelecekte oldugunu dogrular.
 
 ### Dogrulanmis metrikler (sample DB uzerinde)
@@ -30,7 +30,7 @@
 
 ### Git durumu
 
-- Git repo, branch `master`, **remote `origin` → github.com/Ozgurisikdamar/relpath (private)**, push edildi.
+- Git repo, branch `master`, **remote `origin` → github.com/Ozgurisikdamar/realpath (private)**, push edildi.
 - **KURAL:** kullanici `pushla` (ya da `push`) DEMEDIKCE push / PR / merge YOK. Lokal commit serbest, is bitiminde. (Bu turda kullanici "pushla" dedigi icin pushlandi.)
 
 ---
@@ -48,21 +48,21 @@
 - [x] NL→PQL (`nlp.py`): Claude + offline fallback, re-parse validasyon, `schema_summary`.
 - [x] `PredictionResult` (`result.py`) + `Engine` (`engine.py`) + sablon registry (`templates.py`).
 - [x] Eval harness (`eval.py`): `evaluate_local`, `evaluate_relbench` (extra arkasinda), `main` CLI.
-- [x] CLI (`cli.py`): `make-sample / schema / ask / predict / eval`, entry point `relpath`.
+- [x] CLI (`cli.py`): `make-sample / schema / ask / predict / eval`, entry point `realpath`.
 - [x] Streamlit demo (`demo_app.py`, port 8501, Turkce UI).
 - [x] Sentetik e-ticaret DB generator (`data/make_sample_db.py`, 4 tablo, seed 42).
 - [x] Encoding-safe I/O (`_io.py`: `sprint`, `use_utf8`).
 - [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3), `test_cli.py` (2), `conftest.py` (sample_db + engine fixtures) — **25/25** (+2 skip: `test_postgres.py`, `test_mysql.py`).
-- [x] Bilingual README (TR/EN) + `docs/RELPATH_SPEC_v2.md` (+ .docx/.html) + logo.
+- [x] Bilingual README (TR/EN) + `docs/REALPATH_SPEC_v2.md` (+ .docx/.html) + logo.
 - [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3.
-- [x] GitHub'a push: **private** repo `Ozgurisikdamar/relpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
+- [x] GitHub'a push: **private** repo `Ozgurisikdamar/realpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
 - [x] Per-entity probability **calibration** (opt-in isotonic): `model.py` (`fit_model(calibrate=)`, `reliability()` Brier+ECE), `engine.predict(calibrate=)`, `result.reliability()`. Doğrulandı: ECE 0.033→0.014, AUC korunur; **default kapalı** (headline 0.749 değişmedi).
-- [x] **Postgres connector**: `connect.py` `PostgresBackend` + `open_backend` `postgres://` yolu + `postgres` extra (`psycopg`). `?`→`%s` çevirisi, `public` şema introspection. **Docker `postgres:16` ile UÇTAN-UCA DOĞRULANDI**: şema/FK çıkarımı + churn ROC-AUC **0.7492** (DuckDB ile birebir aynı). `data/load_postgres.py` yükleyici, `tests/test_postgres.py` (`RELPATH_TEST_PG` yoksa skip).
+- [x] **Postgres connector**: `connect.py` `PostgresBackend` + `open_backend` `postgres://` yolu + `postgres` extra (`psycopg`). `?`→`%s` çevirisi, `public` şema introspection. **Docker `postgres:16` ile UÇTAN-UCA DOĞRULANDI**: şema/FK çıkarımı + churn ROC-AUC **0.7492** (DuckDB ile birebir aynı). `data/load_postgres.py` yükleyici, `tests/test_postgres.py` (`REALPATH_TEST_PG` yoksa skip).
 - [x] **CONTRIBUTING.md** (repo kökü): kurulum, test/lint, opt-in Postgres testi, guardrail'ler (sızıntı-güvenliği, local-first, lisans), recipe pointer'ları. Setup komutları doğrulanmış (`pip install -e ".[dev]"` → 25 passed, 1 skipped).
 - [x] **RelBench adapter DOĞRULANDI**: `relbench_adapter.py` sertleştirildi (dtype normalize, `ignore_columns`, etiketi `cutoff_time`'a koyup X/y hizalama, test maskeli→`val` fallback). İzole `.venv_eval` (torch+relbench) ile `rel-f1` koşturuldu: **driver-dnf AUC ~0.592, driver-position MAE ~3.61** (basit DFS baseline; tuned RDL'in altında, beklenen).
-- [x] **CLI `--calibrate` bayrağı**: `relpath predict ... --calibrate` → kalibre olasılık + `result.reliability()` (Brier/ECE) yazdırır. `tests/test_cli.py` (2: schema + predict --calibrate). Canlı doğrulandı: brier ~0.20, ece ~0.085.
+- [x] **CLI `--calibrate` bayrağı**: `realpath predict ... --calibrate` → kalibre olasılık + `result.reliability()` (Brier/ECE) yazdırır. `tests/test_cli.py` (2: schema + predict --calibrate). Canlı doğrulandı: brier ~0.20, ece ~0.085.
 - [x] **MySQL connector** (3. backend): `connect.py` `MySQLBackend` (pymysql, `mysql` extra) + `open_backend` `mysql://`. ANSI_QUOTES (çift-tırnak SQL çalışsın) + `DATABASE()` introspection + `?`→`%s`; `_NUMERIC`'e `INT`, `_TEMPORAL`'e `DATETIME` eklendi. **Docker `mysql:8` ile UÇTAN-UCA DOĞRULANDI**: şema/FK + churn **0.7492** (DuckDB/Postgres ile birebir). `data/load_mysql.py`, `tests/test_mysql.py` (skip). → **DuckDB + Postgres + MySQL** üçü de aynı sonucu veriyor (backend-agnostik).
-- [x] **RDL/GNN backend implementasyonu** (`relpath/gnn.py`): HeteroEncoder + HeteroTemporalEncoder + HeteroGraphSAGE + NeighborLoader + eğitim döngüsü; `relpath.eval --gnn`. **Kod uçtan-uca DOĞRULANDI** (rel-f1/driver-dnf: eğitilir loss 0.38→0.29, tahmin eder). **AMA** Windows'ta non-temporal fallback → AUC 0.76 **LEAKY, adil değil** (temporal disjoint sampling pyg-lib ister, Windows'ta yok). Adil temporal eval → SIRADAKI (Linux). Ayrıca pyproject `eval` extra düzeltildi: `torch-frame`(impostor)→**`pytorch-frame`** + `torch-geometric`. Opsiyonel/plugin; çekirdek torch'suz (25/2 değişmedi).
+- [x] **RDL/GNN backend implementasyonu** (`realpath/gnn.py`): HeteroEncoder + HeteroTemporalEncoder + HeteroGraphSAGE + NeighborLoader + eğitim döngüsü; `realpath.eval --gnn`. **Kod uçtan-uca DOĞRULANDI** (rel-f1/driver-dnf: eğitilir loss 0.38→0.29, tahmin eder). **AMA** Windows'ta non-temporal fallback → AUC 0.76 **LEAKY, adil değil** (temporal disjoint sampling pyg-lib ister, Windows'ta yok). Adil temporal eval → SIRADAKI (Linux). Ayrıca pyproject `eval` extra düzeltildi: `torch-frame`(impostor)→**`pytorch-frame`** + `torch-geometric`. Opsiyonel/plugin; çekirdek torch'suz (25/2 değişmedi).
 
 ---
 
@@ -79,13 +79,13 @@
 ## 4) BILINEN SORUNLAR / DIKKAT
 
 - **pandas 3.0 KIRIYOR.** `pandas==2.2.x` (pinli **2.2.3**) sart. pandas 3.0'da `.ww` woodwork accessor semasi kalici olmuyor → Featuretools EntitySet build cokuyor. **Yukseltme.**
-- **GNN temporal sampling `pyg-lib` ister (Windows'ta YOK).** `relpath/gnn.py` non-temporal fallback ile koşar ama **LEAKY** (adil benchmark değil). Leakage-safe temporal GNN için Linux/WSL + `pip install pyg-lib`. Ayrıca `eval` extra'da gerçek paket **`pytorch-frame`** (PyPI `torch-frame` impostor; düzeltildi) + `torch-sparse` PyG wheel index'ten.
+- **GNN temporal sampling `pyg-lib` ister (Windows'ta YOK).** `realpath/gnn.py` non-temporal fallback ile koşar ama **LEAKY** (adil benchmark değil). Leakage-safe temporal GNN için Linux/WSL + `pip install pyg-lib`. Ayrıca `eval` extra'da gerçek paket **`pytorch-frame`** (PyPI `torch-frame` impostor; düzeltildi) + `torch-sparse` PyG wheel index'ten.
 - **⚠️ DİSK %100 DOLDU + Docker BOZULDU.** GNN'i Linux Docker'da koşma denemesi (torch+PyG ≈2 GB) **C: diskini doldurdu** (0 boş) ve Docker WSL2 storage'ı bozdu (`input/output error`). `.venv_eval` + pip cache silinerek ~2.8 GB açıldı. **Docker artık çalışmıyor** — kullanıcının **Docker Desktop → Troubleshoot → Clean/Purge data** (ya da `wsl --shutdown`) ile sıfırlaması gerekir. Postgres/MySQL testleri Docker'a bağlı (şimdilik skip). GNN adil temporal → GitHub Linux CI (`ci/gnn-eval.yml`).
 - **CI workflow'ları `ci/` klasöründe** (`.github/workflows/` değil — token'da `workflow` scope yok). Aktive etmek: `gh auth refresh -s workflow` + `git mv ci/*.yml .github/workflows/`. Lokal `ci` branch artık gereksiz (içerik `ci/`'de).
 - **RelBench adapter `rel-f1` ile DOGRULANDI** (driver-dnf AUC ~0.592, driver-position MAE ~3.61). `eval` extra'sini **izole `.venv_eval`'de** kur (cekirdek `.venv`'i bozma). Basit DFS baseline tuned RDL'in altinda — beklenen; GNN backend "SIRADAKI IS"te.
 - **fraud sinyali sentetik veride zayif.** Bu yuzden return-risk, musteri seviyesinde **2-hop join** olarak reframe edildi (~0.689 ROC-AUC).
-- **Windows cp1252 encoding.** Turkce konsol ciktisi icin `PYTHONUTF8=1` ayarla; kutuphane zaten `relpath._io.sprint` ile encoding-safe yazar ve CLI/eval `_io.use_utf8()` cagirir.
-- **NL→PQL canli yol API key ister.** `ANTHROPIC_API_KEY` yoksa offline template fallback devreye girer (churn/forecast/fraud keyword routing). Default model `claude-sonnet-4-6`, override env `RELPATH_LLM_MODEL`.
+- **Windows cp1252 encoding.** Turkce konsol ciktisi icin `PYTHONUTF8=1` ayarla; kutuphane zaten `realpath._io.sprint` ile encoding-safe yazar ve CLI/eval `_io.use_utf8()` cagirir.
+- **NL→PQL canli yol API key ister.** `ANTHROPIC_API_KEY` yoksa offline template fallback devreye girer (churn/forecast/fraud keyword routing). Default model `claude-sonnet-4-6`, override env `REALPATH_LLM_MODEL`.
 - **Lisans karantinasi:** getML (ELv2) ve TabPFN-2.5 (ticari kullanim yasak) cekirdege ALINMAZ — yalnizca opsiyonel eklenti. Cekirdek MIT/BSD/Apache kalir.
 - **`.duckdb` gitignored** — sample DB'yi her ortamda yeniden uret.
 
@@ -104,15 +104,15 @@ Windows venv yorumlayicisi: `.venv\Scripts\python.exe`. Konsol Turkce icin once 
 #   beklenen: ~1200 customers, ~14343 transactions, ~2209 returns (seed 42)
 
 # 2) Sema
-.venv\Scripts\python.exe -m relpath.cli schema --db data\shop.duckdb
+.venv\Scripts\python.exe -m realpath.cli schema --db data\shop.duckdb
 #   beklenen: 4 tablo (customers/products/transactions/returns) + PK/FK/time-index
 
 # 3) Churn tahmini (PQL)
-.venv\Scripts\python.exe -m relpath.cli predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id" --db data\shop.duckdb --explain
+.venv\Scripts\python.exe -m realpath.cli predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id" --db data\shop.duckdb --explain
 #   beklenen: roc_auc ~0.749, accuracy ~0.737 + global join-path drivers
 
 # 4) Lokal eval (relational vs baseline)
-.venv\Scripts\python.exe -m relpath.eval --db data\shop.duckdb
+.venv\Scripts\python.exe -m realpath.eval --db data\shop.duckdb
 #   beklenen: roc_auc delta ~ +0.045  (=> "relational features HELP")
 
 # 5) Testler
@@ -120,7 +120,7 @@ Windows venv yorumlayicisi: `.venv\Scripts\python.exe`. Konsol Turkce icin once 
 #   beklenen: 25 passed
 
 # 6) (opsiyonel) Streamlit demo
-.venv\Scripts\python.exe -m streamlit run relpath\demo_app.py
+.venv\Scripts\python.exe -m streamlit run realpath\demo_app.py
 #   http://localhost:8501
 ```
 
@@ -130,7 +130,7 @@ Windows venv yorumlayicisi: `.venv\Scripts\python.exe`. Konsol Turkce icin once 
 
 Mimari ve urun kararlarinin gerekceleri: **`docs/DECISIONS.md`**.
 (Henuz yoksa olustur; bu dosyadaki "BILINEN SORUNLAR" maddeleri — pandas pin, lisans karantinasi, fraud reframe — ilk girisler olmali.)
-Detayli strateji & teknik doku: **`docs/RELPATH_SPEC_v2.md`**.
+Detayli strateji & teknik doku: **`docs/REALPATH_SPEC_v2.md`**.
 
 ---
 

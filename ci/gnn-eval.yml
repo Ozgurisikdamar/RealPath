@@ -32,6 +32,6 @@ jobs:
         run: |
           python -c "import importlib.util as u; print('pyg_lib present:', u.find_spec('pyg_lib') is not None)"
           echo "## GNN (fair temporal, pyg-lib)"
-          python -m relpath.eval --dataset rel-f1 --task "${{ github.event.inputs.task }}" --gnn
+          python -m realpath.eval --dataset rel-f1 --task "${{ github.event.inputs.task }}" --gnn
           echo "## DFS baseline (same task)"
-          python -m relpath.eval --dataset rel-f1 --task "${{ github.event.inputs.task }}"
+          python -m realpath.eval --dataset rel-f1 --task "${{ github.event.inputs.task }}"

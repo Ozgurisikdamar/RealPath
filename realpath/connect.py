@@ -2,7 +2,7 @@
 
 The prototype targets DuckDB — a single-file, in-process analytical engine. Your data
 never leaves the machine. The :class:`DuckDBBackend` exposes the small surface the rest
-of relpath needs (list tables, read columns, load frames, count distinct values), so a
+of realpath needs (list tables, read columns, load frames, count distinct values), so a
 Postgres / MySQL backend can be slotted in later behind the same interface.
 """
 from __future__ import annotations
@@ -75,9 +75,9 @@ class DuckDBBackend:
 class PostgresBackend:
     """Read access to a PostgreSQL database (same surface as :class:`DuckDBBackend`).
 
-    relpath generates SQL with ``?`` placeholders (DuckDB style) and double-quoted
+    realpath generates SQL with ``?`` placeholders (DuckDB style) and double-quoted
     identifiers; this backend translates ``?`` -> psycopg's ``%s`` and connects read-only.
-    Requires the optional ``relpath[postgres]`` extra (``psycopg``).
+    Requires the optional ``realpath[postgres]`` extra (``psycopg``).
     """
 
     def __init__(self, dsn: str, schema: str = "public"):
@@ -85,7 +85,7 @@ class PostgresBackend:
             import psycopg
         except Exception as e:  # pragma: no cover - clear guidance
             raise ImportError(
-                "Postgres support needs psycopg: pip install 'relpath[postgres]'"
+                "Postgres support needs psycopg: pip install 'realpath[postgres]'"
             ) from e
         self.dsn = dsn
         self.schema = schema
@@ -150,8 +150,8 @@ class MySQLBackend:
     """Read access to a MySQL database (same surface as :class:`DuckDBBackend`).
 
     MySQL quotes identifiers with backticks by default, so we enable ``ANSI_QUOTES`` on the
-    session — then relpath's double-quoted SQL works unchanged. ``?`` placeholders are
-    translated to ``%s``. Requires the optional ``relpath[mysql]`` extra (``pymysql``).
+    session — then realpath's double-quoted SQL works unchanged. ``?`` placeholders are
+    translated to ``%s``. Requires the optional ``realpath[mysql]`` extra (``pymysql``).
     """
 
     def __init__(self, dsn: str):
@@ -159,7 +159,7 @@ class MySQLBackend:
             import pymysql
         except Exception as e:  # pragma: no cover - clear guidance
             raise ImportError(
-                "MySQL support needs pymysql: pip install 'relpath[mysql]'"
+                "MySQL support needs pymysql: pip install 'realpath[mysql]'"
             ) from e
         from urllib.parse import unquote, urlparse
 

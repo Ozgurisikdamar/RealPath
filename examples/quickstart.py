@@ -1,4 +1,4 @@
-"""relpath quickstart — connect, ask, predict, explain. Local-first, ~10 lines.
+"""realpath quickstart — connect, ask, predict, explain. Local-first, ~10 lines.
 
 Run:
     python data/make_sample_db.py          # once, to create data/shop.duckdb
@@ -8,7 +8,7 @@ import warnings
 
 warnings.filterwarnings("ignore")
 
-import relpath as rp
+import realpath as rp
 
 # 1) Connect to a local database. Nothing leaves your machine.
 engine = rp.connect("data/shop.duckdb")

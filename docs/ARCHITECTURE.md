@@ -1,10 +1,10 @@
-# relpath.dev — Mimari (ARCHITECTURE)
+# realpath.dev — Mimari (ARCHITECTURE)
 
-> Derin teknik referans. Bu doküman `relpath/` paketindeki gerçek kodu temel alır;
+> Derin teknik referans. Bu doküman `realpath/` paketindeki gerçek kodu temel alır;
 > her açıklama gerçek imza ve davranışla eşleşir. Tek doğru kaynak (single source of truth)
 > koddur — burada koddaki bir şeyle çelişen hiçbir komut/yol/fonksiyon yoktur.
 
-**relpath.dev**, açık kaynak, self-hostable ve **local-first** bir ilişkisel tahmin
+**realpath.dev**, açık kaynak, self-hostable ve **local-first** bir ilişkisel tahmin
 motorudur (relational prediction engine). Bir veritabanına bağlanır, tahmine dayalı bir
 soruyu düz dilde ya da PQL ile sorar ve **açıklanmış** (explained) bir cevap alırsınız —
 veriyi hiçbir yere taşımadan. Konum olarak Kumo.AI / KumoRFM'in açık kaynak karşılığıdır.
@@ -86,7 +86,7 @@ connect → schema (FK grafiği) → PQL compile (join inference + temporal wind
 
 ## 2. Modül-Modül Kontratlar (Contracts)
 
-Paket: `relpath/`. Aşağıdaki her satır gerçek imzaya sadıktır.
+Paket: `realpath/`. Aşağıdaki her satır gerçek imzaya sadıktır.
 
 ### `__init__.py`
 - **Sorumluluk:** Genel API yüzeyi. Dışa açar: `connect`, `Engine`, `PredictionResult`,
@@ -190,7 +190,7 @@ Paket: `relpath/`. Aşağıdaki her satır gerçek imzaya sadıktır.
 |-----|-------|-------|
 | `nl_to_pql(question, schema, model=DEFAULT_MODEL, max_retries=2)` | soru + schema | `NLResult(pql, source, note)` |
 | `schema_summary(schema)` | schema | LLM prompt'una giden özet metin |
-- `DEFAULT_MODEL = env RELPATH_LLM_MODEL` ya da `claude-sonnet-4-6`.
+- `DEFAULT_MODEL = env REALPATH_LLM_MODEL` ya da `claude-sonnet-4-6`.
 - LLM çıktısı **re-parse** ile doğrulanır; parse etmezse hata geri beslenip tekrar denenir.
 - `anthropic` yoksa veya `ANTHROPIC_API_KEY` yoksa **offline** deterministik şablon eşleştirici
   (churn/forecast/fraud, Türkçe+İngilizce anahtar kelime yönlendirmesi).
@@ -216,14 +216,14 @@ Paket: `relpath/`. Aşağıdaki her satır gerçek imzaya sadıktır.
 - `templates.py`: `TEMPLATES` kaydı + `churn_pql` / `forecast_pql` / `fraud_pql` PQL üreticileri.
 - `eval.py`: `evaluate_local(db, pql=None, max_depth=2)` (tam ilişkisel öznitelikler vs entity-only
   baseline), `evaluate_relbench(dataset, task)` (eval extra ister), `main()` eval CLI'si. Çalıştırma:
-  `python -m relpath.eval [--db --pql --dataset --task --max-depth]`.
+  `python -m realpath.eval [--db --pql --dataset --task --max-depth]`.
 - `relbench_adapter.py`: `run_relbench_task()` — relbench+torch (eval extra) ile özniteliklerimizi
   RelBench görevlerine bağlar (etiketi `cutoff_time`'a koyarak X/y hizalar, id'leri `ignore_columns`'a
   alır). **`rel-f1` ile doğrulandı**: driver-dnf AUC ~0.592, driver-position MAE ~3.61 (test etiketleri
   maskeliyse `val`'a düşer). Not: bu basit DFS baseline, tuned RDL/GNN'in altında — beklenen.
 - `cli.py`: argparse alt komutları `make-sample`, `schema`, `ask`, `predict`, `eval`.
-  Entry point: `relpath` (veya `python -m relpath.cli`).
-- `demo_app.py`: Streamlit (`streamlit run relpath/demo_app.py`, port 8501). Türkçe UI.
+  Entry point: `realpath` (veya `python -m realpath.cli`).
+- `demo_app.py`: Streamlit (`streamlit run realpath/demo_app.py`, port 8501). Türkçe UI.
 - `_io.py`: `sprint()` encoding-güvenli print; `use_utf8()` stdout/stderr'i UTF-8'e geçirir.
 
 ---
@@ -415,7 +415,7 @@ modellere karşı yapısal üstünlüktür: gömme attribution'ları okunabilir 
 
 ## 8. Şema Sezgisi Heuristikleri (`infer_schema`)
 
-Çoğu gerçek veritabanı/CSV-DuckDB'sinde **bildirilmiş PK/FK yoktur**. relpath bunları
+Çoğu gerçek veritabanı/CSV-DuckDB'sinde **bildirilmiş PK/FK yoktur**. realpath bunları
 sezgisel kurtarır:
 
 | Eleman | Kural |
@@ -461,10 +461,10 @@ sezgisel kurtarır:
 - **MultiIndex:** DFS `(instance, time)` MultiIndex döndürebilir; `synthesize` bunu entity id'ye
   indirir (`get_level_values(0)`). Engine, test özniteliklerini `Xte.reindex(columns=Xtr.columns)`
   ile train kolonlarına hizalar.
-- **Windows / Türkçe konsol:** `PYTHONUTF8=1` ayarlayın; ayrıca `relpath._io.sprint` encoding-güvenli
+- **Windows / Türkçe konsol:** `PYTHONUTF8=1` ayarlayın; ayrıca `realpath._io.sprint` encoding-güvenli
   yazar ve CLI/eval `_io.use_utf8()` çağırır (cp1252 konsolu Türkçe metinde çökmesin diye).
 - **NL → PQL anahtarı:** Claude yolu için `ANTHROPIC_API_KEY` gerekir; yoksa **offline şablon**
-  fallback kullanılır. Varsayılan model id `claude-sonnet-4-6` (env `RELPATH_LLM_MODEL` ile override).
+  fallback kullanılır. Varsayılan model id `claude-sonnet-4-6` (env `REALPATH_LLM_MODEL` ile override).
 - **Local-first tezi:** veri makineyi terk etmek zorunda kalmamalı; DuckDB varsayılan kalır.
 
 Editable kurulum:
@@ -508,10 +508,10 @@ Editable kurulum:
 
 ## Doğrulanmış Metrikler (sample DB)
 
-Aşağıdaki tablo **ilişkisel lift** kazanımlarını gösterir: relpath'in cross-table öznitelikleri
+Aşağıdaki tablo **ilişkisel lift** kazanımlarını gösterir: realpath'in cross-table öznitelikleri
 entity-only baseline'ı yener.
 
-| Görev | Metrik | relpath | Baseline | Δ (lift) |
+| Görev | Metrik | realpath | Baseline | Δ (lift) |
 |-------|--------|---------|----------|----------|
 | Churn (`COUNT(transactions.*, 0, 30, days) == 0`) | ROC-AUC | **~0.749** | ~0.704 | **+0.045** |
 | Customer-level return-risk (2-hop join, 30 günlük pencere) | ROC-AUC | **~0.689** | — | ilişkisel kazanım (60d ~0.699, 90d ~0.690) |
@@ -523,9 +523,9 @@ entity-only baseline'ı yener.
 > değil). Doğrulanmış sayılar:
 > - **3 aylık ufuk** — `forecast()` helper'ının varsayılanı (`templates.forecast_pql`,
 >   `horizon_months=3`): `PREDICT SUM(transactions.quantity, 0, 3, months) FOR EACH products.product_id`
->   ⇒ relpath (full) **MAE ~8.41** (rmse ~10.1), entity-only baseline **~7.48** (Δ **+0.93** = *iyileşme yok*).
-> - **2 aylık ufuk** (varyant) ⇒ relpath **MAE ~6.75**.
+>   ⇒ realpath (full) **MAE ~8.41** (rmse ~10.1), entity-only baseline **~7.48** (Δ **+0.93** = *iyileşme yok*).
+> - **2 aylık ufuk** (varyant) ⇒ realpath **MAE ~6.75**.
 >
 > Yani forecast/return-risk, churn'e göre daha **zayıf** showcase'lerdir; **churn asıl göstergedir**
-> (ilişkisel lift +0.045). Doğrulama: `.venv\Scripts\python.exe -m relpath.eval --pql "<yukarıdaki PQL>"`.
+> (ilişkisel lift +0.045). Doğrulama: `.venv\Scripts\python.exe -m realpath.eval --pql "<yukarıdaki PQL>"`.
 > Ufuk belirtilmeden tek bir "forecast MAE" değeri yanıltıcıdır; her zaman agg + pencere ile raporlayın.

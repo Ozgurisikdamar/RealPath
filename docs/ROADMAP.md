@@ -1,13 +1,13 @@
-# relpath.dev — Yol Haritası (ROADMAP)
+# realpath.dev — Yol Haritası (ROADMAP)
 
 > **Bu doküman stratejiktir.** Üç faza bölünmüş, gerekçeli bir backlog sunar.
-> `docs/RELPATH_SPEC_v2.md` §9.2 yol haritası tablosunun açılımıdır ve onunla çelişmez.
+> `docs/REALPATH_SPEC_v2.md` §9.2 yol haritası tablosunun açılımıdır ve onunla çelişmez.
 >
 > **ÖNEMLİ — bunun tersi HANDOVER:** *Şimdi-yap* (do-it-now) işler bu dosyada DEĞİL,
 > `docs/HANDOVER.md` içindeki **"Sıradaki İş"** bölümünde tutulur. ROADMAP stratejik kalır,
 > HANDOVER taktik. Bir item'a fiilen başlanacağında onu HANDOVER'a taşıyın.
 
-**Tarih:** 2026-06-19 · **Sürüm:** relpath `0.1.0` · **Konum:** açık kaynak, self-hostable, **local-first** relational prediction engine — Kumo.AI / KumoRFM'in açık kaynak karşıtı.
+**Tarih:** 2026-06-19 · **Sürüm:** realpath `0.1.0` · **Konum:** açık kaynak, self-hostable, **local-first** relational prediction engine — Kumo.AI / KumoRFM'in açık kaynak karşıtı.
 
 ---
 
@@ -67,7 +67,7 @@ connect → PQL compile → DFS (cutoff-safe) → LightGBM/TabPFN → join-yolu 
 $env:PYTHONUTF8 = "1"
 .venv\Scripts\python.exe data\make_sample_db.py data\shop.duckdb
 .venv\Scripts\python.exe -m pytest tests\ -q
-.venv\Scripts\python.exe -m relpath.eval --db data\shop.duckdb
+.venv\Scripts\python.exe -m realpath.eval --db data\shop.duckdb
 ```
 
 ---
@@ -83,7 +83,7 @@ Local-first tezi korunur — yeni konnektörler hep **opsiyon**, asla zorunluluk
 - **Local-first notu:** Bağlantı kullanıcının kendi sunucusuna; veri makineden çıkmaz.
 
 ### 2.2 PyPI yayını + CI — **M**
-- **Gerekçe:** `pip install relpath` tek-komut kurulum; "GitHub-first launch" (SPEC §9.1) bunu gerektirir.
+- **Gerekçe:** `pip install realpath` tek-komut kurulum; "GitHub-first launch" (SPEC §9.1) bunu gerektirir.
 - **Bağımlılık:** `pyproject.toml` zaten extras tanımlı (nlp/explain/tabpfn/demo/eval/dev) ve `requires-python = ">=3.10"`. Henüz `.github/workflows/ci.yml` **yok** (HANDOVER backlog'unda). CI matrisi `requires-python >=3.10` aralığını ve dev env Python 3.11'i kapsamalı; `pytest tests\ -q` + `ruff` koşmalı. **Önemli:** `pyproject` bugün gevşek alt sınır kullanır (`pandas>=2.0`); pandas 2.2.x **hard pin'i dokümanla zorlanıyor** (GOLDEN RULE 3 / HANDOVER), `pyproject` ile değil — CI'yi bu kuralı (örn. `pandas>=2.2,<2.3`) gerçekten dayatacak şekilde kurmak bu item'ın işidir. **GOLDEN RULE:** push/release sadece kullanıcı "pushla" dediğinde.
 - **Not:** Lisans disiplini — çekirdek MIT/BSD/Apache; getML (ELv2) ve TabPFN-2.5 (ticari yasak) extras'ta karantinada kalır.
 
@@ -94,7 +94,7 @@ Local-first tezi korunur — yeni konnektörler hep **opsiyon**, asla zorunluluk
 
 ### 2.4 Canlı Claude NL→PQL (web demo) — **M**
 - **Gerekçe:** "Veritabanıyla konuşma" deneyimi en yüksek algılanan değer; SPEC §9.1'de developer-lead toplama aracı.
-- **Bağımlılık:** `nlp.py` zaten Claude + offline fallback. Gereken: `ANTHROPIC_API_KEY` yönetimi, `RELPATH_LLM_MODEL` (varsayılan `claude-sonnet-4-6`) override, Streamlit demo'da (`demo_app.py`) güvenli key girişi. **GOLDEN RULE 5:** key yoksa offline şablon yolu bozulmamalı.
+- **Bağımlılık:** `nlp.py` zaten Claude + offline fallback. Gereken: `ANTHROPIC_API_KEY` yönetimi, `REALPATH_LLM_MODEL` (varsayılan `claude-sonnet-4-6`) override, Streamlit demo'da (`demo_app.py`) güvenli key girişi. **GOLDEN RULE 5:** key yoksa offline şablon yolu bozulmamalı.
 
 ### 2.5 RDL / GNN backend (relbench + PyG) — **L**
 - **Gerekçe:** GNN'in net üstünlüğü link-prediction / öneri ve derin çok-hop görevlerde (SPEC §2.4). Tablo-düzeyi clf/reg için baseline yeter; GNN talep geldikçe.
@@ -116,7 +116,7 @@ Uzun-vadeli, talep ve gelir kanıtlandıkça. Hiçbiri local-first sözünü boz
 - **Bağımlılık:** Faz 2.1 backend arayüzü olgunlaşmış olmalı → aynı kontrat üzerine read-only konnektör. Veri hareketi minimumda (push-down sorgu).
 
 ### 3.2 Relational Foundation Model (in-context, zero-train) — **L**
-- **Gerekçe:** KumoRFM'in asıl arenası; relpath bugün bilinçli olarak görev-başına eğitilen baseline (SPEC §1.3). Foundation-model yolu vizyon, vitrin değil.
+- **Gerekçe:** KumoRFM'in asıl arenası; realpath bugün bilinçli olarak görev-başına eğitilen baseline (SPEC §1.3). Foundation-model yolu vizyon, vitrin değil.
 - **Bağımlılık:** Faz 2.5 GNN backend + ciddi compute. Lisans/izin disiplini (GOLDEN RULE 4) korunmalı.
 
 ### 3.3 Streaming / real-time scoring — **L**
@@ -157,7 +157,7 @@ Uzun-vadeli, talep ve gelir kanıtlandıkça. Hiçbiri local-first sözünü boz
 2. **pandas 2.2.x pinli** — pandas 3.0 woodwork'ü kırar (`.ww` şeması kalıcı olmaz, EntitySet build başarısız). Yükseltme yok.
 3. **Çekirdek izinli lisans** (MIT/BSD/Apache). getML (ELv2) ve TabPFN-2.5 (ticari yasak) sadece opsiyonel/karantina.
 4. **Local-first ürün tezidir** — veri makineden çıkmak zorunda kalmamalı; DuckDB varsayılan.
-5. **Windows:** `PYTHONUTF8=1` (veya `relpath._io.sprint`) ile Türkçe konsol çıktısı cp1252'de çökmemeli.
+5. **Windows:** `PYTHONUTF8=1` (veya `realpath._io.sprint`) ile Türkçe konsol çıktısı cp1252'de çökmemeli.
 
 ---
 

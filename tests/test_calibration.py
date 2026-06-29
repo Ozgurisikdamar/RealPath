@@ -9,7 +9,7 @@ import pandas as pd
 from sklearn.datasets import make_classification
 from sklearn.metrics import brier_score_loss, roc_auc_score
 
-from relpath.model import fit_model, reliability
+from realpath.model import fit_model, reliability
 
 
 def _split():

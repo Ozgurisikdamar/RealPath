@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="generator" content="pandoc 3.10" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
-  <title>relpath.dev v2.0</title>
+  <title>realpath.dev v2.0</title>
   <style>
 
 html {
@@ -239,18 +239,18 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; }
 </head>
 <body>
 <header id="title-block-header">
-<h1 class="title">relpath.dev v2.0</h1>
+<h1 class="title">realpath.dev v2.0</h1>
 </header>
 <nav id="TOC" role="doc-toc">
 <ul>
-<li><a href="#relpath.dev-neural-database-predictive-engine" id="toc-relpath.dev-neural-database-predictive-engine">relpath.dev —
+<li><a href="#realpath.dev-neural-database-predictive-engine" id="toc-realpath.dev-neural-database-predictive-engine">realpath.dev —
 Neural Database Predictive Engine</a>
 <ul>
 <li><a href="#içindekiler" id="toc-içindekiler">İçindekiler</a></li>
 </ul></li>
 </ul>
 </nav>
-<h1 id="relpath.dev-neural-database-predictive-engine">relpath.dev —
+<h1 id="realpath.dev-neural-database-predictive-engine">realpath.dev —
 Neural Database Predictive Engine</h1>
 <h3 id="strateji-teknik-mimari-ve-go-to-market-dokümanı-v2.0">Strateji,
 Teknik Mimari ve Go-to-Market Dokümanı — <strong>v2.0</strong></h3>
@@ -259,14 +259,14 @@ Teknik Mimari ve Go-to-Market Dokümanı — <strong>v2.0</strong></h3>
 2026 <strong>Konumlandırma:</strong> <em>The open-source, self-hostable
 relational prediction engine.</em> <strong>Bir cümlede:</strong>
 Veritabanınıza bağlanın, düz İngilizce/Türkçe ile bir tahmin sorun;
-relpath join’leri kendi bulur, sızıntısız öznitelik üretir, modeli
+realpath join’leri kendi bulur, sızıntısız öznitelik üretir, modeli
 eğitir ve <strong>hangi ilişkisel yolun kararı verdiğini</strong>
 açıklayarak yanıtı döndürür — veriyi hiçbir yere taşımadan, kendi
 makinenizde.</p>
 </blockquote>
 <figure>
-<img role="img" aria-label="relpath.dev logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMjIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0icHVycGxlR3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2MzY2RjEiIC8+IDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0E4NTVGNyIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImVtZXJhbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzEwQjk4MSIgLz4gPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM0I4MkY2IiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Im5lb25HbG93IiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iNiIgcmVzdWx0PSJibHVyIiAvPgogICAgICA8ZmVDb21wb3NpdGUgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iYmx1ciIgb3BlcmF0b3I9Im92ZXIiIC8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIyMjAiIHJ4PSIxNiIgZmlsbD0iIzA5MEQxNiIgLz4KICA8ZyBvcGFjaXR5PSIwLjA0Ij4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjExMCIgcj0iMTUwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgLz4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjExMCIgcj0iMjIwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgLz4KICAgIDxsaW5lIHgxPSIxMDAiIHkxPSIwIiB4Mj0iMTAwIiB5Mj0iMjIwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iMTEwIiB4Mj0iODAwIiB5Mj0iMTEwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgLz4KICA8L2c+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDUsIDEwKSI+CiAgICA8cmVjdCB4PSIzNSIgeT0iNDUiIHdpZHRoPSI0NSIgaGVpZ2h0PSIzNSIgcng9IjYiIGZpbGw9IiMxRTI5M0IiIHN0cm9rZT0iIzQ3NTU2OSIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSI1NyIgeDI9IjcwIiB5Mj0iNTciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSI2NyIgeDI9IjYwIiB5Mj0iNjciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8cmVjdCB4PSIxMTUiIHk9IjExNSIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjM1IiByeD0iNiIgZmlsbD0iIzFFMjkzQiIgc3Ryb2tlPSIjNDc1NTY5IiBzdHJva2Utd2lkdGg9IjEuNSIgLz4KICAgIDxsaW5lIHgxPSIxMjUiIHkxPSIxMjciIHgyPSIxNTAiIHkyPSIxMjciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iMTI1IiB5MT0iMTM3IiB4Mj0iMTQwIiB5Mj0iMTM3IiBzdHJva2U9IiM2NDc0OEIiIHN0cm9rZS13aWR0aD0iMS41IiAvPgogICAgPHBhdGggZD0iTSA4MCA2MiBRIDEzNyA2MiAxMzcgMTE1IiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjcHVycGxlR3JhZCkiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iMiAyIiAvPgogICAgPHBhdGggZD0iTSA4MCA2MiBRIDEwMCAxMTAgMTM3IDExNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2VtZXJhbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIzLjUiIGZpbHRlcj0idXJsKCNuZW9uR2xvdykiIC8+CiAgICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjYyIiByPSI2IiBmaWxsPSIjMTBCOTgxIiAvPgogICAgPGNpcmNsZSBjeD0iMTM3IiBjeT0iMTE1IiByPSI2IiBmaWxsPSIjM0I4MkY2IiAvPgogICAgPGNpcmNsZSBjeD0iMTAzIiBjeT0iOTEiIHI9IjQiIGZpbGw9IiNGRkZGRkYiIGZpbHRlcj0idXJsKCNuZW9uR2xvdykiIC8+CiAgPC9nPgogIDx0ZXh0IHg9IjIxNSIgeT0iMTE1IiBmb250LWZhbWlseT0iJ0ludGVyJywgJ1NlZ29lIFVJJywgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSI1NiIgZmlsbD0iI0ZGRkZGRiIgbGV0dGVyLXNwYWNpbmc9Ii0xIj5yZWxwYXRoPC90ZXh0PgogIDx0ZXh0IHg9IjQyMCIgeT0iMTE1IiBmb250LWZhbWlseT0iJ0ludGVyJywgJ1NlZ29lIFVJJywgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjMwMCIgZm9udC1zaXplPSI1NiIgZmlsbD0idXJsKCNlbWVyYWxkR3JhZCkiPi5kZXY8L3RleHQ+CiAgPHRleHQgeD0iMjE4IiB5PSIxNDgiIGZvbnQtZmFtaWx5PSInSW50ZXInLCAnU2Vnb2UgVUknLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNjAwIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNEI1NTYzIiBsZXR0ZXItc3BhY2luZz0iNC41Ij5ORVVSQUwgREFUQUJBU0UgUFJFRElDVElWRSBFTkdJTkU8L3RleHQ+Cjwvc3ZnPgo=" alt="relpath.dev logo" />
-<figcaption aria-hidden="true">relpath.dev logo</figcaption>
+<img role="img" aria-label="realpath.dev logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA4MDAgMjIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIj4KICA8ZGVmcz4KICAgIDxsaW5lYXJHcmFkaWVudCBpZD0icHVycGxlR3JhZCIgeDE9IjAlIiB5MT0iMCUiIHgyPSIxMDAlIiB5Mj0iMTAwJSI+CiAgICAgIDxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiM2MzY2RjEiIC8+IDxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI0E4NTVGNyIgLz4KICAgIDwvbGluZWFyR3JhZGllbnQ+CiAgICA8bGluZWFyR3JhZGllbnQgaWQ9ImVtZXJhbGRHcmFkIiB4MT0iMCUiIHkxPSIwJSIgeDI9IjEwMCUiIHkyPSIxMDAlIj4KICAgICAgPHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iIzEwQjk4MSIgLz4gPHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjM0I4MkY2IiAvPgogICAgPC9saW5lYXJHcmFkaWVudD4KICAgIDxmaWx0ZXIgaWQ9Im5lb25HbG93IiB4PSItMjAlIiB5PSItMjAlIiB3aWR0aD0iMTQwJSIgaGVpZ2h0PSIxNDAlIj4KICAgICAgPGZlR2F1c3NpYW5CbHVyIHN0ZERldmlhdGlvbj0iNiIgcmVzdWx0PSJibHVyIiAvPgogICAgICA8ZmVDb21wb3NpdGUgaW49IlNvdXJjZUdyYXBoaWMiIGluMj0iYmx1ciIgb3BlcmF0b3I9Im92ZXIiIC8+CiAgICA8L2ZpbHRlcj4KICA8L2RlZnM+CiAgPHJlY3Qgd2lkdGg9IjgwMCIgaGVpZ2h0PSIyMjAiIHJ4PSIxNiIgZmlsbD0iIzA5MEQxNiIgLz4KICA8ZyBvcGFjaXR5PSIwLjA0Ij4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjExMCIgcj0iMTUwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgLz4KICAgIDxjaXJjbGUgY3g9IjEwMCIgY3k9IjExMCIgcj0iMjIwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgZmlsbD0ibm9uZSIgLz4KICAgIDxsaW5lIHgxPSIxMDAiIHkxPSIwIiB4Mj0iMTAwIiB5Mj0iMjIwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgLz4KICAgIDxsaW5lIHgxPSIwIiB5MT0iMTEwIiB4Mj0iODAwIiB5Mj0iMTEwIiBzdHJva2U9IiNGM0Y0RjYiIHN0cm9rZS13aWR0aD0iMSIgLz4KICA8L2c+CiAgPGcgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoNDUsIDEwKSI+CiAgICA8cmVjdCB4PSIzNSIgeT0iNDUiIHdpZHRoPSI0NSIgaGVpZ2h0PSIzNSIgcng9IjYiIGZpbGw9IiMxRTI5M0IiIHN0cm9rZT0iIzQ3NTU2OSIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSI1NyIgeDI9IjcwIiB5Mj0iNTciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iNDUiIHkxPSI2NyIgeDI9IjYwIiB5Mj0iNjciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8cmVjdCB4PSIxMTUiIHk9IjExNSIgd2lkdGg9IjQ1IiBoZWlnaHQ9IjM1IiByeD0iNiIgZmlsbD0iIzFFMjkzQiIgc3Ryb2tlPSIjNDc1NTY5IiBzdHJva2Utd2lkdGg9IjEuNSIgLz4KICAgIDxsaW5lIHgxPSIxMjUiIHkxPSIxMjciIHgyPSIxNTAiIHkyPSIxMjciIHN0cm9rZT0iIzY0NzQ4QiIgc3Ryb2tlLXdpZHRoPSIxLjUiIC8+CiAgICA8bGluZSB4MT0iMTI1IiB5MT0iMTM3IiB4Mj0iMTQwIiB5Mj0iMTM3IiBzdHJva2U9IiM2NDc0OEIiIHN0cm9rZS13aWR0aD0iMS41IiAvPgogICAgPHBhdGggZD0iTSA4MCA2MiBRIDEzNyA2MiAxMzcgMTE1IiBmaWxsPSJub25lIiBzdHJva2U9InVybCgjcHVycGxlR3JhZCkiIHN0cm9rZS13aWR0aD0iMyIgc3Ryb2tlLWRhc2hhcnJheT0iMiAyIiAvPgogICAgPHBhdGggZD0iTSA4MCA2MiBRIDEwMCAxMTAgMTM3IDExNSIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ1cmwoI2VtZXJhbGRHcmFkKSIgc3Ryb2tlLXdpZHRoPSIzLjUiIGZpbHRlcj0idXJsKCNuZW9uR2xvdykiIC8+CiAgICA8Y2lyY2xlIGN4PSI4MCIgY3k9IjYyIiByPSI2IiBmaWxsPSIjMTBCOTgxIiAvPgogICAgPGNpcmNsZSBjeD0iMTM3IiBjeT0iMTE1IiByPSI2IiBmaWxsPSIjM0I4MkY2IiAvPgogICAgPGNpcmNsZSBjeD0iMTAzIiBjeT0iOTEiIHI9IjQiIGZpbGw9IiNGRkZGRkYiIGZpbHRlcj0idXJsKCNuZW9uR2xvdykiIC8+CiAgPC9nPgogIDx0ZXh0IHg9IjIxNSIgeT0iMTE1IiBmb250LWZhbWlseT0iJ0ludGVyJywgJ1NlZ29lIFVJJywgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjgwMCIgZm9udC1zaXplPSI1NiIgZmlsbD0iI0ZGRkZGRiIgbGV0dGVyLXNwYWNpbmc9Ii0xIj5yZWxwYXRoPC90ZXh0PgogIDx0ZXh0IHg9IjQyMCIgeT0iMTE1IiBmb250LWZhbWlseT0iJ0ludGVyJywgJ1NlZ29lIFVJJywgLWFwcGxlLXN5c3RlbSwgc2Fucy1zZXJpZiIgZm9udC13ZWlnaHQ9IjMwMCIgZm9udC1zaXplPSI1NiIgZmlsbD0idXJsKCNlbWVyYWxkR3JhZCkiPi5kZXY8L3RleHQ+CiAgPHRleHQgeD0iMjE4IiB5PSIxNDgiIGZvbnQtZmFtaWx5PSInSW50ZXInLCAnU2Vnb2UgVUknLCAtYXBwbGUtc3lzdGVtLCBzYW5zLXNlcmlmIiBmb250LXdlaWdodD0iNjAwIiBmb250LXNpemU9IjE0IiBmaWxsPSIjNEI1NTYzIiBsZXR0ZXItc3BhY2luZz0iNC41Ij5ORVVSQUwgREFUQUJBU0UgUFJFRElDVElWRSBFTkdJTkU8L3RleHQ+Cjwvc3ZnPgo=" alt="realpath.dev logo" />
+<figcaption aria-hidden="true">realpath.dev logo</figcaption>
 </figure>
 <hr />
 <h2 id="içindekiler">İçindekiler</h2>
@@ -376,17 +376,17 @@ otomatikleşir — model, ilişkisel topolojiyi tarayarak hangi sinyalin
 önemli olduğunu kendisi keşfeder. Bu fikrin akademik temeli Stanford’da
 (Fey, Leskovec ve ark., ICML’24) atıldı; ticari öncüsü
 <strong>Kumo.AI</strong>.<a href="#fn4" class="footnote-ref" id="fnref4" role="doc-noteref"><sup>4</sup></a><a href="#fn5" class="footnote-ref" id="fnref5" role="doc-noteref"><sup>5</sup></a></p>
-<h3 id="relpath.devin-vizyonu">1.3 relpath.dev’in Vizyonu</h3>
+<h3 id="realpath.devin-vizyonu">1.3 realpath.dev’in Vizyonu</h3>
 <blockquote>
 <p><strong>“Relational Deep Learning’i
 demokratikleştirmek.”</strong></p>
 </blockquote>
 <p>Kumo bu teknolojiyi kurumsal, kapalı ve bulut-kilitli bir SaaS olarak
-sunuyor. relpath.dev aynı değeri <strong>açık kaynak, self-hostable ve
+sunuyor. realpath.dev aynı değeri <strong>açık kaynak, self-hostable ve
 local-first</strong> olarak sunar. Bir veri bilimci veya geliştirici,
 kendi dizüstü bilgisayarında, verisini hiçbir yere taşımadan, üç satır
 kodla (ya da bir cümle düz dille) ilişkisel tahmin alabilmeli.</p>
-<p><strong>Dürüst kapsam notu:</strong> relpath.dev bir “foundation
+<p><strong>Dürüst kapsam notu:</strong> realpath.dev bir “foundation
 model” (KumoRFM gibi sıfır-eğitim in-context model)
 <strong>değildir</strong> — en azından bugün değil. v2 prototipi,
 bilinçli olarak <strong>görev-başına hızlı eğitilen güçlü bir
@@ -414,7 +414,7 @@ memory-mapped grafik motoru 500B+ satır.<a href="#fn9" class="footnote-ref" id=
 veri dışarı çıkmadan çalışır.<a href="#fn10" class="footnote-ref" id="fnref10" role="doc-noteref"><sup>10</sup></a> -
 <strong>Agent-native:</strong> MCP server + Python SDK.<a href="#fn11" class="footnote-ref" id="fnref11" role="doc-noteref"><sup>11</sup></a></p>
 <p><strong>Yapısal zayıflıkları (bizim açtığımız kapılar):</strong> |
-Zayıflık | Açıklama | relpath fırsatı | |—|—|—| | <strong>Kapalı
+Zayıflık | Açıklama | realpath fırsatı | |—|—|—| | <strong>Kapalı
 kaynak</strong> | Model ağırlıkları/kodu kapalı, satış-odaklı | Açık
 kaynak çekirdek | | <strong>Şeffaf olmayan fiyat</strong> | Genel fiyat
 sayfası yok; enterprise = “contact sales” | Self-host = ücretsiz;
@@ -454,7 +454,7 @@ bıraktığı boşluğu bugün Kumo dolduruyor.</li>
 Bakışta</h3>
 <pre><code>                 Açık Kaynak / Self-host
                           ▲
-        Featuretools •    │    • relpath.dev  ◀── BOŞ KÖŞE (hedefimiz)
+        Featuretools •    │    • realpath.dev  ◀── BOŞ KÖŞE (hedefimiz)
             getML •       │
    ───────────────────────┼───────────────────────▶  Push-button
    Manuel öznitelik       │              Otomatik ilişkisel tahmin
@@ -464,7 +464,7 @@ Bakışta</h3>
                           ▼
                   Kapalı / Bulut-kilitli</code></pre>
 <p>Sağ-üst köşe — <strong>otomatik ilişkisel tahmin + açık
-kaynak/self-host</strong> — bugün <strong>boş</strong>. relpath.dev’in
+kaynak/self-host</strong> — bugün <strong>boş</strong>. realpath.dev’in
 tüm stratejisi bu köşeyi sahiplenmektir.</p>
 <h3 id="kritik-bulgu-gnn-şart-değil-8020">2.4 Kritik Bulgu: “GNN Şart
 Değil” (80/20)</h3>
@@ -558,7 +558,7 @@ hakkı”), güven, hata ayıklama.</li>
 <li><strong>Ne:</strong> Yatay sorgu diline ek olarak, hazır paketlenmiş
 çözümler: <code>churn</code>, <code>fraud</code>, <code>forecast</code>.
 Her biri parametrik bir PQL + makul varsayılanlar + alana özgü açıklama.
-<code>relpath.churn(entity=&quot;customers&quot;, horizon=&quot;30 days&quot;)</code> →
+<code>realpath.churn(entity=&quot;customers&quot;, horizon=&quot;30 days&quot;)</code> →
 bitti.</li>
 <li><strong>Neden moat:</strong> Kumo yatay bir platform satar; alıcı
 yine de problemi modellemeli. Şablonlar “time-to-value”yu dakikalara
@@ -596,7 +596,7 @@ ve gelir geldikçe eklenir — vitrin değil, yol haritası.</p>
 Bizim Yorumumuz</h3>
 <p>v1 bunu “warehouse içinde çalış” diye tanımlıyordu (Snowflake SPCS).
 Biz daha radikal yorumluyoruz: <strong>veri zaten makinenizde</strong>
-(DuckDB dosyası) ya da kendi sunucunuzda (Postgres); relpath onun
+(DuckDB dosyası) ya da kendi sunucunuzda (Postgres); realpath onun
 <em>yanında</em> çalışır. Hiçbir SaaS’a, hiçbir buluta veri gitmez.
 Warehouse’a bağlanmak (Faz 2) bir <em>opsiyon</em>’dur,
 <em>zorunluluk</em> değil — Kumo’nun aksine.</p>
@@ -741,7 +741,7 @@ Safety)</p>
 Akademi bunu RDL’in <strong>çözülmemiş açık problemlerinden</strong>
 sayar; çoğu sistem bunu ad-hoc halleder.<a href="#fn17" class="footnote-ref" id="fnref17" role="doc-noteref"><sup>17</sup></a><a href="#fn18" class="footnote-ref" id="fnref18" role="doc-noteref"><sup>18</sup></a> v1 bunu “Anchor Timestamp” diye
 anıyordu ama mekanizma soyuttu.</p>
-<p><strong>relpath’in çözümü — yapısal garanti.</strong> Her entity’ye
+<p><strong>realpath’in çözümü — yapısal garanti.</strong> Her entity’ye
 bir <strong>anchor timestamp</strong> <code>t*</code> atanır. Tüm
 öznitelikler Featuretools <code>cutoff_time</code> ile üretilir; bu,
 motorun <strong>yalnızca <code>t ≤ t*</code> olan satırları</strong>
@@ -809,11 +809,11 @@ başlangıçta 2 temsili görev:<a href="#fn19" class="footnote-ref" id="fnref19
 </thead>
 <tbody>
 <tr>
-<td>relpath (DFS+LGBM) <strong>vs</strong> LightGBM-no-features</td>
+<td>realpath (DFS+LGBM) <strong>vs</strong> LightGBM-no-features</td>
 <td>Öznitelik üretiminin değerini kanıtla</td>
 </tr>
 <tr>
-<td>relpath <strong>vs</strong> yayınlanan RDL/GNN baseline</td>
+<td>realpath <strong>vs</strong> yayınlanan RDL/GNN baseline</td>
 <td>“Ucuz baseline yarışıyor” tezini doğrula (§2.4)</td>
 </tr>
 <tr>
@@ -828,8 +828,8 @@ kanıtla</td>
 </tbody>
 </table>
 <p><strong>Tek komut:</strong>
-<code>python -m relpath.eval --dataset rel-hm --task user-churn</code> →
-skor + baseline farkı yazdırır. (relbench, <code>relpath[eval]</code>
+<code>python -m realpath.eval --dataset rel-hm --task user-churn</code> →
+skor + baseline farkı yazdırır. (relbench, <code>realpath[eval]</code>
 opsiyonel extra’sında izole; çekirdek torch’suz.)</p>
 <hr />
 <p><a id="9"></a> ## 9. Go-to-Market, Yol Haritası ve Riskler</p>
@@ -947,7 +947,7 @@ makinesinde kalması; buluta bağımlı olmama.</li>
 </ul>
 <hr />
 <blockquote>
-<p><em>relpath.dev — “tablolardan grafik patikalarına ve sinirsel
+<p><em>realpath.dev — “tablolardan grafik patikalarına ve sinirsel
 tahminlere giden ilişkisel yol.”</em> Açık kaynak. Self-hostable.
 Local-first.</p>
 </blockquote>

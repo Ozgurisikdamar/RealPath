@@ -16,7 +16,7 @@ def sample_db(tmp_path_factory) -> str:
     """Build the synthetic e-commerce DuckDB once per test session."""
     from data.make_sample_db import build
 
-    out = tmp_path_factory.mktemp("relpath_data") / "shop.duckdb"
+    out = tmp_path_factory.mktemp("realpath_data") / "shop.duckdb"
     build(out)
     return str(out)
 
@@ -24,7 +24,7 @@ def sample_db(tmp_path_factory) -> str:
 @pytest.fixture(scope="session")
 def engine(sample_db):
     """A connected Engine on the sample DB, shared across tests (EntitySet built once)."""
-    import relpath as rp
+    import realpath as rp
 
     eng = rp.connect(sample_db)
     yield eng

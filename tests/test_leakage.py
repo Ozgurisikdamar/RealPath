@@ -8,12 +8,12 @@ import duckdb
 import numpy as np
 import pandas as pd
 
-from relpath.engine import connect
-from relpath.features import synthesize
+from realpath.engine import connect
+from realpath.features import synthesize
 
 
 def _build_split_and_features(db_path, pql, anchor):
-    from relpath.pql import compile_task, parse_pql
+    from realpath.pql import compile_task, parse_pql
 
     eng = connect(db_path)
     task = parse_pql(pql)
@@ -70,7 +70,7 @@ def test_no_future_leakage(sample_db, tmp_path):
 
 def test_label_window_is_in_the_future(sample_db):
     """The label window must lie strictly after the anchor (no overlap with features)."""
-    from relpath.pql import compile_task, parse_pql
+    from realpath.pql import compile_task, parse_pql
 
     eng = connect(sample_db)
     compiled = compile_task(parse_pql(PQL), eng.schema, eng.backend)

@@ -1,7 +1,7 @@
 """PQL parser unit tests."""
 import pytest
 
-from relpath.pql import PQLSyntaxError, parse_pql
+from realpath.pql import PQLSyntaxError, parse_pql
 
 
 def test_churn_classification():
