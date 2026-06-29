@@ -7,7 +7,7 @@
 > Kararların **gerekçeleri** [`DECISIONS.md`](DECISIONS.md)'de (ADR + Business Decisions).
 > Canlı durum [`HANDOVER.md`](HANDOVER.md)'de. API [`API.md`](API.md)'de.
 >
-> **Son güncelleme:** 2026-06-19 · **Güncel sprint:** **Sprint 1 — OSS Launch Readiness**
+> **Son güncelleme:** 2026-06-19 · **Güncel sprint:** **Sprint 1 — OSS Launch Readiness** (1/7 görev bitti: LICENSE)
 
 ---
 
@@ -44,9 +44,7 @@
 tablosu, ve net konumlandırma. Hepsi **bu makinede (Windows) yapılabilir.**
 
 **Software**
-- [ ] **LICENSE dosyası ekle (MIT)** — repo kökü.
-  - WHAT: Kök `LICENSE` (MIT, telif "relpath.dev contributors"); `pyproject` zaten MIT diyor.
-  - ACCEPTANCE: Kökte `LICENSE` var; README/pyproject ile tutarlı.
+- [x] **LICENSE dosyası ekle (MIT)** — repo kökü. ✅ Kök `LICENSE` (MIT, "2026 relpath.dev contributors"); pyproject/README ile tutarlı.
 - [ ] **Streamlit demo'ya kalibrasyon** — `relpath/demo_app.py`.
   - WHAT: "Kalibrasyon" toggle'ı → `predict(calibrate=True)`; sonuçta `result.reliability()` (Brier/ECE) göster.
   - ACCEPTANCE: Demo'da toggle çalışır, Brier/ECE görünür; `AppTest` ile no-exception doğrulanır.
