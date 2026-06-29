@@ -30,7 +30,7 @@ python data/make_sample_db.py data/shop.duckdb
 ## Running tests & lint
 
 ```bash
-pytest tests/ -q          # expect: 23 passed, 1 skipped
+pytest tests/ -q          # expect: 25 passed, 1 skipped
 ruff check relpath/ tests/ data/
 ```
 

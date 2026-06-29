@@ -20,7 +20,7 @@ bağlarsın, tahmin sorusunu düz dilde ya da **PQL** ile sorarsın, veriyi hiç
 |---|---|
 | Faz | **Phase 1 PoC — tamam** (çalışan uçtan uca hat) |
 | Versiyon | `0.1.0` |
-| Testler | **23/23 geçiyor** |
+| Testler | **25/25 geçiyor** |
 | Git | repo **`Ozgurisikdamar/relpath` (private)**, branch **`master`**, remote `origin`, push edildi. Yeni iş için yine **"pushla" bekle** (Bölüm 3). |
 | Python | **3.11.9**, venv `.venv\` |
 | pandas | **2.2.3 (PİNLİ — yükseltme!)** |
@@ -79,7 +79,7 @@ $env:PYTHONUTF8 = "1"                               # Türkçe konsol çıktıs�
 ```powershell
 $env:PYTHONUTF8 = "1"
 .venv\Scripts\python.exe data\make_sample_db.py data\shop.duckdb   # .duckdb gitignored — yeniden üret
-.venv\Scripts\python.exe -m pytest tests\ -q                       # 23 passed beklenir
+.venv\Scripts\python.exe -m pytest tests\ -q                       # 25 passed beklenir
 .venv\Scripts\python.exe -m relpath.eval                           # relational vs no-relational baseline
 # opsiyonel demo:
 streamlit run relpath\demo_app.py                                  # http://localhost:8501
@@ -89,7 +89,7 @@ streamlit run relpath\demo_app.py                                  # http://loca
 
 | Kontrol | Beklenen |
 |---|---|
-| pytest | **23 passed** |
+| pytest | **25 passed** |
 | churn ROC-AUC | **~0.749** (entity-only baseline ~0.704, **delta +0.045**) |
 | customer return-risk (2-hop join, 30 günlük pencere) | **~0.689** ROC-AUC (60d ~0.699, 90d ~0.690) |
 | product demand forecast (varsayılan `forecast()`: `SUM(transactions.quantity)`, 3 ay) | **MAE ~8.4** (rmse ~10.1) |
@@ -125,7 +125,7 @@ relpath/
 └── _io.py                 # sprint (encoding-safe print), use_utf8
 
 data/make_sample_db.py     # sentetik e-ticaret DuckDB üretir (seed 42)
-tests/                     # test_pql_parser (10) + test_leakage (2) + test_templates (8) + test_calibration (3) = 23 pass (+ test_postgres, RELPATH_TEST_PG ile opt-in)
+tests/                     # parser(10)+leakage(2)+templates(8)+calibration(3)+cli(2) = 25 pass (+ test_postgres, RELPATH_TEST_PG ile opt-in)
 docs/                      # aşağıdaki DOCUMENT INDEX
 ```
 
@@ -168,5 +168,5 @@ PREDICT AGG(table.col|*, start, end, unit) [op value] FOR EACH entity_table.prim
 ## 7. YENİ SESSION İSEN — 3 SATIRLIK CHECKLIST
 
 - [ ] **`docs/HANDOVER.md`** "Sıradaki İş"i oku, en üstteki işaretsiz maddeyi al.
-- [ ] Bölüm 5 smoke test'i çalıştır (**23 passed** görmelisin), sonra Bölüm 2 protokolünü izle.
+- [ ] Bölüm 5 smoke test'i çalıştır (**25 passed** görmelisin), sonra Bölüm 2 protokolünü izle.
 - [ ] İş bitince **sadece lokal commit** — kullanıcı **"pushla"** demeden **push YOK** (Bölüm 3).

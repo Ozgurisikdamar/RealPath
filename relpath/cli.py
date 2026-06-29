@@ -46,9 +46,13 @@ def _cmd_predict(args):
     from .engine import connect
 
     eng = connect(args.db)
-    res = eng.predict(args.query, verbose=True, evaluate=not args.no_eval)
+    res = eng.predict(args.query, verbose=True, evaluate=not args.no_eval, calibrate=args.calibrate)
     if res.metrics:
         sprint("metrics:", "  ".join(f"{k}={v:.4f}" for k, v in res.metrics.items()))
+    if args.calibrate:
+        rel = res.reliability()
+        if rel:
+            sprint("calibration:", "  ".join(f"{k}={v:.4f}" for k, v in rel.items()))
     sprint("\ntop predictions:")
     sprint(res.top(args.top).to_string(index=False))
     if args.csv:
@@ -97,6 +101,8 @@ def main(argv=None):
     sp.add_argument("--top", type=int, default=10)
     sp.add_argument("--explain", action="store_true")
     sp.add_argument("--no-eval", action="store_true", help="skip metric computation")
+    sp.add_argument("--calibrate", action="store_true",
+                    help="isotonic probability calibration + Brier/ECE (classification)")
     sp.add_argument("--csv", default=None, help="write predictions to CSV")
     sp.set_defaults(func=_cmd_predict)
 

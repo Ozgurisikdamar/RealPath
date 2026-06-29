@@ -71,6 +71,8 @@ relpath make-sample
 relpath schema  --db data/shop.duckdb
 relpath ask     "hangi musteriler iade yapacak" --db data/shop.duckdb
 relpath predict "gelecek 30 gunde islem yapmayacak musteriler" --db data/shop.duckdb --explain
+relpath predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id" \
+                --db data/shop.duckdb --calibrate   # kalibre olasılık + Brier/ECE
 relpath eval                                       # relational-vs-baseline proof
 ```
 

@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: RelBench adapter doğrulandı (`.venv_eval` + rel-f1; driver-dnf 0.592 / driver-position MAE 3.61).
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: CLI `--calibrate` bayrağı (kalibre olasılık + Brier/ECE; test_cli).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
 
@@ -17,7 +17,7 @@
 - **NL → PQL:** Claude (anthropic SDK) yolu + API key yoksa **offline deterministik sablon fallback** (churn/forecast/fraud keyword routing, TR+EN). Cikti her zaman tekrar-parse edilerek dogrulanir.
 - **Aciklanabilirlik:** global importance + per-entity join-path karti (SHAP varsa, yoksa LightGBM gain fallback).
 - **Eval:** `evaluate_local()` relpath full relational feature'lari ile entity-only baseline'i karsilastirir.
-- **Testler:** 23/23 gecer. `test_leakage.py` gelecek-sizintisi olmadigini, anchor sonrasi tum satirlari silip feature matrix'in ayni kaldigini gostererek **kanitlar**; ayrica label penceresinin kesin olarak gelecekte oldugunu dogrular.
+- **Testler:** 25/25 gecer. `test_leakage.py` gelecek-sizintisi olmadigini, anchor sonrasi tum satirlari silip feature matrix'in ayni kaldigini gostererek **kanitlar**; ayrica label penceresinin kesin olarak gelecekte oldugunu dogrular.
 
 ### Dogrulanmis metrikler (sample DB uzerinde)
 
@@ -26,7 +26,7 @@
 | Churn (classification) | ROC-AUC | **~0.749** | entity-only baseline ~0.704, delta **+0.045** |
 | Customer return-risk (2-hop join) | ROC-AUC | **~0.689** | musteri seviyesine reframe edildi |
 | Product demand forecast (varsayılan 3 ay `SUM(quantity)`) | MAE | **~8.41** (rmse ~10.1) | ilişkisel lift YOK (baseline ~7.48); 2 ay varyant ~6.75. **Churn asıl gösterge.** |
-| Test suite | pytest | **23/23 pass** | |
+| Test suite | pytest | **25/25 pass** (+1 skip: Postgres) | |
 
 ### Git durumu
 
@@ -52,14 +52,15 @@
 - [x] Streamlit demo (`demo_app.py`, port 8501, Turkce UI).
 - [x] Sentetik e-ticaret DB generator (`data/make_sample_db.py`, 4 tablo, seed 42).
 - [x] Encoding-safe I/O (`_io.py`: `sprint`, `use_utf8`).
-- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3: AUC korunur, ECE düşer, e2e), `conftest.py` (sample_db + engine fixtures) — **23/23**.
+- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3), `test_cli.py` (2), `conftest.py` (sample_db + engine fixtures) — **25/25** (+1 skip: `test_postgres.py`).
 - [x] Bilingual README (TR/EN) + `docs/RELPATH_SPEC_v2.md` (+ .docx/.html) + logo.
 - [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3.
 - [x] GitHub'a push: **private** repo `Ozgurisikdamar/relpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
 - [x] Per-entity probability **calibration** (opt-in isotonic): `model.py` (`fit_model(calibrate=)`, `reliability()` Brier+ECE), `engine.predict(calibrate=)`, `result.reliability()`. Doğrulandı: ECE 0.033→0.014, AUC korunur; **default kapalı** (headline 0.749 değişmedi).
 - [x] **Postgres connector**: `connect.py` `PostgresBackend` + `open_backend` `postgres://` yolu + `postgres` extra (`psycopg`). `?`→`%s` çevirisi, `public` şema introspection. **Docker `postgres:16` ile UÇTAN-UCA DOĞRULANDI**: şema/FK çıkarımı + churn ROC-AUC **0.7492** (DuckDB ile birebir aynı). `data/load_postgres.py` yükleyici, `tests/test_postgres.py` (`RELPATH_TEST_PG` yoksa skip).
-- [x] **CONTRIBUTING.md** (repo kökü): kurulum, test/lint, opt-in Postgres testi, guardrail'ler (sızıntı-güvenliği, local-first, lisans), recipe pointer'ları. Setup komutları doğrulanmış (`pip install -e ".[dev]"` → 23 passed, 1 skipped).
+- [x] **CONTRIBUTING.md** (repo kökü): kurulum, test/lint, opt-in Postgres testi, guardrail'ler (sızıntı-güvenliği, local-first, lisans), recipe pointer'ları. Setup komutları doğrulanmış (`pip install -e ".[dev]"` → 25 passed, 1 skipped).
 - [x] **RelBench adapter DOĞRULANDI**: `relbench_adapter.py` sertleştirildi (dtype normalize, `ignore_columns`, etiketi `cutoff_time`'a koyup X/y hizalama, test maskeli→`val` fallback). İzole `.venv_eval` (torch+relbench) ile `rel-f1` koşturuldu: **driver-dnf AUC ~0.592, driver-position MAE ~3.61** (basit DFS baseline; tuned RDL'in altında, beklenen).
+- [x] **CLI `--calibrate` bayrağı**: `relpath predict ... --calibrate` → kalibre olasılık + `result.reliability()` (Brier/ECE) yazdırır. `tests/test_cli.py` (2: schema + predict --calibrate). Canlı doğrulandı: brier ~0.20, ece ~0.085.
 
 ---
 
@@ -73,12 +74,6 @@
   - WHY: Su an sadece offline template fallback dogrulandi; canli yol untested.
   - WHERE: `relpath/nlp.py` (`nl_to_pql`, `source` alani), env `ANTHROPIC_API_KEY`, `RELPATH_LLM_MODEL` (default `claude-sonnet-4-6`).
   - ACCEPTANCE: `relpath ask "hangi musteriler iade yapacak" --db data/shop.duckdb` gecerli PQL dondurur ve `NLResult.source` Claude yolunu (offline degil) gosterir.
-
-- [ ] **CLI/`predict` icin `--calibrate` bayragi**
-  - WHAT: `relpath predict ... --calibrate` (engine.predict(calibrate=) ZATEN var, sadece CLI'a bagla); ciktida `result.reliability()` goster.
-  - WHY: Kalibrasyon ozelligi CLI/demo'dan erisilebilir olsun.
-  - WHERE: `relpath/cli.py` (`_cmd_predict`, argparse), opsiyonel `relpath/demo_app.py`.
-  - ACCEPTANCE: `--calibrate` kalibre olasilik dondurur ve Brier/ECE yazdirir; kucuk bir test eklenir; 23+→ artar.
 
 - [ ] **MySQL connector (Postgres'i ornek al)**
   - WHAT: `mysql://` icin `MySQLBackend`; ayni kucuk arayuz; yeni `mysql` extra.
@@ -132,7 +127,7 @@ Windows venv yorumlayicisi: `.venv\Scripts\python.exe`. Konsol Turkce icin once 
 
 # 5) Testler
 .venv\Scripts\python.exe -m pytest tests\ -q
-#   beklenen: 23 passed
+#   beklenen: 25 passed
 
 # 6) (opsiyonel) Streamlit demo
 .venv\Scripts\python.exe -m streamlit run relpath\demo_app.py
