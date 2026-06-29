@@ -304,7 +304,7 @@ npx sharp-cli -i docs\logo.svg -o docs\logo.png
 **Doğrulama:**
 
 ```powershell
-.venv\Scripts\python.exe -m pytest tests\ -q   # 20/20 geçmeli
+.venv\Scripts\python.exe -m pytest tests\ -q   # 23/23 geçmeli
 ```
 
 > **Kural 3 hatırlatma:** pandas'ı **asla** 2.2.x üstüne çıkarma. Başka bir paket pandas 3.0 çekmek isterse onu pinle/iste, pandas'ı feda etme.

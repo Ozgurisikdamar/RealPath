@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: CI + paketleme + GitHub'a push (private `Ozgurisikdamar/relpath`).
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: per-entity probability calibration (opt-in isotonic; ECE 0.033→0.014, AUC korunur).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
 
@@ -17,7 +17,7 @@
 - **NL → PQL:** Claude (anthropic SDK) yolu + API key yoksa **offline deterministik sablon fallback** (churn/forecast/fraud keyword routing, TR+EN). Cikti her zaman tekrar-parse edilerek dogrulanir.
 - **Aciklanabilirlik:** global importance + per-entity join-path karti (SHAP varsa, yoksa LightGBM gain fallback).
 - **Eval:** `evaluate_local()` relpath full relational feature'lari ile entity-only baseline'i karsilastirir.
-- **Testler:** 20/20 gecer. `test_leakage.py` gelecek-sizintisi olmadigini, anchor sonrasi tum satirlari silip feature matrix'in ayni kaldigini gostererek **kanitlar**; ayrica label penceresinin kesin olarak gelecekte oldugunu dogrular.
+- **Testler:** 23/23 gecer. `test_leakage.py` gelecek-sizintisi olmadigini, anchor sonrasi tum satirlari silip feature matrix'in ayni kaldigini gostererek **kanitlar**; ayrica label penceresinin kesin olarak gelecekte oldugunu dogrular.
 
 ### Dogrulanmis metrikler (sample DB uzerinde)
 
@@ -26,7 +26,7 @@
 | Churn (classification) | ROC-AUC | **~0.749** | entity-only baseline ~0.704, delta **+0.045** |
 | Customer return-risk (2-hop join) | ROC-AUC | **~0.689** | musteri seviyesine reframe edildi |
 | Product demand forecast (varsayılan 3 ay `SUM(quantity)`) | MAE | **~8.41** (rmse ~10.1) | ilişkisel lift YOK (baseline ~7.48); 2 ay varyant ~6.75. **Churn asıl gösterge.** |
-| Test suite | pytest | **20/20 pass** | |
+| Test suite | pytest | **23/23 pass** | |
 
 ### Git durumu
 
@@ -52,10 +52,11 @@
 - [x] Streamlit demo (`demo_app.py`, port 8501, Turkce UI).
 - [x] Sentetik e-ticaret DB generator (`data/make_sample_db.py`, 4 tablo, seed 42).
 - [x] Encoding-safe I/O (`_io.py`: `sprint`, `use_utf8`).
-- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8: churn/forecast/fraud + builders + NL routing), `conftest.py` (sample_db + engine fixtures) — **20/20**.
+- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3: AUC korunur, ECE düşer, e2e), `conftest.py` (sample_db + engine fixtures) — **23/23**.
 - [x] Bilingual README (TR/EN) + `docs/RELPATH_SPEC_v2.md` (+ .docx/.html) + logo.
-- [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3, 20/20.
-- [x] GitHub'a push: **private** repo `Ozgurisikdamar/relpath` (origin/master).
+- [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3.
+- [x] GitHub'a push: **private** repo `Ozgurisikdamar/relpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
+- [x] Per-entity probability **calibration** (opt-in isotonic): `model.py` (`fit_model(calibrate=)`, `reliability()` Brier+ECE), `engine.predict(calibrate=)`, `result.reliability()`. Doğrulandı: ECE 0.033→0.014, AUC korunur; **default kapalı** (headline 0.749 değişmedi).
 
 ---
 
@@ -82,12 +83,6 @@
   - WHY: Modul bu ortamda **hic calistirilmadi** (untested); torch+relbench kurulu degil.
   - WHERE: `relpath/relbench_adapter.py`, `relpath/eval.py` (`evaluate_relbench`), extra: `pip install -e ".[eval]"`.
   - ACCEPTANCE: `python -m relpath.eval --dataset rel-hm --task user-churn` bir metrik tablosu uretir; hatalar duzeltilir; sonuc bu dosyaya yazilir.
-
-- [ ] **Per-entity probability calibration**
-  - WHAT: Classification ciktilarina kalibrasyon (orn. isotonic / Platt) ekle.
-  - WHY: Ham LightGBM olasiliklari kalibre degil; karar esikleri icin guvenilirlik gerekir.
-  - WHERE: `relpath/model.py` (`TrainedModel.predict`), `relpath/result.py`.
-  - ACCEPTANCE: Kalibre olasiliklar uretilir; mevcut ROC-AUC bozulmaz; bir reliability/calibration kontrolu eklenir.
 
 - [ ] **CONTRIBUTING guide yaz**
   - WHAT: Kurulum, test calistirma, kod stili (ruff), commit kurallari, sizinti-guvenligi prensibi.
@@ -135,7 +130,7 @@ Windows venv yorumlayicisi: `.venv\Scripts\python.exe`. Konsol Turkce icin once 
 
 # 5) Testler
 .venv\Scripts\python.exe -m pytest tests\ -q
-#   beklenen: 20 passed
+#   beklenen: 23 passed
 
 # 6) (opsiyonel) Streamlit demo
 .venv\Scripts\python.exe -m streamlit run relpath\demo_app.py

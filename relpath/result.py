@@ -38,6 +38,17 @@ class PredictionResult:
         sprint(_explain.format_card(entity_id, score, contribs, self.task.task_type))
         return contribs
 
+    def reliability(self, n_bins: int = 10) -> dict:
+        """Calibration quality (Brier + ECE) for classification with known labels."""
+        if self.task.task_type != "classification" or "label" not in self.predictions.columns:
+            return {}
+        from .model import reliability as _rel
+
+        df = self.predictions.dropna(subset=["label"])
+        if df.empty:
+            return {}
+        return _rel(df["label"].to_numpy(), df["score"].to_numpy(), n_bins=n_bins)
+
     # -- convenience ---------------------------------------------------
     def top(self, n: int = 10, ascending: bool = False) -> pd.DataFrame:
         return self.predictions.sort_values("score", ascending=ascending).head(n)

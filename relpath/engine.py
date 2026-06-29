@@ -50,6 +50,7 @@ class Engine:
         max_depth: int = 2,
         evaluate: bool = True,
         verbose: bool = False,
+        calibrate: bool = False,
     ) -> PredictionResult:
         task = self._to_task(query)
         compiled = compile_task(task, self.schema, self.backend)
@@ -65,7 +66,7 @@ class Engine:
         Xtr, ytr = _features.align_xy(train_fm, train_split.labels)
         if verbose:
             print(f"[relpath] train: {Xtr.shape[0]} rows × {Xtr.shape[1]} features")
-        model = fit_model(Xtr, ytr, task.task_type)
+        model = fit_model(Xtr, ytr, task.task_type, calibrate=calibrate)
 
         # SCORE: features at test_anchor → predictions (+ eval vs ground truth)
         test_split = compiled.build_split(test_anchor)

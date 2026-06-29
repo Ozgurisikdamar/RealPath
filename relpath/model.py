@@ -52,6 +52,7 @@ class TrainedModel:
     feature_names: list[str]
     classes_: np.ndarray | None = None
     constant: float | None = None      # set when the target was degenerate
+    calibrator: object | None = None   # isotonic map raw->calibrated proba (classification)
 
     def predict(self, X: pd.DataFrame) -> np.ndarray:
         """Class-1 probability (classification) or value (regression)."""
@@ -59,8 +60,8 @@ class TrainedModel:
             return np.full(len(X), self.constant, dtype=float)
         Xt = self.preprocessor.transform(X)
         if self.task_type == "classification":
-            proba = self.estimator.predict_proba(Xt)
-            return proba[:, 1]
+            raw = self.estimator.predict_proba(Xt)[:, 1]
+            return self.calibrator.predict(raw) if self.calibrator is not None else raw
         return self.estimator.predict(Xt)
 
     def importance(self) -> pd.Series:
@@ -75,7 +76,11 @@ def fit_model(
     y: pd.Series,
     task_type: str,
     backend: str = "auto",
+    calibrate: bool = False,
 ) -> TrainedModel:
+    """Train a model. ``calibrate=True`` adds isotonic probability calibration for
+    classification (fit on a held-out slice). Isotonic is monotonic, so ranking — and
+    therefore ROC-AUC — is preserved while probabilities become better calibrated."""
     pre = _Preprocessor().fit(X)
     Xt = pre.transform(X)
     feat = list(Xt.columns)
@@ -98,11 +103,47 @@ def fit_model(
                   n_jobs=-1, verbosity=-1)
     if task_type == "classification":
         est = lgb.LGBMClassifier(**params)
-        est.fit(Xt, y)
-        return TrainedModel(est, task_type, pre, feat, classes_=est.classes_)
+        calibrator = _fit_with_calibration(est, Xt, y) if calibrate else None
+        if calibrator is None:
+            est.fit(Xt, y)
+        return TrainedModel(est, task_type, pre, feat, classes_=est.classes_, calibrator=calibrator)
     est = lgb.LGBMRegressor(**params)
     est.fit(Xt, y)
     return TrainedModel(est, task_type, pre, feat)
+
+
+def _fit_with_calibration(est, Xt: pd.DataFrame, y: pd.Series):
+    """Fit ``est`` on a train slice and an isotonic calibrator on a held-out slice.
+    Returns the calibrator, or None if calibration isn't applicable (``est`` is then
+    left to be fit on the full data by the caller)."""
+    if y.nunique() < 2 or len(Xt) < 50:
+        return None
+    try:
+        from sklearn.isotonic import IsotonicRegression
+        from sklearn.model_selection import train_test_split
+
+        Xf, Xc, yf, yc = train_test_split(Xt, y, test_size=0.25, stratify=y, random_state=42)
+        est.fit(Xf, yf)
+        raw = est.predict_proba(Xc)[:, 1]
+        return IsotonicRegression(out_of_bounds="clip").fit(raw, yc.to_numpy())
+    except Exception:
+        return None
+
+
+def reliability(y_true, proba, n_bins: int = 10) -> dict:
+    """Calibration quality: Brier score and Expected Calibration Error (lower is better)."""
+    y_true = np.asarray(y_true, dtype=float)
+    proba = np.asarray(proba, dtype=float)
+    brier = float(np.mean((proba - y_true) ** 2))
+    edges = np.linspace(0.0, 1.0, n_bins + 1)
+    idx = np.clip(np.digitize(proba, edges[1:-1]), 0, n_bins - 1)
+    ece = 0.0
+    for b in range(n_bins):
+        m = idx == b
+        if not m.any():
+            continue
+        ece += (m.sum() / len(proba)) * abs(proba[m].mean() - y_true[m].mean())
+    return {"brier": brier, "ece": float(ece)}
 
 
 def _should_use_tabpfn(X: pd.DataFrame, y: pd.Series, task_type: str) -> bool:
