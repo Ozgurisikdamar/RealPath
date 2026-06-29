@@ -17,7 +17,6 @@ from . import nlp as _nlp
 from .connect import DuckDBBackend, open_backend
 from .model import fit_model
 from .pql import PredictiveTask, compile_task, parse_pql
-from .pql.compile import CompiledTask
 from .result import PredictionResult
 from .schema import RelationalSchema, build_entityset, infer_schema
 

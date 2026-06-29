@@ -10,6 +10,10 @@
   answer — without moving your data anywhere.
 </p>
 
+<p align="center">
+  <a href="https://github.com/Ozgurisikdamar/relpath/actions/workflows/ci.yml"><img src="https://github.com/Ozgurisikdamar/relpath/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+</p>
+
 ---
 
 ## Neden? / Why

@@ -205,7 +205,7 @@ def _normalize_dtypes(df):
         dt = df[c].dtype
         if pd.api.types.is_datetime64_any_dtype(dt):
             df[c] = df[c].astype("datetime64[ns]")
-        elif dt == object or "str" in str(dt).lower() or "string" in str(dt).lower():
+        elif pd.api.types.is_object_dtype(dt) or "str" in str(dt).lower() or "string" in str(dt).lower():
             df[c] = df[c].astype(object)
     return df
 

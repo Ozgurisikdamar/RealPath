@@ -21,7 +21,7 @@ bağlarsın, tahmin sorusunu düz dilde ya da **PQL** ile sorarsın, veriyi hiç
 | Faz | **Phase 1 PoC — tamam** (çalışan uçtan uca hat) |
 | Versiyon | `0.1.0` |
 | Testler | **20/20 geçiyor** |
-| Git | lokal repo, **1 commit** (`5953440`), branch **`master`**, **remote YOK**, **push YOK** |
+| Git | repo **`Ozgurisikdamar/relpath` (private)**, branch **`master`**, remote `origin`, push edildi. Yeni iş için yine **"pushla" bekle** (Bölüm 3). |
 | Python | **3.11.9**, venv `.venv\` |
 | pandas | **2.2.3 (PİNLİ — yükseltme!)** |
 

@@ -11,11 +11,22 @@ requires-python = ">=3.10"
 license = { text = "MIT" }
 authors = [{ name = "relpath.dev" }]
 keywords = ["relational deep learning", "predictive query", "automl", "feature engineering", "duckdb", "local-first"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+    "Topic :: Database",
+]
 
 # Core stays permissively licensed (MIT/BSD/Apache) and torch-free.
 dependencies = [
     "duckdb>=0.10",
-    "pandas>=2.0",
+    "pandas>=2.0,<2.3",   # PINNED: pandas 3.0 breaks woodwork's .ww accessor (see docs/DECISIONS.md ADR-001)
     "numpy>=1.24",
     "featuretools>=1.30",
     "lightgbm>=4.0",
@@ -39,9 +50,22 @@ dev = ["pytest>=7", "ruff>=0.4"]
 [project.scripts]
 relpath = "relpath.cli:main"
 
+[project.urls]
+Homepage = "https://github.com/Ozgurisikdamar/relpath"
+Repository = "https://github.com/Ozgurisikdamar/relpath"
+Issues = "https://github.com/Ozgurisikdamar/relpath/issues"
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["relpath*"]
 
 [tool.setuptools.package-data]
 relpath = ["templates/*.json"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"
+
+[tool.ruff.lint.per-file-ignores]
+# demo_app suppresses warnings before importing heavy libs — intentional import order.
+"relpath/demo_app.py" = ["E402"]

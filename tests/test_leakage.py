@@ -7,11 +7,9 @@ byte-for-byte identical. If any future row leaked into a feature, the matrices w
 import duckdb
 import numpy as np
 import pandas as pd
-import pytest
 
 from relpath.engine import connect
 from relpath.features import synthesize
-from relpath.schema import build_entityset, infer_schema
 
 
 def _build_split_and_features(db_path, pql, anchor):

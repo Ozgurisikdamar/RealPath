@@ -1,6 +1,6 @@
 # HANDOVER — relpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: vertical-template testleri (`tests/test_templates.py`, **20/20**).
+> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: CI + paketleme + GitHub'a push (private `Ozgurisikdamar/relpath`).
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam et` dendiginde once bu dosya okunur; "SIRADAKI IS" listesindeki en ust kutucuk bir sonraki istir.
 
@@ -30,8 +30,8 @@
 
 ### Git durumu
 
-- Lokal repo, **1 commit** (`5953440`), default branch, **remote YOK**, **push EDILMEDI**.
-- **KURAL:** kullanici `pushla` (ya da `push`) DEMEDIKCE push / PR / merge YOK. Lokal commit serbest, is bitiminde.
+- Git repo, branch `master`, **remote `origin` → github.com/Ozgurisikdamar/relpath (private)**, push edildi.
+- **KURAL:** kullanici `pushla` (ya da `push`) DEMEDIKCE push / PR / merge YOK. Lokal commit serbest, is bitiminde. (Bu turda kullanici "pushla" dedigi icin pushlandi.)
 
 ---
 
@@ -54,6 +54,8 @@
 - [x] Encoding-safe I/O (`_io.py`: `sprint`, `use_utf8`).
 - [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8: churn/forecast/fraud + builders + NL routing), `conftest.py` (sample_db + engine fixtures) — **20/20**.
 - [x] Bilingual README (TR/EN) + `docs/RELPATH_SPEC_v2.md` (+ .docx/.html) + logo.
+- [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3, 20/20.
+- [x] GitHub'a push: **private** repo `Ozgurisikdamar/relpath` (origin/master).
 
 ---
 
@@ -73,12 +75,7 @@
   - WHY: Local-first tezi korunarak self-host kurumsal DB'lere acilim.
   - WHERE: `relpath/connect.py` (`open_backend`, yeni `PostgresBackend`, ayni interface: tables/columns/row_count/distinct_count/load/query/close).
   - ACCEPTANCE: Bir Postgres DSN ile `connect(...)` sema cikarir ve en az churn sablonu uctan uca calisir; DuckDB default'u bozulmaz.
-
-- [ ] **PyPI metadata + CI (push'ta pytest)**
-  - WHAT: `pyproject.toml` paket metadata'sini tamamla; GitHub Actions ile push'ta `pytest` + `ruff`.
-  - WHY: Acik kaynak dagitimi ve regresyon korumasi.
-  - WHERE: `pyproject.toml`, yeni `.github/workflows/ci.yml`. (NOT: remote yok — workflow ancak push sonrasi tetiklenir, `pushla` bekler.)
-  - ACCEPTANCE: `pip install -e ".[dev]"` sonrasi `ruff check` + `python -m pytest tests/ -q` lokalde temiz; workflow dosyasi gecerli.
+  - NOT: Uctan-uca **dogrulama** icin erisilebilir bir Postgres gerekir (yoksa docker `postgres` ile yerel ayaga kaldir). Kod yazilabilir ama acceptance'i kanitlamak icin bir DB sart.
 
 - [ ] **RelBench adapter'i eval extra ile calistir/dogrula**
   - WHAT: `relbench_adapter.run_relbench_task`'i gercek bir RelBench task'inda kosturup feature/model yeniden-kullanimini dogrula.
