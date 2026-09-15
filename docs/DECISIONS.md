@@ -38,6 +38,7 @@ Her kayıt dört bölümden oluşur:
 | [ADR-012](#adr-012) | eval extra: `pytorch-frame` (impostor `torch-frame` değil) + PyG | Accepted |
 | [ADR-013](#adr-013) | Connector'lar tek küçük arayüz; MySQL ANSI_QUOTES; `?`→`%s` | Accepted |
 | [ADR-014](#adr-014) | Kalibrasyon opt-in (default kapalı) | Accepted |
+| [ADR-015](#adr-015) | GitHub Actions bu hesapta koşmuyor; kapı yerel, `schedule:` yok | Accepted |
 
 **İş/ürün kararları** ayrı bölümde: [Business Decisions (BD)](#business).
 
@@ -379,6 +380,37 @@ sızıntı pencereleri (ADR-005) bir FK grafiği ve time-index'e ihtiyaç duyar.
   metrikler (churn 0.749, eval +0.045) **değişmez**; isteyen `--calibrate` ile açar.
 - **Consequences:** (+) Doğrulanmış sayılar stabil. (−) Kalibrasyon varsayılan değil (kullanıcı
   bilinçli açmalı).
+
+---
+
+<a id="adr-015"></a>
+## ADR-015 — GitHub Actions bu hesapta koşmuyor; kapı yereldir, `schedule:` eklenmez
+
+**Status:** Accepted · **Tarih:** 2026-09-15
+
+- **Context:** `ci/` altında iki workflow **hazır ama etkin değil** (`ci.yml`,
+  `gnn-eval.yml`); `ci/README.md` onları `.github/workflows/`'a taşıyıp
+  etkinleştirmeyi anlatıyor. 2026-09-15'te `Ozgurisikdamar` hesabında Actions'ın
+  gerçekte ne yaptığı GitHub API ile ölçüldü: **hiç koşmamış.** Workflow'u olan iki
+  depoda (`portfolyo` 25, `ty_discovery` 30) **55/55 koşum `startup_failure`**,
+  sıfır başarı — üstelik `portfolyo`'da workflow'u **ekleyen** commit'ten itibaren.
+  Koşumlar `created_at == run_started_at == updated_at` ile anında düşüyor ve `path`
+  alanı `BuildFailed` yazıyor: koşum workflow dosyasını okumaya hiç ulaşmıyor, yani
+  sorun YAML'da değil, hesap düzeyinde (faturalandırma / harcama limiti).
+  **`workflow_dispatch` de düşüyor** (`ty_discovery/live-probe.yml`, 2026-09-05).
+- **Decision:** Bu depoya `schedule:` tetikleyicili workflow **eklenmez**.
+  `ci/` etkinleştirilse bile **kapı sayılmaz**; tek gerçek kapı yereldir:
+  `python -m pytest tests/ -q` (25/25) + gerekiyorsa `python -m realpath.eval`.
+  Tekrarlayan iş gerekirse yeri sürecin kendi zamanlayıcısı ya da sunucu cron'udur.
+- **Consequences:** (+) "CI yeşil" gibi olmayan bir kanıta yaslanmıyoruz; Bölüm 5
+  smoke test'i zaten bu rolü üstleniyor ve **gerçekten koşuyor**.
+  (−) **ADR-011'in temiz-Linux-runner varsayımı çöktü:** `gnn-eval.yml`
+  `workflow_dispatch` ile koşacaktı ve `pyg-lib` (Linux-only) temporal GNN
+  benchmark'ının "doğru mekânı" oydu (`docs/BENCHMARKS.md` §6). O mekân **yok**;
+  benchmark ya gerçek bir Linux makinesinde elle koşturulur ya da PENDING kalır —
+  ve PENDING olduğu açıkça yazılır, koşmuş gibi yapılmaz.
+  (−) `ci/README.md`'deki etkinleştirme reçetesi teknik olarak doğru ama **sonuç
+  üretmez**; dosyanın başına bu uyarı kondu.
 
 ---
 
