@@ -1,6 +1,6 @@
 # HANDOVER — realpath.dev
 
-> **Son guncelleme: 2026-06-19 — hazirlayan: Claude (Opus 4.8)** · son is: **Sprint 2 (3/4)** — DFS tuning (driver-dnf 0.592→**0.658**), ek RelBench task (driver-top3 0.769), GNN CI workflow (`ci/gnn-eval.yml`). Kalan: GNN adil temporal SAYISI **infra-bloke** (disk %100 doldu, Docker bozuldu → GitHub Linux CI'da koşacak).
+> **Son guncelleme: 2026-09-15** · onceki is: **Sprint 2 (3/4)** — DFS tuning (driver-dnf 0.592→**0.658**), ek RelBench task (driver-top3 0.769), GNN CI workflow (`ci/gnn-eval.yml`). Kalan: GNN adil temporal SAYISI **infra-bloke** (disk %100 doldu, Docker bozuldu). ⚠️ **2026-09-15 duzeltmesi:** "GitHub Linux CI'da kosacak" cozumu **YOK** — bu hesapta Actions hic kosmuyor (**ADR-015**); benchmark gercek bir Linux makinesinde elle kosar ya da PENDING kalir.
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam` dendiginde once **`docs/SPRINTS.md`** (🟢 guncel sprint) okunur; **bu dosya canli durumdur** (ne bitti, bilinen sorunlar, dogrulama).
 
@@ -32,6 +32,7 @@
 
 - Git repo, branch `master`, **remote `origin` → github.com/Ozgurisikdamar/realpath (private)**, push edildi.
 - **KURAL:** kullanici `pushla` (ya da `push`) DEMEDIKCE push / PR / merge YOK. Lokal commit serbest, is bitiminde. (Bu turda kullanici "pushla" dedigi icin pushlandi.)
+- **2026-09-15:** ADR-015 + `ci/README.md` uyarisi commit `b87b51f`; kullanici "ana dala pushla" dedigi icin `master`'a ileri sarildi (force push yok, gecmis yeniden yazilmadi).
 
 ---
 
@@ -72,7 +73,7 @@
 > (şu an **Sprint 1 — OSS Launch Readiness**) → en üst açık & bloke-olmayan görev.
 >
 > **Bloke maddeler** (atla; SPRINTS'te ilgili sprintte): canlı Claude NL→PQL (`ANTHROPIC_API_KEY`
-> yok → Sprint 4) · GNN adil temporal benchmark (`pyg-lib` Windows'ta yok → Sprint 2).
+> yok → Sprint 4) · GNN adil temporal benchmark (`pyg-lib` Windows'ta yok → Sprint 2; ⚠️ **kacis yolu sanilan GitHub CI de yok** — ADR-015).
 
 ---
 
@@ -80,8 +81,8 @@
 
 - **pandas 3.0 KIRIYOR.** `pandas==2.2.x` (pinli **2.2.3**) sart. pandas 3.0'da `.ww` woodwork accessor semasi kalici olmuyor → Featuretools EntitySet build cokuyor. **Yukseltme.**
 - **GNN temporal sampling `pyg-lib` ister (Windows'ta YOK).** `realpath/gnn.py` non-temporal fallback ile koşar ama **LEAKY** (adil benchmark değil). Leakage-safe temporal GNN için Linux/WSL + `pip install pyg-lib`. Ayrıca `eval` extra'da gerçek paket **`pytorch-frame`** (PyPI `torch-frame` impostor; düzeltildi) + `torch-sparse` PyG wheel index'ten.
-- **⚠️ DİSK %100 DOLDU + Docker BOZULDU.** GNN'i Linux Docker'da koşma denemesi (torch+PyG ≈2 GB) **C: diskini doldurdu** (0 boş) ve Docker WSL2 storage'ı bozdu (`input/output error`). `.venv_eval` + pip cache silinerek ~2.8 GB açıldı. **Docker artık çalışmıyor** — kullanıcının **Docker Desktop → Troubleshoot → Clean/Purge data** (ya da `wsl --shutdown`) ile sıfırlaması gerekir. Postgres/MySQL testleri Docker'a bağlı (şimdilik skip). GNN adil temporal → GitHub Linux CI (`ci/gnn-eval.yml`).
-- **CI workflow'ları `ci/` klasöründe** (`.github/workflows/` değil — token'da `workflow` scope yok). Aktive etmek: `gh auth refresh -s workflow` + `git mv ci/*.yml .github/workflows/`. Lokal `ci` branch artık gereksiz (içerik `ci/`'de).
+- **⚠️ DİSK %100 DOLDU + Docker BOZULDU.** GNN'i Linux Docker'da koşma denemesi (torch+PyG ≈2 GB) **C: diskini doldurdu** (0 boş) ve Docker WSL2 storage'ı bozdu (`input/output error`). `.venv_eval` + pip cache silinerek ~2.8 GB açıldı. **Docker artık çalışmıyor** — kullanıcının **Docker Desktop → Troubleshoot → Clean/Purge data** (ya da `wsl --shutdown`) ile sıfırlaması gerekir. Postgres/MySQL testleri Docker'a bağlı (şimdilik skip). ~~GNN adil temporal → GitHub Linux CI (`ci/gnn-eval.yml`)~~ → **BU ÇÖZÜM YOK (2026-09-15, ADR-015):** bu hesapta Actions hiç koşmuyor, `workflow_dispatch` dahil. Adil temporal sayı ya gerçek bir Linux makinesinde elle koşturulur ya da PENDING kalır — ve PENDING olduğu açıkça yazılır.
+- **⛔ CI DİYE BİR KAPI YOK — ölçüldü (2026-09-15, ADR-015).** `ci/` klasöründeki iki workflow (`.github/workflows/` değil — token'da `workflow` scope yok) etkinleştirilse **bile sonuç üretmez**: bu hesapta GitHub Actions bugüne kadar hiç koşmadı — workflow'u olan iki depoda **55/55 `startup_failure`**, sıfır başarı, `workflow_dispatch` dahil. Koşum workflow dosyasına hiç ulaşmıyor (`path: BuildFailed`), yani sebep YAML değil, hesap düzeyinde (faturalandırma). Eski aktive etme reçetesi (`gh auth refresh -s workflow` + `git mv`) teknik olarak doğru ama **yeşil bir kapı vermez**; uyarı `ci/README.md`'nin başında. **Tek gerçek kapı yerel:** `python -m pytest tests/ -q` (25/25). Bu depoya `schedule:` tetikleyicisi de eklenmez.
 - **RelBench adapter `rel-f1` ile DOGRULANDI** (driver-dnf AUC ~0.592, driver-position MAE ~3.61). `eval` extra'sini **izole `.venv_eval`'de** kur (cekirdek `.venv`'i bozma). Basit DFS baseline tuned RDL'in altinda — beklenen; GNN backend "SIRADAKI IS"te.
 - **fraud sinyali sentetik veride zayif.** Bu yuzden return-risk, musteri seviyesinde **2-hop join** olarak reframe edildi (~0.689 ROC-AUC).
 - **Windows cp1252 encoding.** Turkce konsol ciktisi icin `PYTHONUTF8=1` ayarla; kutuphane zaten `realpath._io.sprint` ile encoding-safe yazar ve CLI/eval `_io.use_utf8()` cagirir.
