@@ -1,0 +1,190 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="940" viewBox="0 0 1600 940">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#090D16"/>
+    <stop offset="1" stop-color="#0E1726"/>
+  </linearGradient>
+  <linearGradient id="emeraldBlue" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#10B981"/>
+    <stop offset="1" stop-color="#3B82F6"/>
+  </linearGradient>
+  <linearGradient id="purple" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#6366F1"/>
+    <stop offset="1" stop-color="#A855F7"/>
+  </linearGradient>
+  <filter id="softGlow" x="-30%" y="-30%" width="160%" height="160%">
+    <feGaussianBlur stdDeviation="8" result="b"/>
+    <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+  </filter>
+  <style>
+    .title{font:700 42px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
+    .subtitle{font:400 18px Inter,Segoe UI,Arial,sans-serif;fill:#94A3B8}
+    .lane{font:700 15px Inter,Segoe UI,Arial,sans-serif;fill:#94A3B8;letter-spacing:2px}
+    .cardTitle{font:700 22px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
+    .cardText{font:400 16px Inter,Segoe UI,Arial,sans-serif;fill:#A8B4C7}
+    .mini{font:600 14px Inter,Segoe UI,Arial,sans-serif;fill:#CBD5E1}
+    .accent{font:700 15px Inter,Segoe UI,Arial,sans-serif;fill:#6EE7B7}
+  </style>
+</defs>
+
+<rect width="1600" height="940" rx="30" fill="url(#bg)"/>
+<circle cx="1400" cy="120" r="240" fill="#10B981" opacity=".05"/>
+<circle cx="160" cy="820" r="260" fill="#6366F1" opacity=".06"/>
+
+<text x="800" y="62" text-anchor="middle" class="title">RealPath Architecture</text>
+<text x="800" y="96" text-anchor="middle" class="subtitle">A local-first relational prediction pipeline with explicit temporal safety and explainable provenance.</text>
+
+<!-- Lane labels -->
+<text x="78" y="145" class="lane">INPUT &amp; STORAGE</text>
+<text x="420" y="145" class="lane">RELATIONAL COMPILATION</text>
+<text x="824" y="145" class="lane">FEATURE &amp; MODEL</text>
+<text x="1220" y="145" class="lane">OUTPUT &amp; RESEARCH</text>
+
+<!-- Column backgrounds -->
+<rect x="60" y="164" width="300" height="674" rx="26" fill="#0D1624" stroke="#243244" stroke-width="2"/>
+<rect x="402" y="164" width="360" height="674" rx="26" fill="#0D1624" stroke="#243244" stroke-width="2"/>
+<rect x="804" y="164" width="350" height="674" rx="26" fill="#0D1624" stroke="#243244" stroke-width="2"/>
+<rect x="1196" y="164" width="344" height="674" rx="26" fill="#0D1624" stroke="#243244" stroke-width="2"/>
+
+<!-- INPUT -->
+<g transform="translate(88 202)">
+  <rect width="244" height="132" rx="20" fill="#111C2C" stroke="#10B981" stroke-width="2"/>
+  <text x="22" y="35" class="accent">DATABASES</text>
+  <text x="22" y="69" class="cardTitle">Backend adapters</text>
+  <text x="22" y="98" class="cardText">DuckDB · PostgreSQL</text>
+  <text x="22" y="120" class="cardText">MySQL · read-only access</text>
+</g>
+
+<g transform="translate(88 380)">
+  <rect width="244" height="132" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
+  <text x="22" y="35" class="accent">QUESTION</text>
+  <text x="22" y="69" class="cardTitle">Natural language</text>
+  <text x="22" y="98" class="cardText">English / Turkish</text>
+  <text x="22" y="120" class="cardText">or direct PQL</text>
+</g>
+
+<g transform="translate(88 558)">
+  <rect width="244" height="154" rx="20" fill="#111C2C" stroke="#64748B" stroke-width="2"/>
+  <text x="22" y="35" class="accent">LOCAL-FIRST</text>
+  <text x="22" y="69" class="cardTitle">Data stays local</text>
+  <text x="22" y="98" class="cardText">No warehouse export</text>
+  <text x="22" y="120" class="cardText">No mandatory cloud ML</text>
+  <text x="22" y="142" class="cardText">DuckDB runs in-process</text>
+</g>
+
+<!-- RELATIONAL -->
+<g transform="translate(432 202)">
+  <rect width="300" height="138" rx="20" fill="#111C2C" stroke="#10B981" stroke-width="2"/>
+  <text x="22" y="35" class="accent">SCHEMA</text>
+  <text x="22" y="69" class="cardTitle">RelationalSchema</text>
+  <text x="22" y="98" class="cardText">PK · FK · time-index inference</text>
+  <text x="22" y="120" class="cardText">BFS join-path discovery</text>
+</g>
+
+<g transform="translate(432 382)">
+  <rect width="300" height="158" rx="20" fill="#111827" stroke="url(#purple)" stroke-width="2.5"/>
+  <text x="22" y="35" class="accent">PQL COMPILER</text>
+  <text x="22" y="69" class="cardTitle">Predictive task AST</text>
+  <text x="22" y="98" class="cardText">SQLGlot validation</text>
+  <text x="22" y="120" class="cardText">join inference · horizons</text>
+  <text x="22" y="142" class="cardText">classification / regression</text>
+</g>
+
+<g transform="translate(432 586)">
+  <rect width="300" height="158" rx="20" fill="#0D241F" stroke="#10B981" stroke-width="2"/>
+  <text x="22" y="35" class="accent">TEMPORAL SPLIT</text>
+  <text x="22" y="69" class="cardTitle">Anchor-safe windows</text>
+  <text x="22" y="98" class="cardText">features ≤ t*</text>
+  <text x="22" y="120" class="cardText">labels &gt; t*</text>
+  <text x="22" y="142" class="cardText">cutoff_time prevents leakage</text>
+</g>
+
+<!-- MODEL -->
+<g transform="translate(834 202)">
+  <rect width="290" height="150" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
+  <text x="22" y="35" class="accent">FEATURE ENGINE</text>
+  <text x="22" y="69" class="cardTitle">Featuretools DFS</text>
+  <text x="22" y="98" class="cardText">multi-hop aggregations</text>
+  <text x="22" y="120" class="cardText">entity-specific cutoff</text>
+  <text x="22" y="142" class="cardText">relational feature matrix</text>
+</g>
+
+<g transform="translate(834 398)">
+  <rect width="290" height="150" rx="20" fill="#111C2C" stroke="#6366F1" stroke-width="2"/>
+  <text x="22" y="35" class="accent">MODEL</text>
+  <text x="22" y="69" class="cardTitle">LightGBM</text>
+  <text x="22" y="98" class="cardText">classification / regression</text>
+  <text x="22" y="120" class="cardText">degenerate-target guard</text>
+  <text x="22" y="142" class="cardText">optional calibration</text>
+</g>
+
+<g transform="translate(834 594)">
+  <rect width="290" height="150" rx="20" fill="#111C2C" stroke="#A855F7" stroke-width="2"/>
+  <text x="22" y="35" class="accent">EXPLAINABILITY</text>
+  <text x="22" y="69" class="cardTitle">Join-path provenance</text>
+  <text x="22" y="98" class="cardText">feature → table → aggregation</text>
+  <text x="22" y="120" class="cardText">global + entity explanations</text>
+  <text x="22" y="142" class="cardText">optional SHAP</text>
+</g>
+
+<!-- OUTPUT -->
+<g transform="translate(1226 202)">
+  <rect width="284" height="174" rx="22" fill="#0B241F" stroke="url(#emeraldBlue)" stroke-width="2.5" filter="url(#softGlow)"/>
+  <text x="22" y="35" class="accent">PUBLIC RESULT</text>
+  <text x="22" y="71" class="cardTitle">PredictionResult</text>
+  <text x="22" y="102" class="cardText">scores / probabilities</text>
+  <text x="22" y="126" class="cardText">metrics · top entities</text>
+  <text x="22" y="150" class="cardText">explain() · provenance</text>
+</g>
+
+<g transform="translate(1226 424)">
+  <rect width="284" height="138" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
+  <text x="22" y="35" class="accent">INTERFACES</text>
+  <text x="22" y="69" class="cardTitle">Python · CLI · Demo</text>
+  <text x="22" y="98" class="cardText">one engine, same pipeline</text>
+  <text x="22" y="120" class="cardText">no separate demo backend</text>
+</g>
+
+<g transform="translate(1226 610)">
+  <rect width="284" height="166" rx="20" fill="#151827" stroke="#6366F1" stroke-width="2"/>
+  <text x="22" y="35" class="accent">OPTIONAL RESEARCH</text>
+  <text x="22" y="69" class="cardTitle">RelBench / GNN</text>
+  <text x="22" y="98" class="cardText">isolated from the core</text>
+  <text x="22" y="120" class="cardText">heavy dependencies optional</text>
+  <text x="22" y="142" class="cardText">not required for production use</text>
+</g>
+
+<!-- Arrows -->
+<g stroke-linecap="round" stroke-linejoin="round" fill="none">
+  <path d="M332 268 H432" stroke="#10B981" stroke-width="3"/>
+  <path d="M420 260l12 8-12 8" stroke="#10B981" stroke-width="3"/>
+
+  <path d="M332 446 C380 446 380 460 432 460" stroke="#6366F1" stroke-width="3"/>
+  <path d="M420 452l12 8-12 8" stroke="#6366F1" stroke-width="3"/>
+
+  <path d="M582 340 V382" stroke="#38BDF8" stroke-width="3"/>
+  <path d="M574 370l8 12 8-12" stroke="#38BDF8" stroke-width="3"/>
+
+  <path d="M582 540 V586" stroke="#10B981" stroke-width="3"/>
+  <path d="M574 574l8 12 8-12" stroke="#10B981" stroke-width="3"/>
+
+  <path d="M732 665 H834" stroke="#38BDF8" stroke-width="3"/>
+  <path d="M822 657l12 8-12 8" stroke="#38BDF8" stroke-width="3"/>
+
+  <path d="M979 352 V398" stroke="#6366F1" stroke-width="3"/>
+  <path d="M971 386l8 12 8-12" stroke="#6366F1" stroke-width="3"/>
+
+  <path d="M979 548 V594" stroke="#A855F7" stroke-width="3"/>
+  <path d="M971 582l8 12 8-12" stroke="#A855F7" stroke-width="3"/>
+
+  <path d="M1124 669 C1174 669 1174 290 1226 290" stroke="#10B981" stroke-width="3"/>
+  <path d="M1214 282l12 8-12 8" stroke="#10B981" stroke-width="3"/>
+
+  <path d="M1368 376 V424" stroke="#38BDF8" stroke-width="3"/>
+  <path d="M1360 412l8 12 8-12" stroke="#38BDF8" stroke-width="3"/>
+</g>
+
+<!-- Footer -->
+<rect x="60" y="866" width="1480" height="42" rx="14" fill="#0B1421" stroke="#1F3348"/>
+<text x="800" y="892" text-anchor="middle" class="mini">connect → infer relationships → compile predictive task → isolate time → synthesize features → train → explain</text>
+</svg>

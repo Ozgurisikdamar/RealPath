@@ -234,33 +234,66 @@ The figures below are measured on this repository's reproducible sample/evaluati
 
 ## Architecture
 
-```mermaid
-flowchart LR
-    DB[(DuckDB / PostgreSQL / MySQL)] --> S[Schema inference]
-    S --> G[PK · FK · time graph]
-    Q[Plain language / PQL] --> P[PQL parser + compiler]
-    G --> P
-    P --> T[Temporal split]
-    T --> F[Featuretools DFS]
-    F --> M[LightGBM]
-    M --> R[PredictionResult]
-    F --> E[Join-path provenance]
-    E --> R
-```
+<div align="center">
 
-| Module | Responsibility |
-| --- | --- |
-| `connect.py` | DuckDB, PostgreSQL and MySQL backend interface |
-| `schema.py` | PK/FK/time inference and relational graph |
-| `pql/` | PQL AST, parser, compilation and join-path inference |
-| `features.py` | leakage-safe Deep Feature Synthesis |
-| `model.py` | LightGBM classification/regression and optional calibration |
-| `explain.py` | feature provenance and optional SHAP |
-| `nlp.py` | natural language → PQL with offline fallback |
-| `eval.py` | local and RelBench evaluation paths |
-| `gnn.py` | optional experimental relational GNN path |
+<img src="docs/architecture-premium.svg" alt="RealPath architecture — local-first relational prediction pipeline" width="100%"/>
 
-For the full technical design, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+</div>
+
+RealPath keeps the production path intentionally small: **database access, relational compilation, leakage-safe feature synthesis, tabular modeling, and provenance-based explanations**. Heavy research paths remain optional instead of becoming mandatory runtime dependencies.
+
+<table>
+<tr>
+<td width="50%" valign="top">
+
+### 1. Relational layer
+
+`connect.py` provides a common backend interface while `schema.py` discovers **primary keys, foreign keys and time indexes** and builds the graph used for join-path inference.
+
+</td>
+<td width="50%" valign="top">
+
+### 2. Predictive compiler
+
+`nlp.py` can translate a natural-language question to PQL. The `pql/` package parses and compiles it into a concrete predictive task with entity, horizon, joins and task type.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### 3. Leakage-safe ML
+
+`features.py` builds relational features with Featuretools DFS and per-entity `cutoff_time`. `model.py` trains the LightGBM classification/regression path and optional calibration.
+
+</td>
+<td width="50%" valign="top">
+
+### 4. Explained result
+
+`explain.py` maps generated features back to **tables, aggregations and join paths**. `PredictionResult` exposes scores, metrics and entity-level explanations through the public API.
+
+</td>
+</tr>
+</table>
+
+### Core module map
+
+| Layer | Module | Responsibility |
+| --- | --- | --- |
+| **Storage** | `connect.py` | DuckDB, PostgreSQL and MySQL backend interface |
+| **Relational graph** | `schema.py` | PK/FK/time inference, EntitySet creation and join paths |
+| **Query** | `nlp.py`, `pql/` | natural language → PQL, AST, validation and compilation |
+| **Temporal split** | `pql/compile.py` | anchor timestamps, feature/label windows and task construction |
+| **Feature engine** | `features.py` | leakage-safe Deep Feature Synthesis |
+| **Modeling** | `model.py` | LightGBM classification/regression and calibration |
+| **Explainability** | `explain.py`, `result.py` | provenance, global drivers and entity-level explanation |
+| **Evaluation** | `eval.py` | local proof path and RelBench adapter |
+| **Research** | `gnn.py` | optional experimental relational GNN path |
+
+> **Design rule:** the core stays lightweight and tabular. RelBench, PyTorch and GNN tooling are isolated behind optional evaluation/research dependencies.
+
+For the full contracts, data flow and implementation details, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
