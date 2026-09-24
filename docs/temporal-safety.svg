@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="430" viewBox="0 0 1600 430">
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+    <stop offset="0" stop-color="#0A0F18"/>
+    <stop offset="1" stop-color="#0F1B2B"/>
+  </linearGradient>
+  <linearGradient id="past" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#6366F1"/>
+    <stop offset="1" stop-color="#3B82F6"/>
+  </linearGradient>
+  <linearGradient id="future" x1="0" y1="0" x2="1" y2="0">
+    <stop offset="0" stop-color="#10B981"/>
+    <stop offset="1" stop-color="#34D399"/>
+  </linearGradient>
+  <style>
+    .title{font:700 34px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
+    .text{font:400 18px Inter,Segoe UI,Arial,sans-serif;fill:#A8B4C7}
+    .label{font:700 18px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
+    .small{font:600 15px Inter,Segoe UI,Arial,sans-serif;fill:#CBD5E1}
+  </style>
+</defs>
+<rect width="1600" height="430" rx="26" fill="url(#bg)"/>
+<text x="800" y="56" text-anchor="middle" class="title">Temporal safety: features never see the future</text>
+<text x="800" y="88" text-anchor="middle" class="text">Each entity is evaluated around an anchor timestamp. Feature and label windows are structurally separated.</text>
+
+<line x1="170" y1="244" x2="1430" y2="244" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
+
+<rect x="225" y="184" width="540" height="120" rx="22" fill="#111A2A" stroke="#6366F1" stroke-width="2"/>
+<rect x="225" y="184" width="540" height="8" rx="4" fill="url(#past)"/>
+<text x="265" y="227" class="label">FEATURE WINDOW</text>
+<text x="265" y="259" class="text">Only data at or before the anchor is used</text>
+<text x="265" y="286" class="small">transactions · returns · relational aggregations</text>
+
+<line x1="800" y1="140" x2="800" y2="340" stroke="#F8FAFC" stroke-width="3" stroke-dasharray="7 7"/>
+<circle cx="800" cy="244" r="13" fill="#F8FAFC"/>
+<text x="800" y="130" text-anchor="middle" class="label">ANCHOR t*</text>
+
+<rect x="835" y="184" width="540" height="120" rx="22" fill="#0D241F" stroke="#10B981" stroke-width="2"/>
+<rect x="835" y="184" width="540" height="8" rx="4" fill="url(#future)"/>
+<text x="875" y="227" class="label">LABEL WINDOW</text>
+<text x="875" y="259" class="text">The outcome is measured strictly after the anchor</text>
+<text x="875" y="286" class="small">(t*, t* + horizon] · no overlap with features</text>
+
+<text x="225" y="350" class="small">PAST</text>
+<text x="1375" y="350" text-anchor="end" class="small">FUTURE</text>
+</svg>

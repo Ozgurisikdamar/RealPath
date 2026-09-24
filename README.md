@@ -1,138 +1,306 @@
-<p align="center">
-  <img src="docs/logo.png" alt="realpath.dev" width="560">
+<div align="center">
+
+<img src="docs/logo.svg" alt="realpath.dev" width="720"/>
+
+<br/>
+
+### Open-source, self-hostable relational prediction — directly on your data.
+
+Connect a relational database, ask a predictive question in plain language or PQL, and get an **explained prediction** without exporting the dataset to a separate ML platform.
+
+<br/>
+
+<img src="https://img.shields.io/badge/version-0.1.0-6366F1?style=for-the-badge" alt="version 0.1.0"/>
+<img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+"/>
+<img src="https://img.shields.io/badge/license-MIT-10B981?style=for-the-badge" alt="MIT"/>
+<img src="https://img.shields.io/badge/tests-25%20passed-22C55E?style=for-the-badge&logo=pytest&logoColor=white" alt="25 tests passed"/>
+<img src="https://img.shields.io/badge/local--first-data%20stays%20local-0F766E?style=for-the-badge" alt="local-first"/>
+
+<br/><br/>
+
+<table>
+<tr>
+<td align="center"><strong>3</strong><br/><sub>VERIFIED BACKENDS</sub></td>
+<td align="center"><strong>NL → PQL</strong><br/><sub>PREDICTIVE QUERIES</sub></td>
+<td align="center"><strong>LEAKAGE-SAFE</strong><br/><sub>TEMPORAL FEATURES</sub></td>
+<td align="center"><strong>EXPLAINED</strong><br/><sub>JOIN-PATH PROVENANCE</sub></td>
+</tr>
+</table>
+
+<p>
+<a href="#why-realpath"><b>Why</b></a> ·
+<a href="#how-it-works"><b>How it works</b></a> ·
+<a href="#quickstart"><b>Quickstart</b></a> ·
+<a href="#pql--predictive-query-language"><b>PQL</b></a> ·
+<a href="#verified-results"><b>Results</b></a> ·
+<a href="#architecture"><b>Architecture</b></a>
 </p>
 
-<h1 align="center">realpath.dev — Neural Database Predictive Engine</h1>
-
-<p align="center">
-  <b>The open-source, self-hostable relational prediction engine.</b><br>
-  Connect a database, ask a predictive question in plain language, get an <i>explained</i>
-  answer — without moving your data anywhere.
-</p>
-
-<p align="center">
-  <a href="https://github.com/Ozgurisikdamar/realpath/actions/workflows/ci.yml"><img src="https://github.com/Ozgurisikdamar/realpath/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-</p>
+</div>
 
 ---
 
-## Neden? / Why
+## Why RealPath
 
-Kurumsal verinin çoğu çok-tablolu **ilişkisel** veritabanlarında yaşar, ama klasik ML
-araçları yalnızca tek bir düz tabloyu görebilir — aradaki boşluğu aylar süren elle SQL JOIN
-ve "öznitelik mühendisliği" kapatır. **realpath** bu süreci otomatikleştirir: şemanızı ve
-foreign-key grafiğini çıkarır, sorduğunuz tahmini sızıntısız özniteliklere derler, bir model
-eğitir ve **hangi ilişkisel yolun kararı verdiğini** açıklar.
+Most business data is not a flat CSV. It lives across related tables: customers, orders, transactions, returns, products and events.
 
-Bu, kategori lideri **Kumo.AI / KumoRFM**'in açık-kaynak, self-host, **local-first** karşıtıdır.
-Detaylı strateji & teknik doküman: [`docs/REALPATH_SPEC_v2.md`](docs/REALPATH_SPEC_v2.md).
+Traditional tabular ML usually requires someone to manually turn those relationships into one training table with repeated SQL joins, aggregations and feature engineering. RealPath automates that relational step.
 
-## Farklılaştırıcılar / Differentiators
+<table>
+<tr>
+<td width="50%" valign="top">
 
-- 🔓 **Açık kaynak + self-host + local-first** — DuckDB ile dizüstünüzde çalışır, veri çıkmaz.
-- 🗣️ **Doğal dil → PQL** — düz Türkçe/İngilizce sorun; SQLGlot ile doğrulanmış PQL'e çevrilir.
-- 🔎 **Açıklanabilirlik** — her tahmin için "hangi tablo / agregasyon / join yolu" etkiledi.
-- 📦 **Dikey şablonlar** — `churn`, `forecast`, `fraud` tek satırda.
+### 🔗 Understands relationships
 
-## Kurulum / Install
+Discovers tables, primary keys, foreign keys and time columns, then builds the relational graph used for multi-hop feature generation.
 
-```bash
-python -m venv .venv && .venv\Scripts\activate      # Windows
-pip install -e .
-# opsiyonel: pip install -e ".[nlp,explain,demo]"
+</td>
+<td width="50%" valign="top">
+
+### 🗣️ Predict in plain language
+
+Questions can be translated into **PQL (Predictive Query Language)** and validated before execution. PQL can also be written directly.
+
+</td>
+</tr>
+<tr>
+<td width="50%" valign="top">
+
+### ⏱️ Temporal leakage protection
+
+Feature generation uses entity-specific cutoff times, keeping historical evidence separate from the future label window.
+
+</td>
+<td width="50%" valign="top">
+
+### 🔎 Explain relational paths
+
+Predictions expose feature importance and provenance so you can see which table, aggregation and join path contributed to the result.
+
+</td>
+</tr>
+</table>
+
+---
+
+## How it works
+
+<div align="center">
+
+<img src="docs/realpath-overview.svg" alt="RealPath relational prediction pipeline" width="100%"/>
+
+</div>
+
+The core path is intentionally compact:
+
+```text
+database
+   ↓
+schema + FK graph
+   ↓
+plain language / PQL
+   ↓
+predictive task + temporal split
+   ↓
+Deep Feature Synthesis
+   ↓
+LightGBM
+   ↓
+prediction + join-path explanation
 ```
 
-Çekirdek bağımlılıklar izinli lisanslı (MIT/BSD/Apache): `duckdb`, `featuretools`, `lightgbm`,
-`sqlglot`, `scikit-learn`. **Not:** `pandas==2.2.x` gerekir (`woodwork` pandas 3.0 ile uyumsuz).
+RealPath is **local-first**: DuckDB runs in-process; PostgreSQL and MySQL are supported through optional connectors. The same predictive pipeline is used across the verified backends.
 
-## 60 saniyede / Quickstart
+---
+
+## Quickstart
+
+### Install
 
 ```bash
-python data/make_sample_db.py        # bundle synthetic e-commerce DuckDB (zero downloads)
+python -m venv .venv
+
+# Windows
+.venv\Scripts\activate
+
+# macOS / Linux
+source .venv/bin/activate
+
+pip install -e .
+```
+
+Optional capabilities:
+
+```bash
+pip install -e ".[nlp,explain,demo]"
+```
+
+### Run the bundled example
+
+```bash
+python data/make_sample_db.py
 python examples/quickstart.py
 ```
+
+### Python API
 
 ```python
 import realpath as rp
 
-engine = rp.connect("data/shop.duckdb")          # local-first
-result = engine.predict(                          # PQL or plain language
-    "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id"
+engine = rp.connect("data/shop.duckdb")
+
+result = engine.predict(
+    "PREDICT COUNT(transactions.*, 0, 30, days) == 0 "
+    "FOR EACH customers.customer_id"
 )
-print(result.metrics)                             # {'roc_auc': 0.749, 'accuracy': 0.737}
-result.explain()                                  # global drivers (join paths)
-result.explain(entity_id=9)                       # why THIS customer
+
+print(result.metrics)
+result.explain()
+result.explain(entity_id=9)
 ```
 
-## CLI
+### CLI
 
 ```bash
 realpath make-sample
-realpath schema  --db data/shop.duckdb
-realpath ask     "hangi musteriler iade yapacak" --db data/shop.duckdb
-realpath predict "gelecek 30 gunde islem yapmayacak musteriler" --db data/shop.duckdb --explain
-realpath predict "PREDICT COUNT(transactions.*, 0, 30, days) == 0 FOR EACH customers.customer_id" \
-                --db data/shop.duckdb --calibrate   # kalibre olasılık + Brier/ECE
-realpath eval                                       # relational-vs-baseline proof
+realpath schema --db data/shop.duckdb
+realpath ask "which customers will churn in the next 30 days?" --db data/shop.duckdb
+realpath predict "which customers will churn in the next 30 days?" --db data/shop.duckdb --explain
+realpath eval
 ```
 
-## Interaktif demo (Streamlit)
-
-```bash
-streamlit run realpath/demo_app.py
-# http://localhost:8501
-```
+---
 
 ## PQL — Predictive Query Language
 
-```
-PREDICT  AGG(<table>.<col|*>, <start>, <end>, <unit>) [<op> <value>]
+PQL expresses **what should be predicted, for which entity, and over which time window**.
+
+```text
+PREDICT AGG(<table>.<column|*>, <start>, <end>, <unit>) [<op> <value>]
 FOR EACH <entity_table>.<primary_key>
-[WHERE <filter>]        -- hangi target satırları etiketi oluşturur
-[ASSUMING <filter>]     -- hangi entity'ler skorlanır
+[WHERE <filter>]
+[ASSUMING <filter>]
 ```
 
-`AGG ∈ {COUNT, SUM, AVG, MIN, MAX}` · `unit ∈ {days, weeks, months}` ·
-karşılaştırıcı varsa **sınıflandırma**, yoksa **regresyon**.
+Example:
 
-## Zamansal sızıntı güvenliği / Temporal safety
+```text
+PREDICT COUNT(transactions.*, 0, 30, days) == 0
+FOR EACH customers.customer_id
+```
 
-Öznitelikler her entity'nin **anchor timestamp**'inden öncesini, etiket ise sonrasını görür
-(Featuretools `cutoff_time`). İki pencere asla kesişmez. Bu yapısal garanti, gelecekteki
-veriyi silip özniteliklerin değişmediğini kanıtlayan bir testle güvence altındadır:
+Supported aggregations include `COUNT`, `SUM`, `AVG`, `MIN` and `MAX`. A comparison produces a classification task; an aggregate without a comparison produces regression.
+
+The optional natural-language layer can translate English or Turkish questions into PQL. An offline template fallback is available when the Anthropic extra is not installed.
+
+---
+
+## Temporal safety
+
+<div align="center">
+
+<img src="docs/temporal-safety.svg" alt="RealPath temporal leakage safety" width="100%"/>
+
+</div>
+
+RealPath builds features from information available **at or before** each entity's anchor timestamp and computes labels strictly afterward. Featuretools `cutoff_time` is used to enforce that separation.
+
+The repository includes a dedicated leakage test:
 
 ```bash
 pytest tests/test_leakage.py -q
 ```
 
-## Değerlendirme / Evaluation
+---
+
+## Verified results
+
+The figures below are measured on this repository's reproducible sample/evaluation paths. Full methodology lives in [docs/BENCHMARKS.md](docs/BENCHMARKS.md).
+
+| Check | Verified result |
+| --- | ---: |
+| Test suite | **25 passed**, 2 opt-in connector tests skipped by default |
+| DuckDB churn ROC-AUC | **0.7492** |
+| PostgreSQL churn ROC-AUC | **0.7492** |
+| MySQL churn ROC-AUC | **0.7492** |
+| Entity-only baseline ROC-AUC | 0.7043 |
+| Relational lift | **+0.045** |
+| Calibrated ECE | **0.0144** |
+| Calibrated Brier | **0.0392** |
+
+> The benchmark documentation also contains RelBench experiments and the optional GNN research path. The core product does not depend on PyTorch.
+
+---
+
+## Architecture
+
+```mermaid
+flowchart LR
+    DB[(DuckDB / PostgreSQL / MySQL)] --> S[Schema inference]
+    S --> G[PK · FK · time graph]
+    Q[Plain language / PQL] --> P[PQL parser + compiler]
+    G --> P
+    P --> T[Temporal split]
+    T --> F[Featuretools DFS]
+    F --> M[LightGBM]
+    M --> R[PredictionResult]
+    F --> E[Join-path provenance]
+    E --> R
+```
+
+| Module | Responsibility |
+| --- | --- |
+| `connect.py` | DuckDB, PostgreSQL and MySQL backend interface |
+| `schema.py` | PK/FK/time inference and relational graph |
+| `pql/` | PQL AST, parser, compilation and join-path inference |
+| `features.py` | leakage-safe Deep Feature Synthesis |
+| `model.py` | LightGBM classification/regression and optional calibration |
+| `explain.py` | feature provenance and optional SHAP |
+| `nlp.py` | natural language → PQL with offline fallback |
+| `eval.py` | local and RelBench evaluation paths |
+| `gnn.py` | optional experimental relational GNN path |
+
+For the full technical design, see [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
+
+---
+
+## Interactive demo
 
 ```bash
-python -m realpath.eval                              # local: relational vs no-feature baseline
-python -m realpath.eval --dataset rel-hm --task user-churn   # RelBench (needs: pip install -e ".[eval]")
+pip install -e ".[demo]"
+streamlit run realpath/demo_app.py
 ```
 
-`relbench` yolu torch çeker ve çekirdekten izoledir; `rel-f1` ile doğrulandı (driver-dnf,
-driver-position) — başka datasetlerde kendiniz tekrar üretebilirsiniz.
+The demo uses the same core engine rather than a separate showcase implementation.
 
-## Mimari / Architecture
+---
 
-```
-connect → schema (FK grafiği) → PQL compile (join inference + zaman penceresi)
-        → features (DFS + cutoff) → model (LightGBM/TabPFN) → explain (join-yolu provenance)
-```
+## Documentation
 
-| Modül | Rol |
-|---|---|
-| `connect.py` / `schema.py` | DuckDB bağlantısı + otomatik PK/FK/zaman tespiti, Featuretools EntitySet |
-| `pql/` | PQL parser (SQLGlot) + join-path inference + zaman penceresi izolasyonu |
-| `features.py` | Deep Feature Synthesis (sızıntı-güvenli) |
-| `model.py` | LightGBM (auto clf/reg), opsiyonel TabPFN |
-| `explain.py` | join-yolu provenance + SHAP |
-| `nlp.py` | NL→PQL (Claude + offline şablon fallback) |
-| `eval.py` | yerel + RelBench değerlendirme |
+| Document | Purpose |
+| --- | --- |
+| [Architecture](docs/ARCHITECTURE.md) | Deep technical architecture and contracts |
+| [Benchmarks](docs/BENCHMARKS.md) | Reproducible measured results |
+| [API](docs/API.md) | API reference |
+| [Decisions](docs/DECISIONS.md) | Architecture and product decisions |
+| [Roadmap](docs/ROADMAP.md) | Planned development |
+| [Pitch](docs/PITCH.md) | One-page product summary |
+| [Docs Index](docs/INDEX.md) | Documentation map |
 
-## Lisans / License
+---
 
-MIT. `data/`, `docs/` dahil çekirdek izinli lisanslıdır. getML (ELv2) ve TabPFN-2.5
-(ticari kullanım yasak) **çekirdeğe alınmaz** — yalnızca opsiyonel eklenti.
+## License
+
+**MIT.** The core intentionally stays on permissively licensed dependencies.
+
+Optional heavyweight/research integrations are isolated behind extras; see [pyproject.toml](pyproject.toml) and [docs/DECISIONS.md](docs/DECISIONS.md) for the dependency policy.
+
+<br/>
+
+<div align="center">
+
+<img src="docs/logo.svg" alt="realpath.dev" width="360"/>
+
+**Relational prediction without flattening your world first.**
+
+</div>
