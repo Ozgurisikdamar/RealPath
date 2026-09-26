@@ -16,129 +16,149 @@
     <feGaussianBlur stdDeviation="8" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
+  <clipPath id="frame"><rect width="1600" height="760" rx="28"/></clipPath>
   <style>
     .title{font:700 38px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
     .subtitle{font:400 18px Inter,Segoe UI,Arial,sans-serif;fill:#94A3B8}
     .cardTitle{font:700 22px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
+    .question{font:700 20px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
     .cardText{font:400 16px Inter,Segoe UI,Arial,sans-serif;fill:#A8B4C7}
+    .field{font:400 14px Inter,Segoe UI,Arial,sans-serif;fill:#A8B4C7}
     .tiny{font:600 14px Inter,Segoe UI,Arial,sans-serif;fill:#CBD5E1}
     .label{font:700 14px Inter,Segoe UI,Arial,sans-serif;fill:#6EE7B7;letter-spacing:1.5px}
   </style>
 </defs>
 
 <rect width="1600" height="760" rx="28" fill="url(#bg)"/>
-<circle cx="1280" cy="100" r="220" fill="#10B981" opacity=".05"/>
-<circle cx="230" cy="640" r="230" fill="#6366F1" opacity=".06"/>
+<g clip-path="url(#frame)">
+  <circle cx="1280" cy="100" r="220" fill="#10B981" opacity=".05"/>
+  <circle cx="230" cy="640" r="230" fill="#6366F1" opacity=".06"/>
+</g>
 
 <text x="800" y="65" text-anchor="middle" class="title">From relational data to an explained prediction</text>
 <text x="800" y="99" text-anchor="middle" class="subtitle">RealPath discovers relationships, compiles the predictive task, builds leakage-safe features, trains, and explains.</text>
 
-<!-- data tables -->
-<text x="80" y="160" class="label">RELATIONAL DATA</text>
+<!-- relational data: the four tables of the bundled sample database (realpath/sample_data.py) -->
+<text x="56" y="150" class="label">RELATIONAL DATA</text>
 
-<g transform="translate(80 185)">
-  <rect width="235" height="116" rx="18" fill="#111B2B" stroke="#334155" stroke-width="2"/>
-  <rect x="18" y="18" width="44" height="44" rx="10" fill="#132B3E" stroke="#10B981"/>
-  <path d="M28 31h24M28 40h24M28 49h16" stroke="#6EE7B7" stroke-width="3" stroke-linecap="round"/>
-  <text x="78" y="45" class="cardTitle">customers</text>
-  <text x="78" y="72" class="cardText">customer_id · country</text>
-  <text x="78" y="94" class="cardText">signup_at · segment</text>
+<g transform="translate(56 170)">
+  <rect width="250" height="108" rx="18" fill="#111B2B" stroke="#334155" stroke-width="2"/>
+  <rect x="16" y="16" width="40" height="40" rx="10" fill="#132B3E" stroke="#10B981"/>
+  <path d="M25 29h22M25 37h22M25 45h14" stroke="#6EE7B7" stroke-width="3" stroke-linecap="round"/>
+  <text x="70" y="42" class="cardTitle">customers</text>
+  <text x="70" y="72" class="field">customer_id</text><text x="170" y="72" class="field">country</text>
+  <text x="70" y="92" class="field">signup_date</text><text x="170" y="92" class="field">segment</text>
 </g>
 
-<g transform="translate(80 324)">
-  <rect width="235" height="116" rx="18" fill="#111B2B" stroke="#334155" stroke-width="2"/>
-  <rect x="18" y="18" width="44" height="44" rx="10" fill="#19223B" stroke="#6366F1"/>
-  <path d="M28 31h24M28 40h24M28 49h16" stroke="#A5B4FC" stroke-width="3" stroke-linecap="round"/>
-  <text x="78" y="45" class="cardTitle">transactions</text>
-  <text x="78" y="72" class="cardText">customer_id · amount</text>
-  <text x="78" y="94" class="cardText">event_time · quantity</text>
+<g transform="translate(56 290)">
+  <rect width="250" height="108" rx="18" fill="#111B2B" stroke="#334155" stroke-width="2"/>
+  <rect x="16" y="16" width="40" height="40" rx="10" fill="#132640" stroke="#3B82F6"/>
+  <path d="M25 29h22M25 37h22M25 45h14" stroke="#93C5FD" stroke-width="3" stroke-linecap="round"/>
+  <text x="70" y="42" class="cardTitle">products</text>
+  <text x="70" y="72" class="field">product_id</text><text x="170" y="72" class="field">brand</text>
+  <text x="70" y="92" class="field">category</text><text x="170" y="92" class="field">price</text>
 </g>
 
-<g transform="translate(80 463)">
-  <rect width="235" height="116" rx="18" fill="#111B2B" stroke="#334155" stroke-width="2"/>
-  <rect x="18" y="18" width="44" height="44" rx="10" fill="#2A1834" stroke="#A855F7"/>
-  <path d="M28 31h24M28 40h24M28 49h16" stroke="#D8B4FE" stroke-width="3" stroke-linecap="round"/>
-  <text x="78" y="45" class="cardTitle">returns</text>
-  <text x="78" y="72" class="cardText">transaction_id · reason</text>
-  <text x="78" y="94" class="cardText">returned_at · amount</text>
+<g transform="translate(56 410)">
+  <rect width="250" height="128" rx="18" fill="#111B2B" stroke="#334155" stroke-width="2"/>
+  <rect x="16" y="16" width="40" height="40" rx="10" fill="#19223B" stroke="#6366F1"/>
+  <path d="M25 29h22M25 37h22M25 45h14" stroke="#A5B4FC" stroke-width="3" stroke-linecap="round"/>
+  <text x="70" y="42" class="cardTitle">transactions</text>
+  <text x="70" y="72" class="field">tx_id</text><text x="170" y="72" class="field">tx_time</text>
+  <text x="70" y="92" class="field">customer_id</text><text x="170" y="92" class="field">quantity</text>
+  <text x="70" y="112" class="field">product_id</text><text x="170" y="112" class="field">amount</text>
 </g>
 
-<path d="M315 243 C355 243 355 383 392 383" stroke="#10B981" stroke-width="3" fill="none"/>
-<path d="M315 382 H392" stroke="#6366F1" stroke-width="3"/>
-<path d="M315 521 C355 521 355 383 392 383" stroke="#A855F7" stroke-width="3" fill="none"/>
+<g transform="translate(56 550)">
+  <rect width="250" height="108" rx="18" fill="#111B2B" stroke="#334155" stroke-width="2"/>
+  <rect x="16" y="16" width="40" height="40" rx="10" fill="#2A1834" stroke="#A855F7"/>
+  <path d="M25 29h22M25 37h22M25 45h14" stroke="#D8B4FE" stroke-width="3" stroke-linecap="round"/>
+  <text x="70" y="42" class="cardTitle">returns</text>
+  <text x="70" y="72" class="field">return_id</text><text x="170" y="72" class="field">tx_id</text>
+  <text x="70" y="92" class="field">return_time</text><text x="170" y="92" class="field">reason</text>
+</g>
 
-<!-- schema -->
-<g transform="translate(392 286)">
-  <rect width="220" height="194" rx="22" fill="#101C2B" stroke="#10B981" stroke-width="2"/>
-  <text x="110" y="38" text-anchor="middle" class="cardTitle">Schema Graph</text>
+<g fill="none" stroke-width="3">
+  <path d="M306 224 C338 224 334 414 366 414" stroke="#10B981"/>
+  <path d="M306 344 C338 344 334 414 366 414" stroke="#3B82F6"/>
+  <path d="M306 474 C338 474 334 414 366 414" stroke="#6366F1"/>
+  <path d="M306 604 C338 604 334 414 366 414" stroke="#A855F7"/>
+</g>
+
+<!-- schema: the inferred FK graph (transactions -> customers, transactions -> products, returns -> transactions) -->
+<g transform="translate(366 300)">
+  <rect width="220" height="228" rx="22" fill="#101C2B" stroke="#10B981" stroke-width="2"/>
+  <text x="110" y="40" text-anchor="middle" class="cardTitle">Schema Graph</text>
   <text x="110" y="66" text-anchor="middle" class="cardText">PK / FK / time inference</text>
-  <circle cx="64" cy="116" r="16" fill="#10B981"/>
-  <circle cx="156" cy="116" r="16" fill="#6366F1"/>
-  <circle cx="110" cy="160" r="16" fill="#A855F7"/>
-  <path d="M78 116h62M75 128l24 22M145 128l-24 22" stroke="#64748B" stroke-width="3"/>
+  <path d="M71 119L101 149M149 119L119 149M110 171V191" stroke="#64748B" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="62" cy="110" r="13" fill="#10B981"/>
+  <circle cx="158" cy="110" r="13" fill="#3B82F6"/>
+  <circle cx="110" cy="158" r="13" fill="#6366F1"/>
+  <circle cx="110" cy="204" r="13" fill="#A855F7"/>
 </g>
+
+<path d="M586 414 H626" stroke="#38BDF8" stroke-width="3" fill="none"/>
+<path d="M614 406l12 8-12 8" fill="none" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 
 <!-- question -->
-<g transform="translate(660 184)">
-  <rect width="310" height="132" rx="22" fill="#101C2B" stroke="#3B82F6" stroke-width="2"/>
-  <text x="24" y="35" class="label">QUESTION</text>
-  <text x="24" y="70" class="cardTitle">“Which customers will</text>
-  <text x="24" y="98" class="cardTitle">churn in the next 30 days?”</text>
+<g transform="translate(626 170)">
+  <rect width="326" height="126" rx="22" fill="#101C2B" stroke="#3B82F6" stroke-width="2"/>
+  <text x="24" y="34" class="label">QUESTION</text>
+  <text x="24" y="68" class="question">“Which customers will churn</text>
+  <text x="24" y="96" class="question">in the next 30 days?”</text>
 </g>
 
-<path d="M612 383 H690 V330" stroke="#38BDF8" stroke-width="3" fill="none"/>
-<path d="M682 342l8-12 8 12" fill="none" stroke="#38BDF8" stroke-width="3"/>
+<path d="M789 296 V333" stroke="#8B5CF6" stroke-width="3" fill="none"/>
+<path d="M781 322l8 12 8-12" fill="none" stroke="#8B5CF6" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 
 <!-- pql -->
-<g transform="translate(660 356)">
-  <rect width="310" height="160" rx="22" fill="#111827" stroke="url(#g2)" stroke-width="2.5"/>
+<g transform="translate(626 334)">
+  <rect width="326" height="164" rx="22" fill="#111827" stroke="url(#g2)" stroke-width="2.5"/>
   <text x="24" y="36" class="label">NL → PQL</text>
   <text x="24" y="72" class="tiny">PREDICT COUNT(transactions.*,</text>
   <text x="24" y="96" class="tiny">0, 30, days) == 0</text>
   <text x="24" y="120" class="tiny">FOR EACH customers.customer_id</text>
-  <text x="24" y="146" class="cardText">validated by SQLGlot</text>
+  <text x="24" y="148" class="cardText">validated by the PQL parser</text>
 </g>
 
-<path d="M815 316v34" stroke="#8B5CF6" stroke-width="3"/>
-<path d="M807 340l8 12 8-12" fill="none" stroke="#8B5CF6" stroke-width="3"/>
+<!-- pql (entity + anchor) -> features -->
+<path d="M952 376 H966 Q974 376 974 368 V248 Q974 240 982 240 H996" stroke="#38BDF8" stroke-width="3" fill="none"/>
+<path d="M984 232l12 8-12 8" fill="none" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 
-<!-- pipeline cards -->
-<path d="M970 436h48" stroke="#38BDF8" stroke-width="3"/>
-<path d="M1006 428l12 8-12 8" fill="none" stroke="#38BDF8" stroke-width="3"/>
-
-<g transform="translate(1018 184)">
-  <rect width="250" height="150" rx="22" fill="#101C2B" stroke="#10B981" stroke-width="2"/>
+<g transform="translate(996 170)">
+  <rect width="248" height="140" rx="22" fill="#101C2B" stroke="#10B981" stroke-width="2"/>
   <text x="24" y="36" class="label">FEATURES</text>
   <text x="24" y="72" class="cardTitle">Leakage-safe DFS</text>
   <text x="24" y="101" class="cardText">multi-hop relational</text>
   <text x="24" y="124" class="cardText">aggregations + cutoff_time</text>
 </g>
 
-<g transform="translate(1018 376)">
-  <rect width="250" height="140" rx="22" fill="#101C2B" stroke="#3B82F6" stroke-width="2"/>
+<path d="M1120 310 V349" stroke="#38BDF8" stroke-width="3" fill="none"/>
+<path d="M1112 338l8 12 8-12" fill="none" stroke="#38BDF8" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+<g transform="translate(996 350)">
+  <rect width="248" height="140" rx="22" fill="#101C2B" stroke="#3B82F6" stroke-width="2"/>
   <text x="24" y="36" class="label">MODEL</text>
   <text x="24" y="72" class="cardTitle">LightGBM</text>
   <text x="24" y="101" class="cardText">classification / regression</text>
   <text x="24" y="124" class="cardText">optional calibration</text>
 </g>
 
-<path d="M1143 334v36" stroke="#38BDF8" stroke-width="3"/>
-<path d="M1135 360l8 12 8-12" fill="none" stroke="#38BDF8" stroke-width="3"/>
+<!-- output: a real row of the demo run on the sample database (per-customer contributions) -->
+<path d="M1244 420 H1282" stroke="#10B981" stroke-width="3" fill="none"/>
+<path d="M1270 412l12 8-12 8" fill="none" stroke="#10B981" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 
-<!-- output -->
-<path d="M1268 446h52" stroke="#10B981" stroke-width="3"/>
-<path d="M1308 438l12 8-12 8" fill="none" stroke="#10B981" stroke-width="3"/>
-
-<g transform="translate(1320 286)">
-  <rect width="215" height="230" rx="24" fill="#0B241F" stroke="url(#g1)" stroke-width="2.5" filter="url(#glow)"/>
+<g transform="translate(1282 295)">
+  <rect width="262" height="250" rx="24" fill="#0B241F" stroke="url(#g1)" stroke-width="2.5" filter="url(#glow)"/>
   <text x="24" y="38" class="label">EXPLAINED OUTPUT</text>
-  <text x="24" y="79" class="cardTitle">0.82 churn risk</text>
-  <text x="24" y="110" class="cardText">Top relational drivers:</text>
-  <text x="24" y="140" class="tiny">transactions → count_30d</text>
-  <text x="24" y="166" class="tiny">returns → avg_amount</text>
-  <text x="24" y="192" class="tiny">join-path provenance</text>
-  <rect x="24" y="207" width="167" height="2" fill="#10B981" opacity=".65"/>
+  <text x="24" y="76" class="cardTitle">churn p = 0.989</text>
+  <text x="24" y="102" class="cardText">customer 743 · sample DB</text>
+  <text x="24" y="138" class="cardText">Top relational drivers:</text>
+  <text x="24" y="166" class="tiny">transactions → products · STD</text>
+  <text x="24" y="190" class="tiny">transactions → products · MEAN</text>
+  <text x="24" y="214" class="tiny">returns → transactions · MIN</text>
+  <rect x="24" y="228" width="214" height="2" fill="#10B981" opacity=".65"/>
 </g>
 
-<text x="800" y="696" text-anchor="middle" class="subtitle">Connect → infer schema → compile predictive task → synthesize temporal features → train → explain join paths</text>
+<text x="800" y="708" text-anchor="middle" class="subtitle">Connect → infer schema → compile predictive task → synthesize temporal features → train → explain join paths</text>
 </svg>
