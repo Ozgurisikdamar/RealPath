@@ -12,6 +12,8 @@
     <stop offset="0" stop-color="#10B981"/>
     <stop offset="1" stop-color="#34D399"/>
   </linearGradient>
+  <clipPath id="featureCard"><rect x="225" y="184" width="540" height="120" rx="22"/></clipPath>
+  <clipPath id="labelCard"><rect x="835" y="184" width="540" height="120" rx="22"/></clipPath>
   <style>
     .title{font:700 34px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
     .text{font:400 18px Inter,Segoe UI,Arial,sans-serif;fill:#A8B4C7}
@@ -25,8 +27,9 @@
 
 <line x1="170" y1="244" x2="1430" y2="244" stroke="#475569" stroke-width="4" stroke-linecap="round"/>
 
-<rect x="225" y="184" width="540" height="120" rx="22" fill="#111A2A" stroke="#6366F1" stroke-width="2"/>
-<rect x="225" y="184" width="540" height="8" rx="4" fill="url(#past)"/>
+<rect x="225" y="184" width="540" height="120" rx="22" fill="#111A2A"/>
+<rect x="225" y="184" width="540" height="8" fill="url(#past)" clip-path="url(#featureCard)"/>
+<rect x="225" y="184" width="540" height="120" rx="22" fill="none" stroke="#6366F1" stroke-width="2"/>
 <text x="265" y="227" class="label">FEATURE WINDOW</text>
 <text x="265" y="259" class="text">Only data at or before the anchor is used</text>
 <text x="265" y="286" class="small">transactions · returns · relational aggregations</text>
@@ -35,8 +38,9 @@
 <circle cx="800" cy="244" r="13" fill="#F8FAFC"/>
 <text x="800" y="130" text-anchor="middle" class="label">ANCHOR t*</text>
 
-<rect x="835" y="184" width="540" height="120" rx="22" fill="#0D241F" stroke="#10B981" stroke-width="2"/>
-<rect x="835" y="184" width="540" height="8" rx="4" fill="url(#future)"/>
+<rect x="835" y="184" width="540" height="120" rx="22" fill="#0D241F"/>
+<rect x="835" y="184" width="540" height="8" fill="url(#future)" clip-path="url(#labelCard)"/>
+<rect x="835" y="184" width="540" height="120" rx="22" fill="none" stroke="#10B981" stroke-width="2"/>
 <text x="875" y="227" class="label">LABEL WINDOW</text>
 <text x="875" y="259" class="text">The outcome is measured strictly after the anchor</text>
 <text x="875" y="286" class="small">(t*, t* + horizon] · no overlap with features</text>
