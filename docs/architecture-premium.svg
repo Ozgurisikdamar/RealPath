@@ -16,6 +16,7 @@
     <feGaussianBlur stdDeviation="8" result="b"/>
     <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
   </filter>
+  <clipPath id="frame"><rect width="1600" height="940" rx="30"/></clipPath>
   <style>
     .title{font:700 42px Inter,Segoe UI,Arial,sans-serif;fill:#F8FAFC}
     .subtitle{font:400 18px Inter,Segoe UI,Arial,sans-serif;fill:#94A3B8}
@@ -28,8 +29,10 @@
 </defs>
 
 <rect width="1600" height="940" rx="30" fill="url(#bg)"/>
-<circle cx="1400" cy="120" r="240" fill="#10B981" opacity=".05"/>
-<circle cx="160" cy="820" r="260" fill="#6366F1" opacity=".06"/>
+<g clip-path="url(#frame)">
+  <circle cx="1400" cy="120" r="240" fill="#10B981" opacity=".05"/>
+  <circle cx="160" cy="820" r="260" fill="#6366F1" opacity=".06"/>
+</g>
 
 <text x="800" y="62" text-anchor="middle" class="title">RealPath Architecture</text>
 <text x="800" y="96" text-anchor="middle" class="subtitle">A local-first relational prediction pipeline with explicit temporal safety and explainable provenance.</text>
@@ -48,23 +51,23 @@
 
 <!-- INPUT -->
 <g transform="translate(88 202)">
-  <rect width="244" height="132" rx="20" fill="#111C2C" stroke="#10B981" stroke-width="2"/>
+  <rect width="244" height="142" rx="20" fill="#111C2C" stroke="#10B981" stroke-width="2"/>
   <text x="22" y="35" class="accent">DATABASES</text>
   <text x="22" y="69" class="cardTitle">Backend adapters</text>
   <text x="22" y="98" class="cardText">DuckDB · PostgreSQL</text>
   <text x="22" y="120" class="cardText">MySQL · read-only access</text>
 </g>
 
-<g transform="translate(88 380)">
-  <rect width="244" height="132" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
+<g transform="translate(88 384)">
+  <rect width="244" height="142" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
   <text x="22" y="35" class="accent">QUESTION</text>
   <text x="22" y="69" class="cardTitle">Natural language</text>
   <text x="22" y="98" class="cardText">English / Turkish</text>
   <text x="22" y="120" class="cardText">or direct PQL</text>
 </g>
 
-<g transform="translate(88 558)">
-  <rect width="244" height="154" rx="20" fill="#111C2C" stroke="#64748B" stroke-width="2"/>
+<g transform="translate(88 566)">
+  <rect width="244" height="164" rx="20" fill="#111C2C" stroke="#64748B" stroke-width="2"/>
   <text x="22" y="35" class="accent">LOCAL-FIRST</text>
   <text x="22" y="69" class="cardTitle">Data stays local</text>
   <text x="22" y="98" class="cardText">No warehouse export</text>
@@ -74,15 +77,15 @@
 
 <!-- RELATIONAL -->
 <g transform="translate(432 202)">
-  <rect width="300" height="138" rx="20" fill="#111C2C" stroke="#10B981" stroke-width="2"/>
+  <rect width="300" height="142" rx="20" fill="#111C2C" stroke="#10B981" stroke-width="2"/>
   <text x="22" y="35" class="accent">SCHEMA</text>
   <text x="22" y="69" class="cardTitle">RelationalSchema</text>
   <text x="22" y="98" class="cardText">PK · FK · time-index inference</text>
   <text x="22" y="120" class="cardText">BFS join-path discovery</text>
 </g>
 
-<g transform="translate(432 382)">
-  <rect width="300" height="158" rx="20" fill="#111827" stroke="url(#purple)" stroke-width="2.5"/>
+<g transform="translate(432 384)">
+  <rect width="300" height="164" rx="20" fill="#111827" stroke="url(#purple)" stroke-width="2.5"/>
   <text x="22" y="35" class="accent">PQL COMPILER</text>
   <text x="22" y="69" class="cardTitle">Predictive task AST</text>
   <text x="22" y="98" class="cardText">SQLGlot validation</text>
@@ -90,8 +93,8 @@
   <text x="22" y="142" class="cardText">classification / regression</text>
 </g>
 
-<g transform="translate(432 586)">
-  <rect width="300" height="158" rx="20" fill="#0D241F" stroke="#10B981" stroke-width="2"/>
+<g transform="translate(432 588)">
+  <rect width="300" height="164" rx="20" fill="#0D241F" stroke="#10B981" stroke-width="2"/>
   <text x="22" y="35" class="accent">TEMPORAL SPLIT</text>
   <text x="22" y="69" class="cardTitle">Anchor-safe windows</text>
   <text x="22" y="98" class="cardText">features ≤ t*</text>
@@ -101,7 +104,7 @@
 
 <!-- MODEL -->
 <g transform="translate(834 202)">
-  <rect width="290" height="150" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
+  <rect width="290" height="164" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
   <text x="22" y="35" class="accent">FEATURE ENGINE</text>
   <text x="22" y="69" class="cardTitle">Featuretools DFS</text>
   <text x="22" y="98" class="cardText">multi-hop aggregations</text>
@@ -109,8 +112,8 @@
   <text x="22" y="142" class="cardText">relational feature matrix</text>
 </g>
 
-<g transform="translate(834 398)">
-  <rect width="290" height="150" rx="20" fill="#111C2C" stroke="#6366F1" stroke-width="2"/>
+<g transform="translate(834 406)">
+  <rect width="290" height="164" rx="20" fill="#111C2C" stroke="#6366F1" stroke-width="2"/>
   <text x="22" y="35" class="accent">MODEL</text>
   <text x="22" y="69" class="cardTitle">LightGBM</text>
   <text x="22" y="98" class="cardText">classification / regression</text>
@@ -118,8 +121,8 @@
   <text x="22" y="142" class="cardText">optional calibration</text>
 </g>
 
-<g transform="translate(834 594)">
-  <rect width="290" height="150" rx="20" fill="#111C2C" stroke="#A855F7" stroke-width="2"/>
+<g transform="translate(834 610)">
+  <rect width="290" height="164" rx="20" fill="#111C2C" stroke="#A855F7" stroke-width="2"/>
   <text x="22" y="35" class="accent">EXPLAINABILITY</text>
   <text x="22" y="69" class="cardTitle">Join-path provenance</text>
   <text x="22" y="98" class="cardText">feature → table → aggregation</text>
@@ -137,16 +140,16 @@
   <text x="22" y="150" class="cardText">explain() · provenance</text>
 </g>
 
-<g transform="translate(1226 424)">
-  <rect width="284" height="138" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
+<g transform="translate(1226 416)">
+  <rect width="284" height="142" rx="20" fill="#111C2C" stroke="#3B82F6" stroke-width="2"/>
   <text x="22" y="35" class="accent">INTERFACES</text>
   <text x="22" y="69" class="cardTitle">Python · CLI · Demo</text>
   <text x="22" y="98" class="cardText">one engine, same pipeline</text>
   <text x="22" y="120" class="cardText">no separate demo backend</text>
 </g>
 
-<g transform="translate(1226 610)">
-  <rect width="284" height="166" rx="20" fill="#151827" stroke="#6366F1" stroke-width="2"/>
+<g transform="translate(1226 598)">
+  <rect width="284" height="164" rx="20" fill="#151827" stroke="#6366F1" stroke-width="2"/>
   <text x="22" y="35" class="accent">OPTIONAL RESEARCH</text>
   <text x="22" y="69" class="cardTitle">RelBench / GNN</text>
   <text x="22" y="98" class="cardText">isolated from the core</text>
@@ -154,34 +157,43 @@
   <text x="22" y="142" class="cardText">not required for production use</text>
 </g>
 
-<!-- Arrows -->
+<!-- Arrows (card edges: see the translate/height of each card) -->
 <g stroke-linecap="round" stroke-linejoin="round" fill="none">
-  <path d="M332 268 H432" stroke="#10B981" stroke-width="3"/>
-  <path d="M420 260l12 8-12 8" stroke="#10B981" stroke-width="3"/>
+  <!-- databases -> schema -->
+  <path d="M332 273 H432" stroke="#10B981" stroke-width="3"/>
+  <path d="M420 265l12 8-12 8" stroke="#10B981" stroke-width="3"/>
 
-  <path d="M332 446 C380 446 380 460 432 460" stroke="#6366F1" stroke-width="3"/>
-  <path d="M420 452l12 8-12 8" stroke="#6366F1" stroke-width="3"/>
+  <!-- question -> PQL compiler -->
+  <path d="M332 455 C382 455 382 466 432 466" stroke="#6366F1" stroke-width="3"/>
+  <path d="M420 458l12 8-12 8" stroke="#6366F1" stroke-width="3"/>
 
-  <path d="M582 340 V382" stroke="#38BDF8" stroke-width="3"/>
-  <path d="M574 370l8 12 8-12" stroke="#38BDF8" stroke-width="3"/>
+  <!-- schema -> PQL compiler -->
+  <path d="M582 344 V384" stroke="#38BDF8" stroke-width="3"/>
+  <path d="M574 372l8 12 8-12" stroke="#38BDF8" stroke-width="3"/>
 
-  <path d="M582 540 V586" stroke="#10B981" stroke-width="3"/>
-  <path d="M574 574l8 12 8-12" stroke="#10B981" stroke-width="3"/>
+  <!-- PQL compiler -> temporal split -->
+  <path d="M582 548 V588" stroke="#10B981" stroke-width="3"/>
+  <path d="M574 576l8 12 8-12" stroke="#10B981" stroke-width="3"/>
 
-  <path d="M732 665 H834" stroke="#38BDF8" stroke-width="3"/>
-  <path d="M822 657l12 8-12 8" stroke="#38BDF8" stroke-width="3"/>
+  <!-- temporal split (anchor + cutoff) -> feature engine -->
+  <path d="M732 670 C783 670 783 284 834 284" stroke="#38BDF8" stroke-width="3"/>
+  <path d="M822 276l12 8-12 8" stroke="#38BDF8" stroke-width="3"/>
 
-  <path d="M979 352 V398" stroke="#6366F1" stroke-width="3"/>
-  <path d="M971 386l8 12 8-12" stroke="#6366F1" stroke-width="3"/>
+  <!-- feature engine -> model -->
+  <path d="M979 366 V406" stroke="#6366F1" stroke-width="3"/>
+  <path d="M971 394l8 12 8-12" stroke="#6366F1" stroke-width="3"/>
 
-  <path d="M979 548 V594" stroke="#A855F7" stroke-width="3"/>
-  <path d="M971 582l8 12 8-12" stroke="#A855F7" stroke-width="3"/>
+  <!-- model -> explainability -->
+  <path d="M979 570 V610" stroke="#A855F7" stroke-width="3"/>
+  <path d="M971 598l8 12 8-12" stroke="#A855F7" stroke-width="3"/>
 
-  <path d="M1124 669 C1174 669 1174 290 1226 290" stroke="#10B981" stroke-width="3"/>
-  <path d="M1214 282l12 8-12 8" stroke="#10B981" stroke-width="3"/>
+  <!-- explainability -> public result -->
+  <path d="M1124 692 C1175 692 1175 289 1226 289" stroke="#10B981" stroke-width="3"/>
+  <path d="M1214 281l12 8-12 8" stroke="#10B981" stroke-width="3"/>
 
-  <path d="M1368 376 V424" stroke="#38BDF8" stroke-width="3"/>
-  <path d="M1360 412l8 12 8-12" stroke="#38BDF8" stroke-width="3"/>
+  <!-- public result -> interfaces -->
+  <path d="M1368 376 V416" stroke="#38BDF8" stroke-width="3"/>
+  <path d="M1360 404l8 12 8-12" stroke="#38BDF8" stroke-width="3"/>
 </g>
 
 <!-- Footer -->
