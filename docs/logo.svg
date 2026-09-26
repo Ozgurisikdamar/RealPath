@@ -42,5 +42,5 @@
   </g>
   <!-- One text element: ".dev" flows right after "realpath" whatever font the viewer has. -->
   <text x="215" y="115" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-size="56"><tspan font-weight="800" fill="#FFFFFF" letter-spacing="-1">realpath</tspan><tspan font-weight="300" fill="url(#devGrad)">.dev</tspan></text>
-  <text x="218" y="148" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="600" font-size="14" fill="#94A3B8" letter-spacing="4.5">NEURAL DATABASE PREDICTIVE ENGINE</text>
+  <text x="218" y="148" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="600" font-size="14" fill="#94A3B8" letter-spacing="4.5">RELATIONAL PREDICTIVE ENGINE</text>
 </svg>

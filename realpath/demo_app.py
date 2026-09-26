@@ -206,7 +206,7 @@ T = TEXT[lang]
 if st.query_params.get("lang") != lang:
     st.query_params["lang"] = lang
 
-st.title("realpath.dev — Neural Database Predictive Engine")
+st.title("realpath.dev — Relational Predictive Engine")
 st.caption(T["caption"])
 
 with st.sidebar:
