@@ -6,7 +6,16 @@
     <linearGradient id="emeraldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
       <stop offset="0%" stop-color="#10B981" /> <stop offset="100%" stop-color="#3B82F6" />
     </linearGradient>
+    <!-- ".dev" gradient in user space: a tspan's bounding box is the whole text element. -->
+    <linearGradient id="devGrad" gradientUnits="userSpaceOnUse" x1="440" y1="70" x2="552" y2="122">
+      <stop offset="0%" stop-color="#10B981" /> <stop offset="100%" stop-color="#3B82F6" />
+    </linearGradient>
     <filter id="neonGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="6" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+    <!-- Same glow for the small dot, with a filter region big enough not to clip the blur into a square. -->
+    <filter id="dotGlow" x="-400%" y="-400%" width="900%" height="900%">
       <feGaussianBlur stdDeviation="6" result="blur" />
       <feComposite in="SourceGraphic" in2="blur" operator="over" />
     </filter>
@@ -29,9 +38,9 @@
     <path d="M 80 62 Q 100 110 137 115" fill="none" stroke="url(#emeraldGrad)" stroke-width="3.5" filter="url(#neonGlow)" />
     <circle cx="80" cy="62" r="6" fill="#10B981" />
     <circle cx="137" cy="115" r="6" fill="#3B82F6" />
-    <circle cx="103" cy="91" r="4" fill="#FFFFFF" filter="url(#neonGlow)" />
+    <circle cx="103" cy="91" r="4" fill="#FFFFFF" filter="url(#dotGlow)" />
   </g>
-  <text x="215" y="115" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="800" font-size="56" fill="#FFFFFF" letter-spacing="-1">realpath</text>
-  <text x="420" y="115" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="300" font-size="56" fill="url(#emeraldGrad)">.dev</text>
-  <text x="218" y="148" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="600" font-size="14" fill="#4B5563" letter-spacing="4.5">NEURAL DATABASE PREDICTIVE ENGINE</text>
+  <!-- One text element: ".dev" flows right after "realpath" whatever font the viewer has. -->
+  <text x="215" y="115" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-size="56"><tspan font-weight="800" fill="#FFFFFF" letter-spacing="-1">realpath</tspan><tspan font-weight="300" fill="url(#devGrad)">.dev</tspan></text>
+  <text x="218" y="148" font-family="'Inter', 'Segoe UI', -apple-system, sans-serif" font-weight="600" font-size="14" fill="#94A3B8" letter-spacing="4.5">NEURAL DATABASE PREDICTIVE ENGINE</text>
 </svg>
