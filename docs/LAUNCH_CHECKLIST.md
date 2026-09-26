@@ -29,7 +29,7 @@ Pre-launch checklist for the public GitHub / Show HN release. (Repo is currently
 ## Announce (drafts)
 - [ ] **Show HN** draft: *"Show HN: realpath – open-source, local-first alternative to Kumo.AI
       (predict over your relational DB in plain English)"*. Body: problem (feature-engineering
-      hell) → 4 moats → benchmarks → `pip install realpath`.
+      hell) → 4 moats → benchmarks → install from a clone (`pip install -e .`; not on PyPI yet).
 - [ ] r/MachineLearning / r/dataengineering post.
 - [ ] Vertical SEO posts: "open-source churn prediction", "self-hosted demand forecasting",
       "relational deep learning without GPUs".

@@ -54,5 +54,5 @@ warehouse **managed** connectors (Snowflake/BigQuery), team/governance, support.
 
 ## Call to action
 
-⭐ Star the repo · try the **NL→PQL demo** · `pip install realpath` and predict on your own DB in
-60 seconds. *"The end of feature-engineering hell — open-source, on your machine."*
+⭐ Star the repo · try the **NL→PQL demo** · clone the repo, `pip install -e .`, and predict on
+your own DB. *"The end of feature-engineering hell — open-source, on your machine."*
