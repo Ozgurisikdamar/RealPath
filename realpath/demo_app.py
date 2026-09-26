@@ -142,12 +142,13 @@ def schema_dot(schema) -> str:
         '  edge [color="#94A3B8", penwidth=1.4, arrowsize=0.7, dir=back];',
     ]
     for t in schema.tables.values():
-        rows = [f'<TR><TD ALIGN="LEFT" COLSPAN="2" BGCOLOR="#EEF2FF"><B>{html.escape(t.name)}</B></TD></TR>']
+        # header: the table name over a rule (a filled header cell would poke out of the rounded corners)
+        rows = [f'<TR><TD ALIGN="LEFT" COLSPAN="2"><B>{html.escape(t.name)}</B></TD></TR><HR/>']
         for c in t.columns:
             tag, color = _ROLE_TAGS.get(c.role, (c.role, "#64748B"))
             rows.append(
                 f'<TR><TD ALIGN="LEFT">{html.escape(c.name)}</TD>'
-                f'<TD ALIGN="RIGHT"><FONT COLOR="{color}" POINT-SIZE="9"><B>{html.escape(tag)}</B></FONT></TD></TR>'
+                f'<TD ALIGN="RIGHT"><FONT COLOR="{color}" POINT-SIZE="9"><B>{html.escape(tag)}</B>&#160;</FONT></TD></TR>'
             )
         label = (
             '<<TABLE BORDER="1" CELLBORDER="0" CELLSPACING="0" CELLPADDING="3" STYLE="ROUNDED" '
