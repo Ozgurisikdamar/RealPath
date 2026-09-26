@@ -128,11 +128,11 @@ realpath/
 ├── relbench_adapter.py    # run_relbench_task (relbench+torch, lazy); eval extra; rel-f1 ile DOĞRULANDI
 ├── gnn.py                 # OPSIYONEL RDL/GNN backend (relbench+PyG, lazy); kod doğrulandı; temporal eval pyg-lib/Linux ister
 ├── cli.py                 # argparse: make-sample, schema, ask, predict, eval; entry point realpath
-├── demo_app.py            # Streamlit app (port 8501, Türkçe UI)
+├── demo_app.py            # Streamlit app (port 8501; EN varsayılan + TR: kenar çubuğu ya da ?lang=tr; tema .streamlit/config.toml)
 └── _io.py                 # sprint (encoding-safe print), use_utf8
 
 data/make_sample_db.py     # sentetik e-ticaret DuckDB üretir (seed 42)
-tests/                     # parser(10)+leakage(2)+templates(8)+calibration(3)+cli(2) = 25 pass (+ test_postgres/test_mysql, opt-in skip)
+tests/                     # parser(10)+leakage(2)+templates(8)+calibration(3)+cli(2) = 25 pass (+ test_postgres/test_mysql, opt-in skip; + demo_app(4), streamlit yoksa skip)
 docs/                      # aşağıdaki DOCUMENT INDEX
 ```
 

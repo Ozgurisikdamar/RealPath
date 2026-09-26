@@ -304,7 +304,11 @@ pip install -e ".[demo]"
 streamlit run realpath/demo_app.py
 ```
 
-The demo uses the same core engine rather than a separate showcase implementation.
+The demo uses the same core engine rather than a separate showcase implementation: it draws the
+discovered schema/FK graph, runs a natural-language or PQL question (offline templates when no
+`ANTHROPIC_API_KEY` is set), and shows metrics, global drivers and a per-entity join-path
+explanation. The UI is English by default; switch to Turkish in the sidebar or open
+`http://localhost:8501/?lang=tr`. The theme lives in `.streamlit/config.toml`.
 
 ---
 

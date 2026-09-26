@@ -1,0 +1,33 @@
+# Streamlit settings for the realpath demo (`streamlit run realpath/demo_app.py` from the repo root).
+
+[browser]
+# Local-first: the demo sends no usage statistics anywhere.
+gatherUsageStats = false
+
+[client]
+# A product demo, not a dev session: hide the deploy button and the developer menu.
+toolbarMode = "minimal"
+
+[theme]
+# Clean light theme in the realpath.dev palette: indigo for actions, emerald for data.
+base = "light"
+primaryColor = "#4F46E5"
+backgroundColor = "#FFFFFF"
+secondaryBackgroundColor = "#F3F5FA"
+textColor = "#0F172A"
+linkColor = "#4F46E5"
+borderColor = "#E2E8F0"
+showWidgetBorder = true
+baseRadius = "0.625rem"
+headingFontSizes = ["2.25rem", "1.875rem", "1.5rem"]
+# Inter when it is installed locally, otherwise Streamlit's bundled fonts — no web fonts
+# are fetched, so opening the demo makes no third-party requests.
+font = "Inter, 'Source Sans', sans-serif"
+codeFont = "'JetBrains Mono', 'Source Code Pro', monospace"
+codeBackgroundColor = "#F3F5FA"
+chartCategoricalColors = ["#10B981", "#6366F1", "#3B82F6", "#A855F7", "#F59E0B", "#64748B"]
+showSidebarBorder = true
+
+[theme.sidebar]
+backgroundColor = "#F7F9FC"
+secondaryBackgroundColor = "#FFFFFF"

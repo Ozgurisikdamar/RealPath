@@ -223,7 +223,12 @@ Paket: `realpath/`. Aşağıdaki her satır gerçek imzaya sadıktır.
   maskeliyse `val`'a düşer). Not: bu basit DFS baseline, tuned RDL/GNN'in altında — beklenen.
 - `cli.py`: argparse alt komutları `make-sample`, `schema`, `ask`, `predict`, `eval`.
   Entry point: `realpath` (veya `python -m realpath.cli`).
-- `demo_app.py`: Streamlit (`streamlit run realpath/demo_app.py`, port 8501). Türkçe UI.
+- `demo_app.py`: Streamlit (`streamlit run realpath/demo_app.py`, port 8501). Arayüz varsayılan
+  İngilizce; Türkçe kenar çubuğundaki dil seçicisiyle ya da `?lang=tr` ile (seçim URL'e yazılır).
+  Tüm metinler `TEXT[lang]` sözlüğünde; tema `.streamlit/config.toml`. Kenar çubuğunda keşfedilen
+  şema/FK grafiği (`st.graphviz_chart`), sonuçta metrik kutuları + global sürücü grafiği (Altair).
+  Davranış CLI ile aynı: `Engine.predict(evaluate=True)` + `explain_entity`/`format_card`.
+  Duman testi `tests/test_demo_app.py` (AppTest; `demo` extra, `streamlit>=1.57`).
 - `_io.py`: `sprint()` encoding-güvenli print; `use_utf8()` stdout/stderr'i UTF-8'e geçirir.
 
 ---

@@ -119,7 +119,15 @@ def _scalar(v):
     return v
 
 
-def format_card(entity_id, score: float, contribs: list[Contribution], task_type: str) -> str:
+def format_card(
+    entity_id,
+    score: float,
+    contribs: list[Contribution],
+    task_type: str,
+    contribution_label: str = "katki",
+) -> str:
+    """ASCII-safe join-path card for one entity. ``contribution_label`` names the weight
+    column (the CLI keeps the historical ``katki``; the demo passes the UI language's word)."""
     head = "probability" if task_type == "classification" else "predicted value"
     lines = [f"entity {entity_id} -- {head} {score:.3f}"]
     for i, c in enumerate(contribs):
@@ -128,6 +136,6 @@ def format_card(entity_id, score: float, contribs: list[Contribution], task_type
         sign = "+" if c.weight >= 0 else "-"
         lines.append(
             f"  {branch} {path}: {c.agg or ''} = {c.value}   "
-            f"katki {sign}{abs(c.weight):.3f}"
+            f"{contribution_label} {sign}{abs(c.weight):.3f}"
         )
     return "\n".join(lines)

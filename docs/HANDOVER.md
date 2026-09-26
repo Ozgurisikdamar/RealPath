@@ -1,6 +1,6 @@
 # HANDOVER — realpath.dev
 
-> **Son guncelleme: 2026-09-15** · onceki is: **Sprint 2 (3/4)** — DFS tuning (driver-dnf 0.592→**0.658**), ek RelBench task (driver-top3 0.769), GNN CI workflow (`ci/gnn-eval.yml`). Kalan: GNN adil temporal SAYISI **infra-bloke** (disk %100 doldu, Docker bozuldu). ⚠️ **2026-09-15 duzeltmesi:** "GitHub Linux CI'da kosacak" cozumu **YOK** — bu hesapta Actions hic kosmuyor (**ADR-015**); benchmark gercek bir Linux makinesinde elle kosar ya da PENDING kalir.
+> **Son guncelleme: 2026-09-26** · son is: **demo + gorseller** — `demo_app.py` artik varsayilan **Ingilizce**, Turkce kenar cubugundaki secici ya da `?lang=tr` ile (orijinal Turkce metin korundu); tema `.streamlit/config.toml`; kenar cubugunda sema/FK grafigi; `tests/test_demo_app.py` (AppTest, 4 test); `demo` extra `streamlit>=1.57`. SVG duzeltmeleri: `docs/logo.svg` (+png), `docs/architecture-premium.svg`, `docs/realpath-overview.svg`, `docs/temporal-safety.svg`. Onceki is: **Sprint 2 (3/4)** — DFS tuning (driver-dnf 0.592→**0.658**), ek RelBench task (driver-top3 0.769), GNN CI workflow (`ci/gnn-eval.yml`). Kalan: GNN adil temporal SAYISI **infra-bloke** (disk %100 doldu, Docker bozuldu). ⚠️ **2026-09-15 duzeltmesi:** "GitHub Linux CI'da kosacak" cozumu **YOK** — bu hesapta Actions hic kosmuyor (**ADR-015**); benchmark gercek bir Linux makinesinde elle kosar ya da PENDING kalir.
 > Bu bir *living* state dosyasidir. **Her session** commit'ten ONCE bu satiri ve asagidaki checklist'leri guncelle.
 > `devam` dendiginde once **`docs/SPRINTS.md`** (🟢 guncel sprint) okunur; **bu dosya canli durumdur** (ne bitti, bilinen sorunlar, dogrulama).
 
@@ -50,10 +50,10 @@
 - [x] `PredictionResult` (`result.py`) + `Engine` (`engine.py`) + sablon registry (`templates.py`).
 - [x] Eval harness (`eval.py`): `evaluate_local`, `evaluate_relbench` (extra arkasinda), `main` CLI.
 - [x] CLI (`cli.py`): `make-sample / schema / ask / predict / eval`, entry point `realpath`.
-- [x] Streamlit demo (`demo_app.py`, port 8501, Turkce UI).
+- [x] Streamlit demo (`demo_app.py`, port 8501). **2026-09-26:** varsayilan Ingilizce + Turkce (kenar cubugu / `?lang=tr`, secim URL'e yazilir), `.streamlit/config.toml` temasi (acik; indigo + zumrut; Inter + JetBrains Mono, sistemde yoksa Streamlit varsayilanlari), kenar cubugunda Graphviz sema/FK grafigi, metrik kutulari + Altair surucu grafigi, kodda ligature kapali. Davranis ayni (`Engine.predict` + `explain_entity`/`format_card`; `format_card`'a yalnizca `contribution_label` parametresi eklendi, varsayilani `katki` — CLI ciktisi degismedi). Duman testi `tests/test_demo_app.py` (AppTest: EN varsayilan, `?lang=tr`, bilinmeyen dil → EN, predict + dil degisince sonuc korunur); streamlit 1.57 / 1.58 / 1.64 ile gecti, 1.56'da `AppTest.segmented_control` yok → `demo` extra `streamlit>=1.57`.
 - [x] Sentetik e-ticaret DB generator (`data/make_sample_db.py`, 4 tablo, seed 42).
 - [x] Encoding-safe I/O (`_io.py`: `sprint`, `use_utf8`).
-- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3), `test_cli.py` (2), `conftest.py` (sample_db + engine fixtures) — **25/25** (+2 skip: `test_postgres.py`, `test_mysql.py`).
+- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3), `test_cli.py` (2), `test_demo_app.py` (4, streamlit yoksa modul skip), `conftest.py` (sample_db + engine fixtures) — `.[dev]` ile **25 passed, 3 skipped**; streamlit kuruluyken **29 passed, 2 skipped** (2026-09-26 olculdu).
 - [x] Bilingual README (TR/EN) + `docs/REALPATH_SPEC_v2.md` (+ .docx/.html) + logo.
 - [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3.
 - [x] GitHub'a push: **private** repo `Ozgurisikdamar/realpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
@@ -89,6 +89,7 @@
 - **NL→PQL canli yol API key ister.** `ANTHROPIC_API_KEY` yoksa offline template fallback devreye girer (churn/forecast/fraud keyword routing). Default model `claude-sonnet-4-6`, override env `REALPATH_LLM_MODEL`.
 - **Lisans karantinasi:** getML (ELv2) ve TabPFN-2.5 (ticari kullanim yasak) cekirdege ALINMAZ — yalnizca opsiyonel eklenti. Cekirdek MIT/BSD/Apache kalir.
 - **`.duckdb` gitignored** — sample DB'yi her ortamda yeniden uret.
+- **woodwork `import pkg_resources` → eski bir setuptools ister (2026-09-26 olculdu).** `uv venv` ile kurulan ortamda setuptools yok → `import featuretools` "No module named 'pkg_resources'" ile duser (Python 3.12+ `venv` de setuptools kurmaz). Guncel setuptools da cozmez: 84.0.0'da `pkg_resources` yok, 80.10.2'de var → `pip install "setuptools<81"`. Python 3.11 `python -m venv` ortami (setuptools 79) etkilenmedi.
 
 ---
 
@@ -118,11 +119,11 @@ Windows venv yorumlayicisi: `.venv\Scripts\python.exe`. Konsol Turkce icin once 
 
 # 5) Testler
 .venv\Scripts\python.exe -m pytest tests\ -q
-#   beklenen: 25 passed
+#   beklenen: 25 passed (streamlit kuruluysa 29 passed — demo AppTest'leri)
 
 # 6) (opsiyonel) Streamlit demo
 .venv\Scripts\python.exe -m streamlit run realpath\demo_app.py
-#   http://localhost:8501
+#   http://localhost:8501  (Ingilizce; Turkce: http://localhost:8501/?lang=tr)
 ```
 
 ---
