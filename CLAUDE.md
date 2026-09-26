@@ -85,7 +85,7 @@ $env:PYTHONUTF8 = "1"                               # Türkçe konsol çıktıs�
 ```powershell
 $env:PYTHONUTF8 = "1"
 .venv\Scripts\python.exe data\make_sample_db.py data\shop.duckdb   # .duckdb gitignored — yeniden üret
-.venv\Scripts\python.exe -m pytest tests\ -q                       # 25 passed beklenir
+.venv\Scripts\python.exe -m pytest tests\ -q                       # 28 passed beklenir
 .venv\Scripts\python.exe -m realpath.eval                           # relational vs no-relational baseline
 # opsiyonel demo:
 streamlit run realpath\demo_app.py                                  # http://localhost:8501
@@ -95,7 +95,7 @@ streamlit run realpath\demo_app.py                                  # http://loc
 
 | Kontrol | Beklenen |
 |---|---|
-| pytest | **25 passed** |
+| pytest | **28 passed** |
 | churn ROC-AUC | **~0.749** (entity-only baseline ~0.704, **delta +0.045**) |
 | customer return-risk (2-hop join, 30 günlük pencere) | **~0.689** ROC-AUC (60d ~0.699, 90d ~0.690) |
 | product demand forecast (varsayılan `forecast()`: `SUM(transactions.quantity)`, 3 ay) | **MAE ~8.4** (rmse ~10.1) |
@@ -132,7 +132,7 @@ realpath/
 └── _io.py                 # sprint (encoding-safe print), use_utf8
 
 data/make_sample_db.py     # sentetik e-ticaret DuckDB üretir (seed 42)
-tests/                     # parser(10)+leakage(2)+templates(8)+calibration(3)+cli(2) = 25 pass (+ test_postgres/test_mysql, opt-in skip; + demo_app(4), streamlit yoksa skip)
+tests/                     # parser(10)+leakage(2)+templates(8)+calibration(3)+cli(2)+nlp_llm(3) = 28 pass (+ test_postgres/test_mysql, opt-in skip; + demo_app(4), streamlit yoksa skip)
 docs/                      # aşağıdaki DOCUMENT INDEX
 ```
 
@@ -177,5 +177,5 @@ PREDICT AGG(table.col|*, start, end, unit) [op value] FOR EACH entity_table.prim
 ## 7. YENİ SESSION İSEN — 3 SATIRLIK CHECKLIST
 
 - [ ] **`docs/HANDOVER.md`** "Sıradaki İş"i oku, en üstteki işaretsiz maddeyi al.
-- [ ] Bölüm 5 smoke test'i çalıştır (**25 passed** görmelisin), sonra Bölüm 2 protokolünü izle.
+- [ ] Bölüm 5 smoke test'i çalıştır (**28 passed** görmelisin), sonra Bölüm 2 protokolünü izle.
 - [ ] İş bitince **sadece lokal commit** — kullanıcı **"pushla"** demeden **push YOK** (Bölüm 3).

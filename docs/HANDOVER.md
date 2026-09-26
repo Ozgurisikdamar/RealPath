@@ -53,7 +53,7 @@
 - [x] Streamlit demo (`demo_app.py`, port 8501). **2026-09-26:** varsayilan Ingilizce + Turkce (kenar cubugu / `?lang=tr`, secim URL'e yazilir), `.streamlit/config.toml` temasi (acik; indigo + zumrut; Inter + JetBrains Mono, sistemde yoksa Streamlit varsayilanlari), kenar cubugunda Graphviz sema/FK grafigi, metrik kutulari + Altair surucu grafigi, kodda ligature kapali. Davranis ayni (`Engine.predict` + `explain_entity`/`format_card`; `format_card`'a yalnizca `contribution_label` parametresi eklendi, varsayilani `katki` — CLI ciktisi degismedi). Duman testi `tests/test_demo_app.py` (AppTest: EN varsayilan, `?lang=tr`, bilinmeyen dil → EN, predict + dil degisince sonuc korunur); streamlit 1.57 / 1.58 / 1.64 ile gecti, 1.56'da `AppTest.segmented_control` yok → `demo` extra `streamlit>=1.57`.
 - [x] Sentetik e-ticaret DB generator (`data/make_sample_db.py`, 4 tablo, seed 42).
 - [x] Encoding-safe I/O (`_io.py`: `sprint`, `use_utf8`).
-- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3), `test_cli.py` (2), `test_demo_app.py` (4, streamlit yoksa modul skip), `conftest.py` (sample_db + engine fixtures) — `.[dev]` ile **25 passed, 3 skipped**; streamlit kuruluyken **29 passed, 2 skipped** (2026-09-26 olculdu).
+- [x] Testler: `test_pql_parser.py` (10), `test_leakage.py` (2), `test_templates.py` (8), `test_calibration.py` (3), `test_cli.py` (2), `test_demo_app.py` (4, streamlit yoksa modul skip), `test_nlp_llm.py` (3; Claude yolu sahte istemciyle: ayristirilamayan cevap hata mesajiyla yeniden sorulur, hic ayristirilamazsa sablona dusulur), `conftest.py` (sample_db + engine fixtures) — `.[dev]` ile **28 passed, 3 skipped**; streamlit kuruluyken **32 passed, 2 skipped** (2026-09-26 olculdu).
 - [x] Bilingual README (TR/EN) + `docs/REALPATH_SPEC_v2.md` (+ .docx/.html) + logo.
 - [x] CI + paketleme: `.github/workflows/ci.yml` (push/PR'da ruff + pytest, py3.10/3.11), `pyproject` metadata (`[project.urls]`, classifiers, **pandas pin `>=2.0,<2.3`**), `[tool.ruff]` + lint temiz. Temiz-oda kurulumla (`pip install -e ".[dev]"`) dogrulandi: pandas 2.2.3.
 - [x] GitHub'a push: **private** repo `Ozgurisikdamar/realpath` (origin/master). NOT: `ci.yml` commit'i token'da `workflow` scope olmadigi icin **pushlanmadi** (lokalde bekliyor; `gh auth refresh -h github.com -s workflow` sonrasi pushlanir).
@@ -119,7 +119,7 @@ Windows venv yorumlayicisi: `.venv\Scripts\python.exe`. Konsol Turkce icin once 
 
 # 5) Testler
 .venv\Scripts\python.exe -m pytest tests\ -q
-#   beklenen: 25 passed (streamlit kuruluysa 29 passed — demo AppTest'leri)
+#   beklenen: 28 passed (streamlit kuruluysa 32 passed — demo AppTest'leri)
 
 # 6) (opsiyonel) Streamlit demo
 .venv\Scripts\python.exe -m streamlit run realpath\demo_app.py

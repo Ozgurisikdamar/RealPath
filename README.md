@@ -13,7 +13,7 @@ Connect a relational database, ask a predictive question in plain language or PQ
 <img src="https://img.shields.io/badge/version-0.1.0-6366F1?style=for-the-badge" alt="version 0.1.0"/>
 <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python 3.10+"/>
 <img src="https://img.shields.io/badge/license-MIT-10B981?style=for-the-badge" alt="MIT"/>
-<img src="https://img.shields.io/badge/tests-25%20passed-22C55E?style=for-the-badge&logo=pytest&logoColor=white" alt="25 tests passed"/>
+<img src="https://img.shields.io/badge/tests-28%20passed-22C55E?style=for-the-badge&logo=pytest&logoColor=white" alt="28 tests passed"/>
 <img src="https://img.shields.io/badge/local--first-data%20stays%20local-0F766E?style=for-the-badge" alt="local-first"/>
 
 <br/><br/>
@@ -219,7 +219,7 @@ The figures below are measured on this repository's reproducible sample/evaluati
 
 | Check | Verified result |
 | --- | ---: |
-| Test suite | **25 passed**, 2 opt-in connector tests skipped by default |
+| Test suite | **28 passed**, 3 skipped by default (2 opt-in connector tests; the demo tests without the `demo` extra) |
 | DuckDB churn ROC-AUC | **0.7492** |
 | PostgreSQL churn ROC-AUC | **0.7492** |
 | MySQL churn ROC-AUC | **0.7492** |

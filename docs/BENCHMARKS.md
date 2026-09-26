@@ -3,8 +3,9 @@
 All numbers below were **measured** (not vendor-claimed) on this codebase. Each row lists how to
 reproduce it. Synthetic sample DB = `data/make_sample_db.py` (seed 42, deterministic).
 
-> Test suite: **25 passed, 2 skipped** (the 2 skips are the opt-in Postgres/MySQL connector
-> tests; run them with `REALPATH_TEST_PG` / `REALPATH_TEST_MYSQL`). `pytest tests/ -q`.
+> Test suite: **28 passed, 3 skipped** with `.[dev]` (the skips are the 2 opt-in Postgres/MySQL
+> connector tests — run them with `REALPATH_TEST_PG` / `REALPATH_TEST_MYSQL` — and the demo tests,
+> which need the `demo` extra; with it: **32 passed, 2 skipped**). `pytest tests/ -q`.
 
 ---
 
