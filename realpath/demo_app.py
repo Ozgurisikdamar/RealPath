@@ -2,7 +2,10 @@
 
     streamlit run realpath/demo_app.py
 
-Local-first: everything runs against a local DuckDB file. Nothing leaves the machine.
+Local-first: everything runs against a local DuckDB file. With ANTHROPIC_API_KEY set, a
+plain-language question and the schema summary (table and column names, keys) go to the
+Claude API to become PQL; without a key, offline templates handle it and nothing leaves
+the machine. Rows are never sent.
 
 The UI speaks English (default) and Turkish: switch in the sidebar or open the app with
 ``?lang=tr``. The theme lives in ``.streamlit/config.toml`` at the repo root.
@@ -28,7 +31,7 @@ LANGS = {"en": "English", "tr": "Türkçe"}
 TEXT = {
     "en": {
         "language": "Language · Dil",
-        "caption": "Open source · self-hosted · **local-first** — your data never leaves your machine.",
+        "caption": "Open source · self-hosted · **local-first**.",
         "database": "Database",
         "db_path": "DuckDB path",
         "db_missing": "Database not found. Create it with `python data/make_sample_db.py`.",
@@ -58,7 +61,7 @@ TEXT = {
     },
     "tr": {
         "language": "Language · Dil",
-        "caption": "Açık kaynak · self-host · **local-first** — veriniz makinenizden çıkmaz.",
+        "caption": "Açık kaynak · self-host · **local-first**.",
         "database": "Veritabanı",
         "db_path": "DuckDB yolu",
         "db_missing": "DB bulunamadı. `python data/make_sample_db.py` ile oluşturun.",
@@ -104,7 +107,7 @@ _ROLE_TAGS = {
     "text": ("text", "#94A3B8"),
 }
 
-st.set_page_config(page_title="realpath.dev", layout="wide")
+st.set_page_config(page_title="RealPath", layout="wide")
 # Code blocks show PQL and the ASCII explanation card exactly as typed: no programming ligatures
 # ("==", "->", "|-" would otherwise merge into symbols in fonts such as JetBrains Mono).
 st.html("<style>pre, code { font-variant-ligatures: none; }</style>")
@@ -206,7 +209,7 @@ T = TEXT[lang]
 if st.query_params.get("lang") != lang:
     st.query_params["lang"] = lang
 
-st.title("realpath.dev — Relational Predictive Engine")
+st.title("RealPath — Relational Predictive Engine")
 st.caption(T["caption"])
 
 with st.sidebar:
